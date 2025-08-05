@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation</title>
+    <style>
+    /* ---
+    Dean Theme - Expert Edition
+    Version: 4.1 (Upleveled with OKLCH, Variable Fonts, CQs, and Cascade Layers)
+    Optimized for: Wide Gamut Color, Performance, A11y, Logical Layouts, Future-Proof Architecture.
+    --- */
+
+    /* Define Cascade Layers for structured, maintainable CSS */
+    @layer reset, tokens, base, components, layouts, utilities;
+
+    /* --- LAYER: CRITICAL RESOURCES (Variable Fonts) --- */
+    @layer base {
+        /* Utilizing Variable Fonts for reduced requests and granular control */
+        @import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,wght@0,300..700;1,300..700&family=Playfair+Display:ital,opsz,wght@0,5..120,400..800;1,5..120,400..800&display=swap');
+        @import url('https://fonts.googleapis.com/icon?family=Material+Icons&display=block');
+    }
+
+    /* --- LAYER: DESIGN TOKENS (OKLCH Foundation) --- */
+    @layer tokens {
+        :root {
+            /* Typography */
+            --font-primary: 'Google Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            --font-display: 'Playfair Display', Georgia, serif;
+            
+            /* Scale (Perfect Fourth - 1.333) */
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.333rem;
+            --font-size-2xl: 1.777rem;
+            --font-size-3xl: 2.369rem;
+            --font-size-4xl: 3.157rem;
+            
+            /* Semantic Color System (Defined in OKLCH for perceptual uniformity) */
+            /* Light Theme Palette Definitions (Luminance, Chroma, Hue) */
+            --c-sage-light: 95% 0.03 140;
+            --c-sage-base: 92% 0.04 140;
+            --c-wine-deep: 35% 0.15 25;
+            --c-gold-accent: 80% 0.12 85;
+            --c-neutral-dark: 15% 0.01 280;
+            --c-neutral-medium: 30% 0.01 280;
+            --c-white: 100% 0 0;
+
+            /* Semantic Assignments (Light Mode Default) */
+            --color-surface-primary: oklch(var(--c-sage-base));
+            --color-surface-secondary: oklch(var(--c-sage-light));
+            /* Dynamically mixing colors for elevation and glass effects */
+            --color-surface-elevated: color-mix(in oklch, oklch(var(--c-white)), var(--color-surface-primary) 20%);
+            --color-surface-glass: oklch(var(--c-white) / 0.6);
+            
+            --color-on-surface: oklch(var(--c-neutral-dark));
+            --color-on-surface-variant: oklch(var(--c-neutral-medium));
+            
+            --color-primary: oklch(var(--c-wine-deep));
+            --color-on-primary: oklch(var(--c-white));
+
+            --color-secondary: oklch(var(--c-gold-accent));
+            
+            --color-outline: oklch(50% 0.02 280);
+            --color-outline-variant: oklch(85% 0.02 280);
+            
+            /* Elevation System (Refined shadows) */
+            --shadow-color: 0deg 0% 0%;
+            --elevation-1: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.34),
+                           0.4px 0.8px 1px -1.2px hsl(var(--shadow-color) / 0.34);
+            --elevation-3: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.3),
+                           0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 0.3),
+                           2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 0.3);
+            --elevation-5: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.35),
+                           1.5px 2.9px 3.7px -0.4px hsl(var(--shadow-color) / 0.35),
+                           4.5px 8.9px 11.2px -1.1px hsl(var(--shadow-color) / 0.35),
+                           7.1px 14.3px 18px -1.4px hsl(var(--shadow-color) / 0.35);
+
+            /* Spacing Scale */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            
+            /* Border Radius Scale */
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+            
+            /* Motion Tokens */
+            --motion-duration-medium: 300ms;
+            --motion-duration-long: 500ms;
+            --motion-easing-standard: cubic-bezier(0.2, 0.0, 0, 1.0);
+            --motion-easing-emphasized: cubic-bezier(0.4, 0.0, 0.2, 1.0);
+        }
+
+        /* --- WIDE GAMUT COLOR SUPPORT (P3) --- */
+        /* Targeting modern displays for richer colors */
+        @media (color-gamut: p3) {
+            :root {
+                --color-primary: color(display-p3 0.35 0.08 0.15); /* Richer wine red */
+                --color-secondary: color(display-p3 0.77 0.65 0.41); /* Vibrant gold */
+            }
+        }
+
+        /* --- DYNAMIC THEMING (Dark Mode) --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Theme Palette Adjustments */
+                --c-sage-base: 15% 0.02 140;
+                --c-sage-light: 20% 0.02 140;
+                --c-wine-deep: 65% 0.15 25; /* Brighter primary for dark backgrounds */
+                --c-neutral-dark: 95% 0.01 280;
+                --c-neutral-medium: 80% 0.01 280;
+
+                --shadow-color: 0deg 0% 5%;
+                
+                /* Adjusted dynamic mixing for dark mode elevation */
+               --color-surface-elevated: color-mix(in oklch, oklch(var(--c-white) / 0.05), var(--color-surface-primary) 95%);
+               --color-surface-glass: oklch(var(--c-sage-light) / 0.5);
+            }
+        }
+    }
+
+    /* --- LAYER: RESET & FOUNDATION --- */
+    @layer reset {
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font: inherit;
+        }
+
+        html {
+            /* Fluid typography base */
+            font-size: clamp(14px, 1.5vw, 18px);
+            scroll-behavior: smooth;
+            /* Enable variable font features */
+            font-optical-sizing: auto;
+            font-synthesis: none;
+        }
+
+        body {
+            min-height: 100dvh; /* Dynamic viewport height */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* A11y: Reduced Motion Preference */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    }
+
+    /* --- LAYER: BASE STYLES & ARCHITECTURE --- */
+    @layer base {
+
+        /* --- Material Icons Optimization --- */
+        .material-icons {
+            font-family: 'Material Icons';
+            line-height: 1;
+            display: inline-block;
+            font-feature-settings: 'liga';
+            will-change: transform;
+        }
+
+        .material-icons.size-sm { font-size: 18px; }
+        .material-icons.size-md { font-size: 24px; }
+        .material-icons.size-lg { font-size: 36px; }
+        .material-icons.size-xl { font-size: 48px; }
+
+        /* --- Presentation Container --- */
+        body {
+            font-family: var(--font-primary);
+            background: var(--color-surface-secondary);
+            color: var(--color-on-surface);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: var(--space-4);
+            font-weight: 400;
+        }
+
+        main#presentation-container {
+            --container-padding: var(--space-4);
+            width: 100%;
+            max-width: min(1440px, calc(100vw - var(--container-padding) * 2));
+            aspect-ratio: 16 / 9;
+            max-height: calc(100dvh - var(--container-padding) * 2);
+            
+            display: flex;
+            overflow: hidden;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--elevation-5);
+            border: 1px solid var(--color-outline-variant);
+            position: relative;
+            background: var(--color-surface-primary);
+            /* Performance: Promote to its own layer */
+            transform: translateZ(0);
+            contain: layout style paint;
+        }
+
+        .slides-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            will-change: transform;
+            
+            /* CSS Scroll Snap for high-performance scrolling navigation */
+            scroll-snap-type: x mandatory;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            /* Hide scrollbar */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+
+        .slides-wrapper::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        /* --- Slide Architecture --- */
+        .slide {
+            flex: 0 0 100%;
+            display: flex;
+            flex-direction: column;
+            /* Logical Properties for padding */
+            padding-block: var(--space-12);
+            padding-inline: var(--space-16);
+
+            /* Subtle, sophisticated background texture using noise and gradients */
+            background: 
+                /* SVG Noise Filter (High performance texture) */
+                url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj4KICA8ZmlsdGVyIGlkPSJub2lzZSIgeD0iMCIgeT0iMCI+CiAgICA8ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC43IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+CiAgICA8ZmVDb2xvck1hdHJpeCB0eXBlPSJzYXR1cmF0ZSIgdmFsdWVzPSIwIiAvPgogIDwvZmlsdGVyPgogIDxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjA1Ii8+Cjwvc3ZnPgo='),
+                radial-gradient(ellipse 800px 600px at 15% 20%, oklch(var(--c-gold-accent) / 0.05), transparent 50%),
+                var(--color-surface-primary);
+            position: relative;
+            scroll-snap-align: start;
+            contain: content;
+        }
+
+        /* --- Typography System & Hierarchy --- */
+        .slide-header {
+            flex-shrink: 0;
+            margin-block-end: var(--space-8);
+            padding-block-end: var(--space-4);
+            position: relative;
+        }
+
+        /* Refined visual accent */
+        .slide-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            /* Logical property */
+            inset-inline-start: 0;
+            width: 100px;
+            height: 6px;
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            border-radius: var(--radius-md);
+        }
+
+        .slide-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: var(--space-6);
+            /* Establishing Container Query context */
+            container-type: inline-size;
+            container-name: slide-body;
+        }
+
+        /* Headings */
+        h1, .slide-header h1 {
+            font-family: var(--font-display);
+            /* Fluid typography using Container Query Units (cqi) */
+            font-size: clamp(var(--font-size-2xl), 4cqi + 1rem, var(--font-size-4xl));
+            font-weight: 700;
+            color: var(--color-primary);
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+            /* Progressive Enhancement: Automatic text balancing to prevent widows */
+            text-wrap: balance;
+        }
+
+        h2 { 
+            font-family: var(--font-display);
+            font-size: var(--font-size-2xl);
+            font-weight: 600;
+            color: var(--color-primary);
+            line-height: 1.2;
+            margin-block-end: var(--space-6);
+            text-wrap: balance;
+        }
+
+        h3 {
+            font-family: var(--font-primary);
+            font-size: var(--font-size-xl);
+            font-weight: 550; /* Granular control with variable fonts */
+            color: var(--color-on-surface);
+            line-height: 1.3;
+            margin-block-end: var(--space-4);
+        }
+
+        /* Body text optimized for presentations */
+        p, li { 
+            /* Fluid typography using CQI */
+            font-size: clamp(var(--font-size-base), 2cqi, var(--font-size-lg));
+            line-height: 1.65;
+            max-width: 70ch; /* Optimal reading length */
+        }
+    }
+
+    /* --- LAYER: COMPONENTS --- */
+    @layer components {
+
+        /* --- Enhanced Lists --- */
+        ul, ol { 
+            list-style: none;
+            margin-block: var(--space-4);
+            display: grid;
+            gap: var(--space-4);
+        }
+
+        /* Advanced Icon List Items (Glassmorphism refinement) */
+        li.icon-list-item { 
+            display: flex; 
+            align-items: flex-start; 
+            gap: var(--space-4);
+            padding: var(--space-6);
+            background: var(--color-surface-glass);
+            border: 1px solid var(--color-outline-variant);
+            border-radius: var(--radius-lg);
+            transition: all var(--motion-duration-medium) var(--motion-easing-standard);
+            box-shadow: var(--elevation-1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Micro-interaction: Hover state */
+        li.icon-list-item:hover {
+            background: var(--color-surface-elevated);
+            border-color: oklch(var(--c-gold-accent) / 0.5);
+            box-shadow: var(--elevation-3);
+            transform: translateY(-2px);
+        }
+
+        li.icon-list-item .material-icons {
+            color: var(--color-primary);
+            flex-shrink: 0;
+            margin-top: 0.1em; /* Optical alignment */
+            padding: var(--space-2);
+            background: var(--color-surface-secondary);
+            border-radius: var(--radius-md);
+            transition: transform var(--motion-duration-medium) var(--motion-easing-standard);
+        }
+        
+        li.icon-list-item:hover .material-icons {
+            transform: scale(1.05);
+        }
+
+        /* --- Advanced Card System --- */
+        .card {
+            background: var(--color-surface-glass);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            border: 1px solid var(--color-outline-variant);
+            box-shadow: var(--elevation-3);
+            transition: all var(--motion-duration-medium) var(--motion-easing-emphasized);
+            /* Enhanced Glassmorphism */
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            
+            position: relative;
+            overflow: hidden;
+            will-change: transform, box-shadow;
+        }
+
+        .card:hover {
+            box-shadow: var(--elevation-5);
+            transform: translateY(-4px);
+            background: var(--color-surface-elevated);
+        }
+        
+        .card h3 {
+            color: var(--color-primary);
+        }
+
+        /* --- Quote Block (Testimonials/Insights) --- */
+        .quote-block {
+            background: var(--color-surface-secondary);
+            /* Logical property for border */
+            border-inline-start: 6px solid var(--color-primary);
+            padding: var(--space-8);
+            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+            margin-block: var(--space-6);
+            box-shadow: var(--elevation-1);
+        }
+
+        .quote-block blockquote {
+            font-family: var(--font-display);
+            font-size: var(--font-size-xl);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .quote-block cite {
+            display: block;
+            margin-block-start: var(--space-4);
+            font-style: normal;
+            font-weight: 500;
+            color: var(--color-on-surface-variant);
+            text-align: right;
+        }
+
+        /* --- Statistics/Metrics Display --- */
+        .stat-item {
+            text-align: center;
+            padding: var(--space-6);
+            background: var(--color-surface-glass);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--elevation-1);
+            border: 1px solid var(--color-outline-variant);
+            transition: all var(--motion-duration-medium) var(--motion-easing-standard);
+        }
+
+        .stat-item:hover {
+            transform: scale(1.03);
+            box-shadow: var(--elevation-3);
+            background: var(--color-surface-elevated);
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: var(--font-size-4xl);
+            font-weight: 700;
+            color: var(--color-primary);
+            display: block;
+            line-height: 1;
+            /* Monospace numbers for better alignment in display font */
+            font-feature-settings: "tnum";
+        }
+
+        .stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-on-surface-variant);
+            margin-block-start: var(--space-2);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* --- Section Header --- */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            margin-block-end: var(--space-6);
+            padding-block-end: var(--space-2);
+            border-bottom: 2px solid var(--color-secondary);
+        }
+
+        .section-header h2,
+        .section-header h3 {
+            margin: 0;
+        }
+    }
+
+    /* --- LAYER: LAYOUTS & GRIDS --- */
+    @layer layouts {
+
+        /* --- Grid Systems --- */
+        .card-grid {
+            display: grid;
+            /* Auto-fit layout for intrinsic responsiveness */
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            gap: var(--space-6);
+            margin-block: var(--space-6);
+            align-items: stretch;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-6);
+        }
+        
+        /* Container Query for Stat Grid: Adjust layout if the slide body is narrow */
+        @container slide-body (max-width: 500px) {
+            .stat-number {
+                font-size: var(--font-size-3xl);
+            }
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Layout: Split 50/50 */
+        .layout-split-50-50 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-8);
+            align-items: center;
+            height: 100%;
+        }
+
+        /* Container Query for Split Layout: Stack when slide body is small */
+        @container slide-body (max-width: 700px) {
+            .layout-split-50-50 {
+                grid-template-columns: 1fr;
+                gap: var(--space-6);
+            }
+        }
+
+        /* --- Specialized Slide Layouts --- */
+
+        /* Title Slide */
+        .slide--title {
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .slide--title .slide-header::after { 
+            display: none; 
+        }
+
+        .slide--title .slide-header h1 { 
+            font-size: clamp(var(--font-size-3xl), 8cqi, 5rem);
+            font-weight: 800; /* Heavier weight for impact */
+            margin-bottom: var(--space-6);
+            /* Gradient text effect */
+            background: linear-gradient(135deg, var(--color-primary) 0%, oklch(var(--c-wine-deep) / 0.8) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .slide--title .subtitle {
+            font-size: var(--font-size-xl);
+            color: var(--color-on-surface-variant);
+            font-weight: 350; /* Lighter variable weight */
+            max-width: 50ch;
+            margin: 0 auto;
+        }
+    }
+
+    /* --- LAYER: UTILITIES & HELPERS --- */
+    @layer utilities {
+        .text-emphasis { 
+            color: var(--color-primary); 
+            font-weight: 550; 
+        }
+        
+        .text-center { text-align: center; }
+
+        /* A11y: Screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    }
+
+    /* --- PRESENTATION CONTROLS (Outside Layers for Z-index control) --- */
+    .slide-nav { 
+        position: absolute; 
+        bottom: var(--space-6); 
+        /* Logical property */
+        inset-inline-end: var(--space-6);
+        display: flex; 
+        gap: var(--space-4); 
+        z-index: 1000;
+    }
+
+    /* Floating Action Button Style */
+    .nav-btn { 
+        width: 56px; 
+        height: 56px; 
+        background: var(--color-primary);
+        color: var(--color-on-primary); 
+        border: none;
+        border-radius: var(--radius-full);
+        cursor: pointer; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        transition: all var(--motion-duration-medium) var(--motion-easing-standard);
+        box-shadow: var(--elevation-3);
+        font-family: 'Material Icons';
+    }
+
+    .nav-btn:hover,
+    .nav-btn:focus-visible { 
+        /* Dynamic darkening using OKLCH manipulation */
+        background: oklch(from var(--color-primary) calc(l - 0.1) c h);
+        transform: translateY(-2px);
+        box-shadow: var(--elevation-5);
+    }
+
+    .nav-btn:focus-visible {
+        outline: 3px solid var(--color-secondary);
+        outline-offset: 3px;
+    }
+
+    .nav-btn:active {
+        transform: translateY(0);
+    }
+
+    .slide-counter { 
+        position: absolute; 
+        bottom: var(--space-6); 
+        /* Logical property */
+        inset-inline-start: var(--space-6);
+        padding: var(--space-1) var(--space-4); 
+        font-size: var(--font-size-sm); 
+        color: var(--color-on-surface-variant); 
+        z-index: 1000;
+        /* Monospace numbers */
+        font-variant-numeric: tabular-nums;
+    }
+
+    .progress-bar { 
+        position: absolute; 
+        bottom: 0; 
+        /* Logical property */
+        inset-inline-start: 0;
+        height: 6px; 
+        background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+        width: 0%; 
+        transition: width var(--motion-duration-long) var(--motion-easing-standard);
+        z-index: 1001;
+    }
+
+    /* --- RESPONSIVE OVERRIDES (Viewport Adaptations) --- */
+    @media (max-width: 768px) {
+        @layer base {
+            body {
+                padding: 0;
+            }
+            
+            main#presentation-container {
+                max-width: 100%;
+                max-height: 100dvh;
+                aspect-ratio: unset;
+                border-radius: 0;
+            }
+            
+            .slide {
+                /* Logical Properties */
+                padding-inline: var(--space-6);
+                padding-block: var(--space-8);
+                min-height: 100dvh;
+                justify-content: center;
+            }
+        }
+
+        @layer layouts {
+            .card-grid, .layout-split-50-50 {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+
+    /* --- ACCESSIBILITY: FORCED COLORS (High Contrast Mode) --- */
+    @media (forced-colors: active) {
+        body, .slide, .card, li.icon-list-item {
+            background-color: Canvas !important;
+            color: CanvasText !important;
+            forced-color-adjust: none;
+        }
+        
+        h1, h2, h3, .text-emphasis, .stat-number {
+            color: Highlight !important;
+        }
+        
+        .card, li.icon-list-item, .nav-btn {
+            border: 2px solid CanvasText !important;
+        }
+
+        .nav-btn {
+            background-color: ButtonFace !important;
+            color: ButtonText !important;
+        }
+
+        .nav-btn:hover {
+            background-color: Highlight !important;
+            color: HighlightText !important;
+        }
+    }
+
+    /* --- PRINT STYLES (Handouts) --- */
+    @media print {
+        @page {
+            size: landscape;
+            margin: 0.5in;
+        }
+
+        body {
+            background: white !important;
+            color: black !important;
+            font-size: 12pt;
+        }
+        
+        main#presentation-container {
+            box-shadow: none;
+            width: 100%;
+        }
+
+        .slides-wrapper {
+            display: block;
+            overflow: visible;
+            scroll-snap-type: none;
+        }
+        
+        .slide {
+            page-break-after: always;
+            border: 1px solid #ccc;
+            background: white !important;
+            height: 7.5in;
+            width: 10in;
+        }
+            
+        .nav-btn, .slide-counter, .progress-bar, .slide-nav {
+            display: none !important;
+        }
+
+        h1, h2, h3 {
+            color: black !important;
+        }
+
+        .slide--title .slide-header h1 {
+            color: black !important;
+            -webkit-text-fill-color: black !important;
+            background: none !important;
+        }
+    }
+    </style>
+</head>
+<body>
+    <main id="presentation-container">
+        <div class="slides-wrapper">
+            
+            <section class="slide slide--title">
+                <div class="slide-header">
+                    <h1>Shall we go for an affordable wine?</h1>
+                </div>
+                <div class="slide-body">
+                </div>
+            </section>
+            
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>What is the context?</h1>
+                </div>
+                <div class="slide-body">
+                    <ul>
+                        <li class="icon-list-item">
+                            <span class="material-icons size-md">leaderboard</span>
+                            <div>Current situation</div>
+                        </li>
+                        <li class="icon-list-item">
+                            <span class="material-icons size-md">wine_bar</span>
+                            <div>Producers of the most premium wine in the world</div>
+                        </li>
+                        <li class="icon-list-item">
+                            <span class="material-icons size-md">payments</span>
+                            <div>Able to sell in advance and receive money</div>
+                        </li>
+                        <li class="icon-list-item">
+                            <span class="material-icons size-md">psychology</span>
+                            <div>Allow the château to focus on wine making</div>
+                        </li>
+                        <li class="icon-list-item">
+                            <span class="material-icons size-md">handshake</span>
+                            <div>Excellent relationship with trade partners based on trust, tradition, and marriage</div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Issue?</h1>
+                </div>
+                <div class="slide-body">
+                    <p>Claire believes that Château de Vallois (CDV) is missing the new, emerging market of younger consumers because of its focus on super-premium, very high- priced wine.</p>
+                    <p>She argues that a less expensive wine will open up a new market, gain valuable exposure for CDV, and increase revenues.</p>
+                    <div class="quote-block">
+                        <blockquote>"What might happen if the estate allowed less expensive, lower quality wine makers particularly those from outside the traditional wine making regions of Europe to capture and retain the next generation of customers?"</blockquote>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Issue?</h1>
+                </div>
+                <div class="slide-body">
+                    <p>Claire's CEO uncle, François, believes that extending the brand will undercut its value in the marketplace.</p>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Issue?</h1>
+                </div>
+                <div class="slide-body">
+                    <p>Claire's grandfather, Gaspard, must decide to what degree the rewards of expanding the market and getting experience with new customers in new markets outweigh the risks of undermining the brand that has been carefully cultivated over centuries.</p>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Preserve the luxury or extend the brand?</h1>
+                </div>
+                <div class="slide-body">
+                    <div class="layout-split-50-50">
+                        <div>
+                            <h3>Current Situation</h3>
+                            <ul>
+                                <li>Producers of the most premium wine in the world</li>
+                                <li>Able to sell in advance and receive money</li>
+                                <li>Allow the château to focus on wine making</li>
+                                <li>Excellent relationship with trade partners based on trust, tradition, and marriage</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>But...</h3>
+                            <ul>
+                                <li>But stagnation in business growth restricted by capacity</li>
+                                <li>Competitive activity and possible shift in market preferences</li>
+                                <li>Perception of dependence on middlemen, unequal division of earnings</li>
+                                <li>Distance from end users, what will they want in future?</li>
+                            </ul>
+                            <p><b>Shall we consider launching an affordable wine?</b></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Shall we go for an affordable luxury wine?</h1>
+                </div>
+                <div class="slide-body">
+                    <div class="layout-split-50-50">
+                        <div>
+                            <h2 class="section-header">Motivating Factors (What drives you)</h2>
+                            <ul>
+                                <li class="icon-list-item"><span class="material-icons size-md">trending_up</span><div>Growth brings in revenues</div></li>
+                                <li class="icon-list-item"><span class="material-icons size-md">groups</span><div>Reduces dependence on Négociants</div></li>
+                                <li class="icon-list-item"><span class="material-icons size-md">psychology</span><div>Allows the firm to stay close to consumers</div></li>
+                                <li class="icon-list-item"><span class="material-icons size-md">lightbulb</span><div>Opportunities to experiment, innovate, learn, career</div></li>
+                                <li class="icon-list-item"><span class="material-icons size-md">lan</span><div>Eventually helps build up own channel, master marketing skills and command and capture a premium for the flag ship product</div></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h2 class="section-header">Restraining Factors (What holds you?)</h2>
+                            <ul>
+                                <li class="icon-list-item"><span class="material-icons size-md">monetization_on</span><div>Need investments</div></li>
+                                <li class="icon-list-item"><span class="material-icons size-md">help_outline</span><div>Question of core competence</div></li>
+                                <li class="icon-list-item"><span class="material-icons size-md">work</span><div>Management bandwidth</div></li>
+                                <li class="icon-list-item"><span class="material-icons size-md">handshake</span><div>Antagonize négociants and spoil relationship and resultant risk for flagship brand</div></li>
+                                <li class="icon-list-item"><span class="material-icons size-md">water_drop</span><div>Question of brand dilution</div></li>
+                                <li class="icon-list-item"><span class="material-icons size-md">flag</span><div>Organizational Vision and Values</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Who is my consumer? What are they paying for?</h1>
+                </div>
+                <div class="slide-body">
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Why do consumers pay a premium for a wine?</h1>
+                </div>
+                <div class="slide-body">
+                    <div class="card-grid">
+                        <div class="card">
+                            <h3>WHO (Valued Consumer)</h3>
+                            <p class="text-emphasis">Connoisseurs & Collectors</p>
+                            <ul>
+                                <li>Sophisticated wine drinkers, able to discriminate good wine</li>
+                                <li>Skill comes from experience; culturally upper class</li>
+                                <li>May be privately consumed in small groups for special occasions</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>WHAT (Value Proposition)</h3>
+                            <p class="text-emphasis">Taste & Heritage</p>
+                            <ul>
+                                <li>Unique taste, heritage, origin, and imagery</li>
+                                <li>Experiential product, indulgence, intangible benefits</li>
+                                <li>Status among collectors</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Why do consumers pay a premium for a wine?</h1>
+                </div>
+                <div class="slide-body">
+                    <div class="card-grid">
+                        <div class="card">
+                            <h3>WHO (Valued Consumer)</h3>
+                            <p class="text-emphasis">High Net Worth & Socialites</p>
+                            <ul>
+                                <li>Upper class, business/professionals, travels widely</li>
+                                <li>Uses brand name goods, networked</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>WHAT (Value Proposition)</h3>
+                             <p class="text-emphasis">Status & Exclusivity</p>
+                            <ul>
+                                <li>Brand name/origin, imagery</li>
+                                <li>Endorsed by experts, connoisseurs, and taste makers</li>
+                                <li>Consumed publicly</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Premium Wine - The three Vs</h1>
+                </div>
+                <div class="slide-body">
+                    <ul>
+                        <li class="icon-list-item">
+                            <span class="material-icons size-md">lan</span>
+                            <div>Valued Customers, Value Proposition, Value Chain</div>
+                        </li>
+                        <li class="icon-list-item">
+                            <span class="material-icons size-md">people</span>
+                            <div><b>Valued Customers (WHO?)</b>: Connoisseurs & Luxury Seekers</div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Premium Wine - The three Vs</h1>
+                </div>
+                <div class="slide-body">
+                    <h2 class="section-header">Value Proposition (What?)</h2>
+                    <ul>
+                        <li class="icon-list-item"><span class="material-icons size-md">psychology</span><div><b>Connoisseurs:</b> Unique inimitable taste</div></li>
+                        <li class="icon-list-item"><span class="material-icons size-md">diamond</span><div><b>Luxury seekers:</b> Status, snob value, exclusivity, image</div></li>
+                    </ul>
+                    <p>The value comes from attention to detail in making the fine wine, limited and exclusive availability and creating and managing perceptions of luxury.</p>
+                    <p>How much the marketers can actively influence the value creation and management process?</p>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Premium Wine - The three Vs</h1>
+                </div>
+                <div class="slide-body">
+                     <h2 class="section-header">Value Chain (How?)</h2>
+                     <p><b>Production:</b> Planting, Nurturing, irrigation, fertilization, harvesting, crushing grapes, mixing, fermenting, casking and Aging.</p>
+                     <p><b>Distribution:</b> Bottling, labelling, transportation, insurance, export, customs, refrigeration, merchandising, distribution.</p>
+                     <div class="quote-block">
+                        <blockquote>Where do we straddle and keep an advantage?</blockquote>
+                     </div>
+                </div>
+            </section>
+
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Premium Wine - The three Vs</h1>
+                </div>
+                <div class="slide-body">
+                    <h2 class="section-header">Valued Customers (WHO?)</h2>
+                    <p>Connoisseurs & Luxury Seekers</p>
+                    
+                    <h2 class="section-header">Value Proposition (WHAT?)</h2>
+                    <p>For Connoisseurs: Unique inimitable taste. For Luxury seekers: Status, snob value, exclusivity, image.</p>
+                    
+                    <h2 class="section-header">Value Chain (HOW?)</h2>
+                    <p>From planting and nurturing to bottling, transportation, and distribution.</p>
+                </div>
+            </section>
+            
+            <section class="slide">
+                <div class="slide-header">
+                    <h1>Extension or New Business?</h1>
+                </div>
+                <div class="slide-body">
+                    <p class="text-center">[An image depicting a three-part circular diagram transitioning to another three-part circular diagram, indicating a change or evolution.]</p>
+                </div>
+            </section>
+            
+        </div>
+    </main>
+    <div class="slide-nav">
+        <button id="prev-btn" class="nav-btn" aria-label="Previous Slide">arrow_back</button>
+        <button id="next-btn" class="nav-btn" aria-label="Next Slide">arrow_forward</button>
+    </div>
+    <div id="slide-counter" class="slide-counter"></div>
+    <div id="progress-bar" class="progress-bar"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapper = document.querySelector('.slides-wrapper');
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const counter = document.getElementById('slide-counter');
+            const progressBar = document.getElementById('progress-bar');
+            let currentSlide = 0;
+
+            const updateTotalSlides = () => slides.length;
+
+            const updateUI = () => {
+                // Counter
+                if (counter) {
+                    counter.textContent = `${currentSlide + 1} / ${updateTotalSlides()}`;
+                }
+                // Progress Bar
+                if (progressBar) {
+                    const progressPercentage = ((currentSlide + 1) / updateTotalSlides()) * 100;
+                    progressBar.style.width = `${progressPercentage}%`;
+                }
+                // Buttons
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === updateTotalSlides() - 1;
+            };
+
+            const goToSlide = (slideIndex) => {
+                if (slideIndex >= 0 && slideIndex < updateTotalSlides()) {
+                    wrapper.scrollTo({
+                        left: slides[slideIndex].offsetLeft,
+                        behavior: 'smooth'
+                    });
+                    currentSlide = slideIndex;
+                    updateUI();
+                }
+            };
+            
+            prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+            nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if(e.key === 'ArrowRight') {
+                    goToSlide(currentSlide + 1);
+                } else if (e.key === 'ArrowLeft') {
+                    goToSlide(currentSlide - 1);
+                }
+            });
+
+            // Update on scroll
+            let scrollTimeout;
+            wrapper.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    const newSlideIndex = Math.round(wrapper.scrollLeft / wrapper.clientWidth);
+                    if(newSlideIndex !== currentSlide){
+                        currentSlide = newSlideIndex;
+                        updateUI();
+                    }
+                }, 150);
+            });
+
+            // Initial setup
+            goToSlide(0);
+        });
+    </script>
+</body>
+</html>
