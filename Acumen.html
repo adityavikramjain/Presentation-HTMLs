@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acumen Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <style>
+        :root {
+            --bg-page: #F0F4F0;
+            --text-dark: #212121;
+            --accent-red: #880808;
+            --bg-slide: #FFFFFF;
+        }
+
+        /* 1. CORE AESTHETICS & VIEWPORT MANAGEMENT */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-page);
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e6eae6' fill-opacity='0.6' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .presentation-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            padding: 2.5vw;
+            box-sizing: border-box;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            padding: clamp(2rem, 4vw, 4rem);
+            background-color: var(--bg-slide);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23f9f9f9' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* 2. TYPOGRAPHY */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--accent-red);
+            margin: 0 0 1rem 0;
+            text-align: center;
+        }
+        
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
+        h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2rem; }
+        h3 { font-size: clamp(1.2rem, 2.5vw, 1.6rem); text-align: left; }
+        p, li { font-size: clamp(1rem, 1.8vw, 1.2rem); line-height: 1.6; color: var(--text-dark); }
+        
+        /* 3. ICON-CENTRIC STRATEGY */
+        .material-symbols-sharp {
+            font-size: clamp(2.5rem, 5vw, 3.5rem) !important;
+            color: var(--accent-red);
+            vertical-align: middle;
+        }
+
+        .central-icon {
+             font-size: clamp(5rem, 10vw, 8rem) !important;
+             margin-bottom: 1rem;
+             text-align: center;
+        }
+        
+        /* 4. LAYOUT ENGINEERING */
+        .layout-1-col {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .content-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            gap: 2rem;
+            align-items: stretch; /* CRITICAL for equal height */
+        }
+        
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+        
+        .two-col-grid .column {
+            display: grid;
+            grid-template-rows: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        li .material-symbols-sharp {
+            margin-right: 1rem;
+            font-size: clamp(1.8rem, 3vw, 2.5rem) !important;
+        }
+
+        .comparison-column {
+             border: 1px solid #eee;
+             border-radius: 8px;
+             padding: 1.5rem;
+             background: #fafafa;
+             display: flex;
+             flex-direction: column;
+             justify-content: center;
+        }
+
+        /* 5. NAVIGATION */
+        .navigation-controls {
+            position: fixed;
+            bottom: 2vh;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: var(--bg-slide);
+            color: var(--accent-red);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--accent-red);
+        }
+    </style>
+</head>
+<body>
+
+    <main class="presentation-container">
+
+        <div class="slide active layout-1-col">
+            <span class="material-symbols-sharp central-icon">psychology</span>
+            <h1>Stop Digging.<br>Start Deciding.</h1>
+        </div>
+
+        <div class="slide layout-1-col">
+            <h2>Your business runs on data. But it’s slowing you down.</h2>
+            <p>The very thing that promises clarity has become a source of friction and delay.</p>
+        </div>
+
+        <div class="slide">
+            <h2>We're all stuck in the same frustrating cycle.</h2>
+            <div class="content-wrapper two-col-grid">
+                <div class="column">
+                    <li><span class="material-symbols-sharp">local_fire_department</span><div><h3>Reactive Firefighting</h3>Discovering problems only after they’ve already hurt the business.</div></li>
+                    <li><span class="material-symbols-sharp">hourglass_empty</span><div><h3>Endless Delays</h3>Waiting weeks for insights while opportunities pass you by.</div></li>
+                </div>
+                <div class="column">
+                    <li><span class="material-symbols-sharp">help_center</span><div><h3>Expensive Guesswork</h3>Knowing what happened, but having to guess why.</div></li>
+                    <li><span class="material-symbols-sharp">engineering</span><div><h3>Wasted Resources</h3>Paying brilliant people to hunt for data instead of driving growth.</div></li>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide layout-1-col">
+            <h2>We have more data, but less clarity.</h2>
+            <p style="font-size: 2rem; display:flex; align-items:center; gap: 1rem;">Data Volume: <span class="material-symbols-sharp" style="font-size: 3rem !important; color: green;">arrow_upward</span></p>
+            <p style="font-size: 2rem; display:flex; align-items:center; gap: 1rem;">Decision Speed: <span class="material-symbols-sharp" style="font-size: 3rem !important; color: #d32f2f;">arrow_forward</span></p>
+        </div>
+
+        <div class="slide layout-1-col">
+            <span class="material-symbols-sharp central-icon">change_circle</span>
+            <h2>What if you could go from a complex question to a confident decision in minutes?</h2>
+        </div>
+
+        <div class="slide layout-1-col">
+            <span class="material-symbols-sharp central-icon">auto_awesome</span>
+            <h1>Acumen</h1>
+            <p style="font-size: 1.5rem;">Acumen is not another dashboard; it is your <strong>AI Decision Agent.</strong></p>
+        </div>
+        
+        <div class="slide">
+             <h2>From a Month of Guesswork to a 5-Day Solution</h2>
+             <div class="content-wrapper">
+                <div class="column comparison-column">
+                    <h3>The Old Way</h3>
+                    <ul>
+                        <li><span class="material-symbols-sharp">calendar_month</span><div>Priya, a Head of Product, saw user retention drop by 5%.</div></li>
+                        <li><span class="material-symbols-sharp">sync_problem</span><div>The hunt for "why" took over a month of meetings and manual analysis.</div></li>
+                        <li><span class="material-symbols-sharp">trending_down</span><div>All while customers were churning and revenue was lost.</div></li>
+                    </ul>
+                </div>
+                <div class="column comparison-column" style="background: #e8f5e9;">
+                    <h3>The Acumen Way</h3>
+                    <ul>
+                        <li><span class="material-symbols-sharp">crisis_alert</span><div>Acumen proactively alerted Priya to the problem and its root cause.</div></li>
+                        <li><span class="material-symbols-sharp">science</span><div>It designed the experiment to test a fix automatically.</div></li>
+                        <li><span class="material-symbols-sharp">monetization_on</span><div>The result: A validated solution in 5 days, recovering an estimated <strong>$40,000/month.</strong></div></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide">
+             <h2>From an Abandoned Cart Mystery to a 1-Hour Fix</h2>
+             <div class="content-wrapper">
+                <div class="column comparison-column">
+                    <h3>The Old Way</h3>
+                    <ul>
+                        <li><span class="material-symbols-sharp">shopping_cart_off</span><div>Marco, an E-commerce Head, saw cart abandonment spike 15%.</div></li>
+                        <li><span class="material-symbols-sharp">search_off</span><div>He spent weeks digging through analytics with no clear answer.</div></li>
+                        <li><span class="material-symbols-sharp">attach_money</span><div>The company lost thousands in sales while the team guessed at the problem.</div></li>
+                    </ul>
+                </div>
+                <div class="column comparison-column" style="background: #e8f5e9;">
+                    <h3>The Acumen Way</h3>
+                    <ul>
+                        <li><span class="material-symbols-sharp">bug_report</span><div>Acumen pinpointed the exact cause in minutes: a technical bug.</div></li>
+                        <li><span class="material-symbols-sharp">location_searching</span><div>The diagnosis was so clear that no guesswork was needed.</div></li>
+                        <li><span class="material-symbols-sharp">bolt</span><div>The team deployed a fix in under an hour, instantly saving sales.</div></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+             <h2>From a Marketing Black Hole to True Profit Revealed</h2>
+             <div class="content-wrapper">
+                <div class="column comparison-column">
+                    <h3>The Old Way</h3>
+                    <ul>
+                        <li><span class="material-symbols-sharp">visibility_off</span><div>Sarah, a CMO, was using misleading data to prove ROI.</div></li>
+                        <li><span class="material-symbols-sharp">do_not_disturb_on</span><div>She shifted budget to a "low cost per lead" campaign, thinking it was efficient.</div></li>
+                        <li><span class="material-symbols-sharp">block</span><div>In reality, she had unknowingly cut her most profitable channel.</div></li>
+                    </ul>
+                </div>
+                <div class="column comparison-column" style="background: #e8f5e9;">
+                    <h3>The Acumen Way</h3>
+                    <ul>
+                        <li><span class="material-symbols-sharp">account_balance</span><div>Acumen connected ad spend to actual customer lifetime value.</div></li>
+                        <li><span class="material-symbols-sharp">insights</span><div>It revealed the "expensive" channel had an <strong>8-to-1 ROI.</strong></div></li>
+                        <li><span class="material-symbols-sharp">savings</span><div>She confidently reallocated budget, creating a proven profit center.</div></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <h2>A Continuous Improvement Loop</h2>
+            <div class="content-wrapper two-col-grid">
+                <div class="column">
+                    <li><span class="material-symbols-sharp">travel_explore</span><div><h3>1. Discover</h3>Acumen proactively finds critical insights in your data.</div></li>
+                    <li><span class="material-symbols-sharp">lightbulb</span><div><h3>2. Hypothesize</h3>It generates clear, cause-and-effect hypotheses.</div></li>
+                </div>
+                <div class="column">
+                    <li><span class="material-symbols-sharp">design_services</span><div><h3>3. Design</h3>It instantly creates a statistically sound experiment.</div></li>
+                    <li><span class="material-symbols-sharp">recommend</span><div><h3>4. Recommend</h3>It delivers a final, data-backed recommendation.</div></li>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <h2>The Result: Transform Your Business</h2>
+             <div class="content-wrapper two-col-grid">
+                <div class="column">
+                     <li><span class="material-symbols-sharp">rocket_launch</span><div><h3>Speed</h3>Shrink decision cycles from months to days.</div></li>
+                     <li><span class="material-symbols-sharp">visibility</span><div><h3>Clarity</h3>Get confident answers, not more confusing charts.</div></li>
+                </div>
+                <div class="column">
+                     <li><span class="material-symbols-sharp">trending_up</span><div><h3>Growth</h3>Drive revenue with consistently better decisions.</div></li>
+                     <li><span class="material-symbols-sharp">groups</span><div><h3>Empowerment</h3>Free your team to be strategists, not data miners.</div></li>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide layout-1-col">
+            <span class="material-symbols-sharp central-icon">track_changes</span>
+            <h2>Your best people should be making decisions, not digging for data.</h2>
+        </div>
+
+        <div class="slide layout-1-col">
+            <h2>Let's build the future of decision-making.</h2>
+            <div style="text-align: center; font-size: 1.2rem; line-height: 2;">
+                <p><strong>[Your Name]</strong><br>
+                [Your Title]<br>
+                [Your Email]<br>
+                [Your Website / LinkedIn URL]</p>
+                <p style="margin-top: 2rem; font-weight: bold;">Join Us. Invest in Acumen.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <nav class="navigation-controls">
+        <button id="prevBtn" class="nav-btn"><span class="material-symbols-sharp">arrow_back</span></button>
+        <div class="progress-dots" id="progressDots"></div>
+        <button id="nextBtn" class="nav-btn"><span class="material-symbols-sharp">arrow_forward</span></button>
+    </nav>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const progressDotsContainer = document.getElementById('progressDots');
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+
+            // Create progress dots
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                dot.addEventListener('click', () => goToSlide(i));
+                progressDotsContainer.appendChild(dot);
+            }
+            const dots = document.querySelectorAll('.dot');
+
+            function updateNav() {
+                // Update slide visibility
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === currentSlide);
+                });
+                // Update dot activity
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+
+                // Update button states
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+                prevBtn.style.opacity = prevBtn.disabled ? '0.5' : '1';
+                nextBtn.style.opacity = nextBtn.disabled ? '0.5' : '1';
+            }
+
+            function goToSlide(slideNumber) {
+                if (slideNumber >= 0 && slideNumber < totalSlides) {
+                    currentSlide = slideNumber;
+                    updateNav();
+                }
+            }
+
+            function showNextSlide() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateNav();
+                }
+            }
+
+            function showPrevSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateNav();
+                }
+            }
+
+            nextBtn.addEventListener('click', showNextSlide);
+            prevBtn.addEventListener('click', showPrevSlide);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    showNextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevSlide();
+                }
+            });
+
+            // Initial setup
+            updateNav();
+        });
+    </script>
+
+</body>
+</html>
