@@ -6,20 +6,21 @@
     <title>Acumen Presentation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,1,0" />
     <style>
         :root {
-            --page-bg: #f0f2f5;
-            --slide-canvas: #ffffff;
-            --icdx-accent: #0052cc;
-            --primary-text: #172b4d;
-            --secondary-text: #505f79;
-            --shadow-color-1: rgba(0, 0, 0, 0.15);
-            --shadow-color-2: rgba(0, 0, 0, 0.1);
-            --title-font: 'Montserrat', sans-serif;
-            --body-font: 'Inter', sans-serif;
-            --body-texture: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC43IiBudW1PY3RhdmVzPSIxMCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9IjAuMDMiLz48L3N2Zz4=');
+            --page-bg: #2d333b;
+            --slide-canvas: #fdfbf7;
+            --icdx-accent: #c0a062;
+            --primary-text: #3a3a3a;
+            --secondary-text: #6b6b6b;
+            --shadow-color-1: rgba(0, 0, 0, 0.19);
+            --shadow-color-2: rgba(0, 0, 0, 0.23);
+            --title-font: 'Playfair Display', serif;
+            --body-font: 'Lato', sans-serif;
+            --body-texture: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44IiBudW1PY3RhdmVzPSIxMCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9IjAuMDUiLz48L3N2Zz4=');
+            --canvas-texture: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0yMCA4MGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2U9InJnYmEoMCwwLDAsMC4wNCkiLz48L3N2Zz4=');
         }
         
         html, body {
@@ -56,7 +57,8 @@
             height: clamp(200px, 90vh, 900px);
             max-height: 90vh;
             background-color: var(--slide-canvas);
-            box-shadow: 0 14px 28px var(--shadow-color-1), 0 10px 10px var(--shadow-color-2);
+            background-image: var(--canvas-texture);
+            box-shadow: 0 10px 20px var(--shadow-color-1), 0 6px 6px var(--shadow-color-2);
             border-radius: 8px;
             display: flex;
             flex-direction: column;
@@ -92,18 +94,18 @@
         .slide h1, .slide h2 {
             font-family: var(--title-font);
             color: var(--icdx-accent);
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
             margin: 0 0 1rem 0;
             line-height: 1.2;
         }
         
         .slide h1.main-title {
-            font-size: clamp(3rem, 8vw, 6rem);
+            font-size: clamp(3.2rem, 8vw, 6.2rem);
             margin-bottom: 0.5em;
         }
 
         .slide h2 {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-size: clamp(2rem, 4vw, 3rem);
             margin-bottom: 1.5rem;
             text-align: left;
             width: 100%;
@@ -155,7 +157,7 @@
         .column h3 {
              font-family: var(--title-font);
              color: var(--icdx-accent);
-             font-size: clamp(1.4rem, 2.5vw, 1.7rem);
+             font-size: clamp(1.5rem, 2.5vw, 1.8rem);
              margin: 0 0 0.5rem 0;
         }
 
@@ -190,7 +192,7 @@
         .content-block h3 {
              font-family: var(--title-font);
              color: var(--icdx-accent);
-             font-size: clamp(1.4rem, 2.5vw, 1.7rem);
+             font-size: clamp(1.5rem, 2.5vw, 1.8rem);
              margin: 0 0 0.5rem 0;
         }
         .content-block p {
@@ -200,11 +202,12 @@
 
         strong {
             color: var(--icdx-accent);
-            font-weight: 500;
+            font-weight: 700;
         }
 
         .data-viz {
-            font-family: monospace;
+            font-family: var(--body-font);
+            font-weight: 700;
             font-size: clamp(1.8rem, 3vw, 2.2rem);
             line-height: 1.8;
             color: var(--secondary-text);
