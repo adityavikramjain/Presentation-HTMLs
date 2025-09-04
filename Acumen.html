@@ -6,21 +6,21 @@
     <title>Acumen Presentation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,1,0" />
     <style>
         :root {
-            --page-bg: #2d333b;
-            --slide-canvas: #fdfbf7;
-            --icdx-accent: #c0a062;
-            --primary-text: #3a3a3a;
-            --secondary-text: #6b6b6b;
-            --shadow-color-1: rgba(0, 0, 0, 0.19);
-            --shadow-color-2: rgba(0, 0, 0, 0.23);
-            --title-font: 'Playfair Display', serif;
-            --body-font: 'Lato', sans-serif;
-            --body-texture: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44IiBudW1PY3RhdmVzPSIxMCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9IjAuMDUiLz48L3N2Zz4=');
-            --canvas-texture: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbGnsPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0yMCA4MGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMG0tMTAgMTBsMjAtMjBtLTEwIDEwbDIwLTIwbS0xMCAxMGwyMC0yMCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2U9InJnYmEoMCwwLDAsMC4wNCkiLz48L3N2Zz4=');
+            --page-bg: #1D3A3A;
+            --slide-canvas: #F0FFF4;
+            --icdx-accent: #FF7A59;
+            --primary-text: #2A2A2A;
+            --secondary-text: #5F7A7A;
+            --shadow-color-1: rgba(0, 0, 0, 0.18);
+            --shadow-color-2: rgba(0, 0, 0, 0.15);
+            --title-font: 'Poppins', sans-serif;
+            --body-font: 'Source Sans Pro', sans-serif;
+            --body-texture: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCI+PHJlY3Qgd2lkdGg9IjMwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjMWQzYTNjIi8+PHBhdGggZD0iTTAgMzAgTDMwIDAgTTE1IDMwIEwzMCAxNSBNMC AxNSBMMTUgMCBMOCAwIEwwIDggWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMWI3MjcyIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=');
+            --canvas-texture: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC45IiBudW1PY3RhdmVzPSI4IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbHRlcj0idXJsKCNuKSIgb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==');
         }
         
         html, body {
@@ -58,7 +58,7 @@
             max-height: 90vh;
             background-color: var(--slide-canvas);
             background-image: var(--canvas-texture);
-            box-shadow: 0 10px 20px var(--shadow-color-1), 0 6px 6px var(--shadow-color-2);
+            box-shadow: 0 14px 28px var(--shadow-color-1), 0 10px 10px var(--shadow-color-2);
             border-radius: 8px;
             display: flex;
             flex-direction: column;
@@ -96,7 +96,7 @@
             color: var(--icdx-accent);
             font-size: clamp(2.2rem, 5vw, 3.8rem);
             margin: 0 0 1rem 0;
-            line-height: 1.2;
+            line-height: 1.25;
         }
         
         .slide h1.main-title {
@@ -113,7 +113,7 @@
 
         .slide p, .slide li {
             font-size: clamp(1.1rem, 2vw, 1.4rem);
-            line-height: 1.6;
+            line-height: 1.65;
             margin: 0.5rem 0;
             color: var(--primary-text);
         }
@@ -134,7 +134,7 @@
         }
 
         /* Layouts */
-        .two-column, .three-column {
+        .two-column {
             display: flex;
             gap: 3rem;
             width: 100%;
@@ -174,7 +174,6 @@
             align-items: flex-start;
             margin-bottom: 1.5rem;
             font-size: clamp(1.0rem, 1.8vw, 1.3rem);
-            line-height: 1.5;
         }
 
         li .material-symbols-sharp {
@@ -202,12 +201,12 @@
 
         strong {
             color: var(--icdx-accent);
-            font-weight: 700;
+            font-weight: 600;
         }
 
         .data-viz {
             font-family: var(--body-font);
-            font-weight: 700;
+            font-weight: 600;
             font-size: clamp(1.8rem, 3vw, 2.2rem);
             line-height: 1.8;
             color: var(--secondary-text);
@@ -216,7 +215,6 @@
             color: var(--primary-text);
             font-weight: bold;
         }
-
 
         /* Navigation */
         .navigation {
