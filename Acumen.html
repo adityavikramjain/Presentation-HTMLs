@@ -6,21 +6,20 @@
     <title>Acumen Presentation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,1,0" />
     <style>
         :root {
-            --page-bg: #0a192f;
-            --slide-canvas: #172a46;
-            --icdx-accent: #64ffda;
-            --primary-text: #ccd6f6;
-            --secondary-text: #8892b0;
-            --shadow-color-1: rgba(2, 12, 27, 0.7);
-            --shadow-color-2: rgba(2, 12, 27, 0.5);
-            --title-font: 'Roboto Slab', serif;
-            --body-font: 'Roboto', sans-serif;
-            --body-texture: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAxMGg1ME0xMCAwdiI1MCIgc3Ryb2tlLXdpZHRoPSIuNSIgc3Ryb2tlPSIjMTcyYTQ2IiBmaWxsPSJub25lIi8+PC9zdmc+');
-            --canvas-texture: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgNiA2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik01IDBMMCA1IiBzdHJva2Utd2lkdGg9IjAuMiIgc3Ryb2tlPSJyZ2JhKDIwNCwgMjE0LCAyNDYsIDAuMDUpIiBmaWxsPSJub25lIi8+PC9zdmc+');
+            --page-bg: #f0f2f5;
+            --slide-canvas: #ffffff;
+            --icdx-accent: #0052cc;
+            --primary-text: #172b4d;
+            --secondary-text: #505f79;
+            --shadow-color-1: rgba(0, 0, 0, 0.15);
+            --shadow-color-2: rgba(0, 0, 0, 0.1);
+            --title-font: 'Montserrat', sans-serif;
+            --body-font: 'Inter', sans-serif;
+            --body-texture: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC43IiBudW1PY3RhdmVzPSIxMCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9IjAuMDMiLz48L3N2Zz4=');
         }
         
         html, body {
@@ -57,7 +56,6 @@
             height: clamp(200px, 90vh, 900px);
             max-height: 90vh;
             background-color: var(--slide-canvas);
-            background-image: var(--canvas-texture);
             box-shadow: 0 14px 28px var(--shadow-color-1), 0 10px 10px var(--shadow-color-2);
             border-radius: 8px;
             display: flex;
@@ -112,18 +110,18 @@
         }
 
         .slide p, .slide li {
-            font-size: clamp(1rem, 1.8vw, 1.25rem);
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
             line-height: 1.6;
             margin: 0.5rem 0;
             color: var(--primary-text);
         }
         
         .slide p {
-            max-width: 80ch;
+            max-width: 75ch;
         }
         
         .slide-content > p {
-            font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+            font-size: clamp(1.3rem, 2.3vw, 1.75rem);
             line-height: 1.5;
         }
         
@@ -157,7 +155,7 @@
         .column h3 {
              font-family: var(--title-font);
              color: var(--icdx-accent);
-             font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+             font-size: clamp(1.4rem, 2.5vw, 1.7rem);
              margin: 0 0 0.5rem 0;
         }
 
@@ -172,15 +170,15 @@
         li {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 1.2rem;
-            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            margin-bottom: 1.5rem;
+            font-size: clamp(1.0rem, 1.8vw, 1.3rem);
             line-height: 1.5;
         }
 
         li .material-symbols-sharp {
-            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
             color: var(--icdx-accent);
-            margin-right: 1rem;
+            margin-right: 1.2rem;
             margin-top: -0.1em;
         }
         
@@ -192,11 +190,12 @@
         .content-block h3 {
              font-family: var(--title-font);
              color: var(--icdx-accent);
-             font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+             font-size: clamp(1.4rem, 2.5vw, 1.7rem);
              margin: 0 0 0.5rem 0;
         }
         .content-block p {
             color: var(--secondary-text);
+            font-size: clamp(1rem, 1.8vw, 1.25rem);
         }
 
         strong {
@@ -206,7 +205,7 @@
 
         .data-viz {
             font-family: monospace;
-            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-size: clamp(1.8rem, 3vw, 2.2rem);
             line-height: 1.8;
             color: var(--secondary-text);
         }
@@ -349,8 +348,7 @@
                         <li><span class="material-symbols-sharp">search</span><div><strong>The Hunt Begins:</strong> She messages the data analytics team. The request goes into their backlog. (Delay: 2-3 days)</div></li>
                         <li><span class="material-symbols-sharp">query_stats</span><div><strong>Manual Data Pulling:</strong> An analyst spends a day writing queries to join data from three different systems.</div></li>
                         <li><span class="material-symbols-sharp">hub</span><div><strong>Correlation, Not Causation:</strong> He presents a chart showing the drop is from European mobile users, leaving the team to debate the cause.</div></li>
-                        <li><span class="material-symbols-sharp">timer</span><div><strong>More Delays:</strong> A user survey and an A/B test request add 3+ weeks to the timeline.</div></li>
-                        <li><span class="material-symbols-sharp">block</span><div><strong>The Result:</strong> Over one month has passed. The company has been losing customers the entire time.</div></li>
+                        <li><span class="material-symbols-sharp">timer</span><div><strong>The Result:</strong> Over one month has passed. The company has been losing customers the entire time.</div></li>
                     </ul>
                 </div>
             </div>
@@ -375,7 +373,6 @@
                     <ul>
                         <li><span class="material-symbols-sharp">filter_alt_off</span><div><strong>"Slicing and Dicing":</strong> He spends hours in Google Analytics, lost in a sea of confusing filters with no clear answer.</div></li>
                         <li><span class="material-symbols-sharp">groups</span><div><strong>The Blame Game:</strong> A meeting with design and dev yields only defensive arguments due to a lack of causal data.</div></li>
-                        <li><span class="material-symbols-sharp">help</span><div><strong>A Shot in the Dark:</strong> Based on a weak observation, they run an A/B test that has no impact.</div></li>
                         <li><span class="material-symbols-sharp">sentiment_dissatisfied</span><div><strong>The Result:</strong> Two weeks pass, thousands in sales are lost, and Marco is back at square one.</div></li>
                     </ul>
                 </div>
@@ -388,7 +385,6 @@
                     <ul>
                         <li><span class="material-symbols-sharp">radar</span><div><strong>Precision Diagnosis:</strong> The alert pinpoints a 15% abandonment spike happening exclusively for customers using PayPal on an Android device.</div></li>
                         <li><span class="material-symbols-sharp">bug_report</span><div><strong>The Root Cause:</strong> Acumen confirms the PayPal pop-up is failing to load 85% of the time on Chrome for Android, citing browser error logs.</div></li>
-                        <li><span class="material-symbols-sharp">construction</span><div><strong>A Clear Solution:</strong> Acumen identifies it as a critical bug, not a design problem, and recommends an immediate rollback.</div></li>
                         <li><span class="material-symbols-sharp">rocket_launch</span><div><strong>The Result:</strong> A costly, month-long mystery was identified and solved before lunch.</div></li>
                     </ul>
                 </div>
@@ -401,7 +397,6 @@
                     <ul>
                         <li><span class="material-symbols-sharp">table_chart</span><div><strong>Siloed Reports:</strong> Data from five different platforms (Google Ads, LinkedIn, Salesforce, etc.) each tell a different story.</div></li>
                         <li><span class="material-symbols-sharp">question_answer</span><div><strong>The Attribution Debate:</strong> The team spends a week debating which "touchpoint" gets credit for a sale, but the answer is never clear.</div></li>
-                        <li><span class="material-symbols-sharp">dangerous</span><div><strong>Misleading Metrics:</strong> A low CPL on a Google Ads campaign leads to the "data-driven" decision to cut a high CPL webinar campaign.</div></li>
                         <li><span class="material-symbols-sharp">trending_down</span><div><strong>The Result:</strong> Sales lead quality plummets, as she unknowingly cut the campaign generating nearly all enterprise clients.</div></li>
                     </ul>
                 </div>
@@ -414,7 +409,6 @@
                     <ul>
                         <li><span class="material-symbols-sharp">lan</span><div><strong>A Connected View:</strong> Acumen analyzes the entire customer journey from first click to Lifetime Value (LTV).</div></li>
                         <li><span class="material-symbols-sharp">paid</span><div><strong>True ROI Revealed:</strong> The "low CPL" campaign has negative ROI. The "high CPL" webinar has an 8-to-1 LTV-to-CAC ratio.</div></li>
-                        <li><span class="material-symbols-sharp">recommend</span><div><strong>Strategic Recommendation:</strong> Acumen suggests reallocating the unprofitable campaign's budget, projecting an additional $400,000 in pipeline.</div></li>
                         <li><span class="material-symbols-sharp">insights</span><div><strong>The Result:</strong> Sarah proves marketing is a strategic driver of profit, not a cost center.</div></li>
                     </ul>
                 </div>
