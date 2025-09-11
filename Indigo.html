@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICDX Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <style>
+        :root {
+            --icdx-theme-background: #F8F8F8;
+            --icdx-theme-slide-canvas: #FFFFFF;
+            --icdx-theme-text-primary: #1C1C1C;
+            --icdx-theme-text-secondary: #555555;
+            --icdx-theme-accent: #007BFF;
+            --icdx-theme-accent-dark: #0056b3;
+            --icdx-theme-border-light: #E0E0E0;
+            --icdx-theme-shadow: rgba(0, 0, 0, 0.15);
+            --icdx-font-title: 'Roboto Mono', monospace;
+            --icdx-font-body: 'Roboto', sans-serif;
+            --icdx-font-weight-bold: 700;
+            --icdx-font-weight-regular: 400;
+        }
+
+        /* Base64 SVG Textures */
+        .texture-bg {
+            background-color: var(--icdx-theme-background);
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40' fill='%23E8E8E8' fill-opacity='0.2'/%3E%3C/svg%3E");
+        }
+
+        .texture-slide {
+            background-color: var(--icdx-theme-slide-canvas);
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17.436 4.67a1 1 0 0 1-1.397-.24l-3.328-4a1 1 0 0 1 1.63-.827L18.463 3.6a1 1 0 0 1-.24 1.07zm-14.872 10.66a1 1 0 0 1 1.397.24l3.328 4a1 1 0 0 1-1.63.827L1.537 16.4a1 1 0 0 1 .24-1.07zM5 10a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z' fill='%23F0F0F0' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: var(--icdx-font-body);
+            color: var(--icdx-theme-text-primary);
+        }
+
+        .presentation-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .slide {
+            flex: 0 0 100vw;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4vh;
+            box-sizing: border-box;
+            background-color: var(--icdx-theme-background);
+        }
+
+        .slide-area {
+            width: 90%;
+            height: 90%;
+            border-radius: 20px;
+            padding: 4%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-shadow: 0 14px 28px var(--icdx-theme-shadow), 0 10px 10px var(--icdx-theme-shadow);
+            border: 1px solid var(--icdx-theme-border-light);
+            position: relative;
+        }
+
+        .slide-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17.436 4.67a1 1 0 0 1-1.397-.24l-3.328-4a1 1 0 0 1 1.63-.827L18.463 3.6a1 1 0 0 1-.24 1.07zm-14.872 10.66a1 1 0 0 1 1.397.24l3.328 4a1 1 0 0 1-1.63.827L1.537 16.4a1 1 0 0 1 .24-1.07zM5 10a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z' fill='%23F0F0F0' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            z-index: 1;
+            border-radius: 20px;
+        }
+
+        .slide-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: var(--icdx-font-title);
+            font-weight: var(--icdx-font-weight-bold);
+            color: var(--icdx-theme-text-primary);
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            line-height: 1.2;
+            margin-bottom: 2vh;
+            text-transform: uppercase;
+        }
+        
+        h1 .material-symbols-sharp {
+            font-size: clamp(2rem, 4.5vw, 3.5rem);
+            color: var(--icdx-theme-accent);
+            vertical-align: middle;
+            margin-right: 15px;
+        }
+
+        .slide-area p, .slide-area li {
+            font-family: var(--icdx-font-body);
+            color: var(--icdx-theme-text-secondary);
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            line-height: 1.6;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5vh;
+            padding-left: 0;
+        }
+
+        li .material-symbols-sharp {
+            margin-right: 10px;
+            font-size: clamp(1.4rem, 2.8vw, 1.8rem);
+            color: var(--icdx-theme-accent);
+        }
+
+        .layout-1-col .slide-content {
+            max-width: 80%;
+            margin: auto;
+        }
+
+        .layout-2-col, .layout-3-col {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .layout-2-col .content-grid, .layout-3-col .content-grid {
+            display: flex;
+            flex-grow: 1;
+            gap: 20px;
+            padding-top: 20px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .column h2 {
+            font-family: var(--icdx-font-title);
+            font-size: clamp(1.4rem, 2.8vw, 2rem);
+            font-weight: var(--icdx-font-weight-bold);
+            color: var(--icdx-theme-accent);
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 1.5vh;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 0;
+            width: 100vw;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-button {
+            background-color: var(--icdx-theme-accent);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .nav-button:hover {
+            background-color: var(--icdx-theme-accent-dark);
+            transform: scale(1.05);
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--icdx-theme-text-secondary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .dot.active {
+            background-color: var(--icdx-theme-accent);
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body class="texture-bg">
+    <div class="presentation-container">
+        <div class="slide">
+            <div class="slide-area texture-slide layout-1-col">
+                <div class="slide-content">
+                    <h1><span class="material-symbols-sharp">travel_explore</span>IndiGo is solving the core problem of engine reliability in a rapidly growing, but supply-constrained, aviation market.</h1>
+                    <p>The Indian aviation sector is the third largest in the world, fueled by a young, aspirational demographic and significant government investment in infrastructure. However, a global supply chain crisis and fleet-grounding engine issues threaten to destabilize this growth. IndiGo is strategically addressing this with a multi-pronged approach that ensures capacity, diversifies its fleet, and enhances the passenger experience. This deck outlines our path to becoming a global aviation leader by turning this industry-wide challenge into a competitive advantage.</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="slide-area texture-slide layout-2-col">
+                <div class="slide-content">
+                    <h1><span class="material-symbols-sharp">trending_up</span>The Indian aviation market is poised for explosive growth but remains deeply underpenetrated.</h1>
+                    <div class="content-grid">
+                        <div class="column">
+                            <h2>Market Growth</h2>
+                            <ul>
+                                <li><span class="material-symbols-sharp">leaderboard</span>India is the world's third-largest aviation market, with passenger traffic having doubled in the past decade. With a projected growth rate of 6.4% from 2023-2043, India is set to outpace other major economies. The number of domestic passengers is expected to reach 350 million by 2030, up from 155 million in 2024.</li>
+                            </ul>
+                        </div>
+                        <div class="column">
+                            <h2>Untapped Potential</h2>
+                            <ul>
+                                <li><span class="material-symbols-sharp">expand_circle_down</span>This growth is driven by a young, digitally-connected demographic and a rapidly expanding middle class. Despite this, air travel per capita is significantly lower than in the U.S. and U.K., highlighting vast untapped potential. The government's investment of $27 billion in airport infrastructure and its UDAN scheme are accelerating this expansion.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="slide-area texture-slide layout-1-col">
+                <div class="slide-content">
+                    <h1><span class="material-symbols-sharp">warning</span>A global engine-related supply chain crisis is grounding aircraft, causing a significant and costly capacity bottleneck.</h1>
+                    <ul>
+                        <li><span class="material-symbols-sharp">precision_manufacturing</span>A significant portion of the global aviation fleet, including up to 75 of IndiGo’s aircraft, is grounded due to a defect in a powdered metal component within Pratt & Whitney engines. This has severely constrained the industry's ability to meet soaring passenger demand.</li>
+                        <li><span class="material-symbols-sharp">local_shipping</span>The problem is compounded by a global supply chain bottleneck for spare parts and MRO services, leading to longer repair times and higher costs.</li>
+                        <li><span class="material-symbols-sharp">monetization_on</span>To maintain flight capacity, IndiGo is incurring additional costs by acquiring older, less fuel-efficient aircraft on damp-lease arrangements, which negatively impacts operational expenses.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="slide-area texture-slide layout-2-col">
+                <div class="slide-content">
+                    <h1><span class="material-symbols-sharp">workspace_premium</span>Our multi-pronged fleet and operational strategy directly addresses the capacity crisis to ensure long-term stability and growth.</h1>
+                    <div class="content-grid">
+                        <div class="column">
+                            <h2>Strategic Fleet Modernization & Expansion</h2>
+                            <ul>
+                                <li><span class="material-symbols-sharp">flight_takeoff</span>We are moving beyond the current crisis with an order for up to 100 long-haul Airbus A350 wide-body aircraft, positioning IndiGo for global dominance. We have also secured up to six temporary Boeing 787 wide-body aircraft to serve new international routes to Europe.</li>
+                                <li><span class="material-symbols-sharp">flight_takeoff</span>The upcoming A321 XLR aircraft will serve as a bridge between our narrow-body fleet and future wide-body operations, with deliveries expected by late 2025 or early 2026.</li>
+                            </ul>
+                        </div>
+                        <div class="column">
+                            <h2>Operational Resilience</h2>
+                            <ul>
+                                <li><span class="material-symbols-sharp">engineering</span>To mitigate immediate fleet groundings, we have implemented an aggressive MRO strategy, leveraging predictive maintenance, and are building a new MRO facility in Bengaluru. This facility, three times larger than our combined existing MRO capacity, will be operational by early 2028 and will handle both narrow-body and wide-body aircraft.</li>
+                                <li><span class="material-symbols-sharp">verified_user</span>This proactive approach helps us maintain our industry-leading on-time performance and operational integrity.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="slide-area texture-slide layout-2-col">
+                <div class="slide-content">
+                    <h1><span class="material-symbols-sharp">star_rate</span>We are capturing new revenue streams and retaining passengers by delivering an industry-leading, value-driven customer experience.</h1>
+                    <div class="content-grid">
+                        <div class="column">
+                            <h2>Elevated Customer Offerings</h2>
+                            <ul>
+                                <li><span class="material-symbols-sharp">support</span>We have introduced IndiGoStretch, a premium business-class product for aspirational travelers on key business routes.</li>
+                                <li><span class="material-symbols-sharp">loyalty</span>Our recently launched IndiGo BluChip loyalty program rewards frequent flyers with benefits and partnerships with global brands like Accor and Swiggy.</li>
+                            </ul>
+                        </div>
+                        <div class="column">
+                            <h2>Digital-First Experience</h2>
+                            <ul>
+                                <li><span class="material-symbols-sharp">important_devices</span>Our digital transformation includes a revamped website and app with modern architecture and new features like hotel booking functionality, creating a seamless travel planning experience.</li>
+                                <li><span class="material-symbols-sharp">smart_toy</span>The launch of 6Eskai, an AI conversational bot, provides customers with 24/7 support and end-to-end booking assistance in multiple languages.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="slide-area texture-slide layout-3-col">
+                <div class="slide-content">
+                    <h1><span class="material-symbols-sharp">handshake</span>Our leadership team possesses the deep, cross-functional expertise required to navigate industry challenges and execute our growth strategy.</h1>
+                    <div class="content-grid">
+                        <div class="column">
+                            <h2>Executive Leadership</h2>
+                            <ul>
+                                <li><span class="material-symbols-sharp">military_tech</span>Our CEO and Managing Director have decades of combined experience in global aviation and a proven track record of strategic execution. Their leadership is a critical asset in navigating the current crisis and charting a course for future success.</li>
+                            </ul>
+                        </div>
+                        <div class="column">
+                            <h2>Operational & Technical Expertise</h2>
+                            <ul>
+                                <li><span class="material-symbols-sharp">work</span>Our COO, with a PhD in Physics and an MBA, is uniquely equipped to manage complex operational challenges and technological transformations. This expertise is essential for both MRO development and AI-driven initiatives.</li>
+                            </ul>
+                        </div>
+                        <div class="column">
+                            <h2>Governance & Strategic Vision</h2>
+                            <ul>
+                                <li><span class="material-symbols-sharp">groups</span>The Board of Directors includes high-profile, independent members with extensive experience in corporate governance, law, and business. Their guidance ensures that our growth strategy is robust and aligned with the highest standards of corporate stewardship.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="slide-area texture-slide layout-1-col">
+                <div class="slide-content">
+                    <h1><span class="material-symbols-sharp">paid</span>We seek a strategic partnership and investment to fund our long-term growth and solidify our position as a global aviation leader.</h1>
+                    <ul>
+                        <li><span class="material-symbols-sharp">currency_rupee</span>We are seeking a strategic partner to invest in IndiGo’s next phase of growth. This capital will be used to fund the development of our new MRO facility and accelerate our international expansion, with the goal of increasing our international capacity to 40% by 2030. This partnership represents an opportunity to join the market leader in the world’s fastest-growing aviation economy and benefit from our clear path to global leadership.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prevBtn" class="nav-button">Previous</button>
+        <div class="progress-dots"></div>
+        <button id="nextBtn" class="nav-button">Next</button>
+    </div>
+
+    <script>
+        const container = document.querySelector('.presentation-container');
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.querySelector('.progress-dots');
+        let currentSlide = 0;
+
+        // Create a dot for each slide
+        slides.forEach((_, index) => {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+        const dots = document.querySelectorAll('.dot');
+
+        const updateNavigation = () => {
+            container.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        };
+
+        const goToSlide = (slideIndex) => {
+            if (slideIndex >= 0 && slideIndex < slides.length) {
+                currentSlide = slideIndex;
+                updateNavigation();
+            }
+        };
+
+        prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                goToSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft') {
+                goToSlide(currentSlide - 1);
+            }
+        });
+
+        // Initialize presentation
+        updateNavigation();
+    </script>
+</body>
+</html>
