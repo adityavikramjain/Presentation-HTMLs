@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The End of the Impossible Choice</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Material Design 3.0 Foundation */
+            --grid-columns: 12;
+            --golden-ratio: 1.618;
+            --grid-golden-major: 8;
+            --grid-golden-minor: 4;
+
+            --md-sys-shape-corner-small: 4px;
+            --md-sys-shape-corner-medium: 12px;
+            --md-sys-shape-corner-large: 28px;
+
+            --md-sys-elevation-0: none;
+            --md-sys-elevation-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+            --md-sys-elevation-2: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+            --md-sys-elevation-3: 0px 3px 5px 0px rgba(0, 0, 0, 0.30), 0px 6px 12px 4px rgba(0, 0, 0, 0.15);
+
+            --spacing-multiplier: 1; /* Default for low cognitive load */
+            --spacing-xs: calc(0.5rem * var(--spacing-multiplier));
+            --spacing-sm: calc(1rem * var(--spacing-multiplier));
+            --spacing-md: calc(2rem * var(--spacing-multiplier));
+            --spacing-lg: calc(3rem * var(--spacing-multiplier));
+            --spacing-xl: calc(4rem * var(--spacing-multiplier));
+
+            /* Sophistication Theme (Primary choice) */
+            --md-sys-color-primary: #212121; /* Rich black */
+            --md-sys-color-secondary: #424242; /* Dark grey */
+            --md-sys-color-tertiary: #BDBDBD; /* Medium grey */
+            --md-sys-color-accent: #FFB300; /* Premium gold */
+            --md-sys-color-surface: #FAFAFA; /* Off-white surface */
+            --md-sys-color-surface-variant: #EEEEEE; /* Lighter grey variant */
+            --md-sys-color-background: #FFFFFF; /* Pure white background */
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-on-secondary: #FFFFFF;
+            --md-sys-color-on-surface: #212121;
+            --md-sys-color-on-surface-variant: #616161; /* Darker grey for muted text */
+            --md-sys-color-error: #C62828; /* Action red for warnings */
+
+            /* Typography */
+            --type-scale-ratio: 1.333; /* Perfect Fourth */
+            --font-size-base: clamp(1rem, 1.5vw, 1.125rem);
+
+            --md-sys-typescale-label-small: calc(var(--font-size-base) / var(--type-scale-ratio) / var(--type-scale-ratio));
+            --md-sys-typescale-label-medium: calc(var(--font-size-base) / var(--type-scale-ratio));
+            --md-sys-typescale-body-large: var(--font-size-base);
+            --md-sys-typescale-title-large: calc(var(--font-size-base) * var(--type-scale-ratio));
+            --md-sys-typescale-headline-medium: calc(var(--md-sys-typescale-title-large) * var(--type-scale-ratio));
+            --md-sys-typescale-display-medium: calc(var(--md-sys-typescale-headline-medium) * var(--type-scale-ratio));
+            --md-sys-typescale-display-large: calc(var(--md-sys-typescale-display-medium) * var(--type-scale-ratio));
+
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Source Sans Pro', Helvetica, sans-serif;
+
+            --font-weight-light: 300;
+            --font-weight-regular: 400;
+            --font-weight-medium: 500;
+            --font-weight-bold: 600;
+
+            --line-height-tight: 1.2;
+            --line-height-normal: 1.45;
+            --line-height-relaxed: 1.75;
+
+            /* Icon System */
+            --icon-size-hero: clamp(4rem, 8vw, 6rem);
+            --icon-size-feature: clamp(2.5rem, 4vw, 3rem);
+            --icon-size-inline: 1.5em;
+            --icon-size-bullet: 1.2em;
+
+            --icon-color-primary: var(--md-sys-color-primary);
+            --icon-color-secondary: var(--md-sys-color-secondary);
+            --icon-color-muted: var(--md-sys-color-on-surface-variant);
+        }
+
+        /* Base Styles */
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            color: var(--md-sys-color-on-surface);
+            background-color: var(--md-sys-color-background);
+            line-height: var(--line-height-normal);
+            overflow: hidden; /* Hide scrollbars for presentation */
+        }
+
+        .presentation-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            flex-shrink: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: var(--spacing-xl);
+            box-sizing: border-box;
+            background-color: var(--md-sys-color-background);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateX(100%);
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .slide.previous {
+            transform: translateX(-100%);
+        }
+
+        /* Content Area */
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: var(--spacing-md);
+            text-align: center;
+            position: relative; /* For decorative icons */
+            z-index: 1;
+        }
+
+        /* Typographic Hierarchy */
+        .slide h1, .slide h2, .slide h3, .slide h4, .slide .focal-element {
+            font-family: var(--font-display);
+            line-height: var(--line-height-tight);
+            margin: 0;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .slide h1 { font-size: var(--md-sys-typescale-display-large); font-weight: var(--font-weight-bold); }
+        .slide h2 { font-size: var(--md-sys-typescale-display-medium); font-weight: var(--font-weight-bold); }
+        .slide h3 { font-size: var(--md-sys-typescale-headline-medium); font-weight: var(--font-weight-medium); }
+        .slide h4 { font-size: var(--md-sys-typescale-title-large); font-weight: var(--font-weight-medium); }
+        .slide p, .slide li {
+            font-size: var(--md-sys-typescale-body-large);
+            font-weight: var(--font-weight-regular);
+            color: var(--md-sys-color-on-surface);
+            margin: calc(var(--spacing-xs) / 2) 0;
+            line-height: var(--line-height-normal);
+            max-width: 75ch; /* Optimal line length */
+        }
+
+        .slide li {
+            text-align: left;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        /* Focal Point Dominance System */
+        .focal-element {
+            font-size: var(--md-sys-typescale-display-large);
+            font-weight: var(--font-weight-bold);
+            color: var(--md-sys-color-primary);
+            margin: var(--spacing-lg) 0;
+            animation: subtlePulse 3s ease-in-out infinite;
+        }
+
+        .secondary-element {
+            font-size: var(--md-sys-typescale-headline-medium);
+            font-weight: var(--font-weight-medium);
+            color: var(--md-sys-color-on-surface);
+            opacity: 0.87;
+        }
+
+        .tertiary-element {
+            font-size: var(--md-sys-typescale-body-large);
+            font-weight: var(--font-weight-regular);
+            color: var(--md-sys-color-on-surface);
+            opacity: 0.60;
+        }
+
+        /* Layouts */
+        .slide-layout {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            text-align: left;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .layout-1-col {
+            grid-template-columns: 1fr;
+            place-items: center;
+        }
+
+        .layout-2-col {
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+            padding: var(--spacing-md);
+        }
+
+        .layout-3-col {
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-lg);
+            padding: var(--spacing-md);
+        }
+
+        .layout-process-flow {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            place-items: center;
+            justify-content: center;
+        }
+
+        .layout-matrix-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+            padding: var(--spacing-md);
+        }
+
+        /* Specific Element Styling */
+        .icon-feature {
+            font-size: var(--icon-size-feature);
+            color: var(--icon-color-primary);
+            margin-bottom: var(--spacing-xs);
+            vertical-align: middle;
+            margin-right: var(--spacing-xs);
+        }
+
+        .icon-inline {
+            font-size: var(--icon-size-inline);
+            vertical-align: middle;
+            color: var(--icon-color-primary);
+            margin-right: calc(var(--spacing-xs) / 2);
+        }
+
+        .icon-bullet {
+            font-size: var(--icon-size-bullet);
+            vertical-align: middle;
+            color: var(--icon-color-secondary);
+            margin-right: calc(var(--spacing-xs) / 2);
+        }
+
+        .process-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: var(--spacing-sm);
+            border-radius: var(--md-sys-shape-corner-medium);
+            background-color: var(--md-sys-color-surface);
+            box-shadow: var(--md-sys-elevation-1);
+            height: 100%;
+            justify-content: center;
+        }
+
+        .process-arrow {
+            font-size: var(--icon-size-feature);
+            color: var(--icon-color-secondary);
+            margin: var(--spacing-sm) 0;
+            transform: rotate(0deg);
+        }
+        @media (max-width: 768px) {
+            .layout-process-flow {
+                grid-template-columns: 1fr;
+            }
+            .process-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+
+        .takeaway-box {
+            background-color: var(--md-sys-color-surface-variant);
+            padding: var(--spacing-md);
+            border-radius: var(--md-sys-shape-corner-medium);
+            box-shadow: var(--md-sys-elevation-1);
+            margin-top: var(--spacing-lg);
+            color: var(--md-sys-color-on-surface-variant);
+            font-style: italic;
+            text-align: center;
+            width: fit-content;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .code-block {
+            background-color: var(--md-sys-color-secondary);
+            color: var(--md-sys-color-on-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--md-sys-shape-corner-medium);
+            font-family: 'IBM Plex Mono', monospace; /* Using a monospaced font for code */
+            font-size: var(--md-sys-typescale-body-large);
+            white-space: pre-wrap;
+            text-align: left;
+            box-shadow: var(--md-sys-elevation-2);
+            margin: var(--spacing-md) auto;
+            max-width: 70%;
+        }
+
+        .context-highlight {
+            color: var(--md-sys-color-accent); /* Accent color for highlight */
+            font-weight: var(--font-weight-bold);
+        }
+
+        .slide-7-diagram .sentence {
+            display: flex;
+            gap: 5px;
+            margin-top: var(--spacing-md);
+            position: relative;
+            justify-content: center;
+        }
+        .slide-7-diagram .word-box {
+            border: 1px solid var(--md-sys-color-on-surface-variant);
+            padding: 5px 10px;
+            border-radius: var(--md-sys-shape-corner-small);
+            background-color: var(--md-sys-color-surface);
+            position: relative;
+            z-index: 2;
+            font-family: var(--font-body);
+            font-size: var(--md-sys-typescale-body-large);
+        }
+        .slide-7-diagram .pinhole-view {
+            position: absolute;
+            background-color: rgba(var(--md-sys-color-primary-rgb, 33, 33, 33), 0.8);
+            border-radius: var(--md-sys-shape-corner-large);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--md-sys-color-on-primary);
+            font-size: var(--md-sys-typescale-headline-medium);
+            font-weight: var(--font-weight-medium);
+            padding: var(--spacing-sm) var(--spacing-md);
+            box-shadow: var(--md-sys-elevation-3);
+        }
+
+        .slide-8-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .context-wall-text {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: var(--font-weight-bold);
+            color: var(--md-sys-color-error); /* Use error color for visual impact of barrier */
+            letter-spacing: 0.5em; /* Make it wide and imposing */
+            text-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .slide-10-diagram .word {
+            position: relative;
+            padding: 5px 10px;
+            border: 1px solid var(--md-sys-color-on-surface-variant);
+            border-radius: var(--md-sys-shape-corner-small);
+            background-color: var(--md-sys-color-surface);
+            font-family: var(--font-body);
+            font-size: var(--md-sys-typescale-body-large);
+            z-index: 2;
+        }
+        .slide-10-diagram-container {
+            position: relative;
+            margin-top: var(--spacing-lg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--spacing-md);
+            width: 100%;
+            max-width: 900px;
+            flex-wrap: wrap;
+        }
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background-color: var(--md-sys-color-accent); /* Highlight color */
+            opacity: 0.6;
+            z-index: 1;
+            transition: all 0.3s ease-out;
+        }
+
+        .slide-12-diagram .sentence-words {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-xl);
+            position: relative;
+            z-index: 2;
+        }
+        .slide-12-diagram .word-item {
+            font-size: var(--md-sys-typescale-headline-medium);
+            font-family: var(--font-display);
+            font-weight: var(--font-weight-medium);
+            color: var(--md-sys-color-on-surface);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background-color: var(--md-sys-color-surface);
+            border-radius: var(--md-sys-shape-corner-medium);
+            box-shadow: var(--md-sys-elevation-1);
+            position: relative; /* For line endpoints */
+            z-index: 3;
+        }
+        .line-attention {
+            position: absolute;
+            background-color: var(--md-sys-color-accent);
+            z-index: 1;
+            height: 4px; /* Thicker for strong attention */
+            opacity: 0.8;
+            border-radius: 2px;
+        }
+        .line-minor {
+            position: absolute;
+            background-color: var(--md-sys-color-on-surface-variant);
+            z-index: 1;
+            height: 2px; /* Thinner for minor attention */
+            opacity: 0.4;
+            border-radius: 1px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .slide-active .slide-content > * {
+            animation: fadeInUp 0.5s ease-out backwards;
+        }
+        .slide-active .slide-content > *:nth-child(2) { animation-delay: 0.1s; }
+        .slide-active .slide-content > *:nth-child(3) { animation-delay: 0.2s; }
+        .slide-active .slide-content > *:nth-child(4) { animation-delay: 0.3s; }
+        .slide-active .slide-content > *:nth-child(5) { animation-delay: 0.4s; }
+        .slide-active .slide-content > *:nth-child(6) { animation-delay: 0.5s; }
+
+        .slide-active .layout-process-flow .process-step { animation: fadeInUp 0.5s ease-out backwards; }
+        .slide-active .layout-process-flow .process-arrow { animation: fadeInUp 0.5s ease-out backwards; }
+        .slide-active .layout-process-flow .process-step:nth-child(1) { animation-delay: 0s; }
+        .slide-active .layout-process-flow .process-arrow:nth-child(2) { animation-delay: 0.1s; }
+        .slide-active .layout-process-flow .process-step:nth-child(3) { animation-delay: 0.2s; }
+        .slide-active .layout-process-flow .process-arrow:nth-child(4) { animation-delay: 0.3s; }
+        .slide-active .layout-process-flow .process-step:nth-child(5) { animation-delay: 0.4s; }
+        .slide-active .layout-process-flow .process-arrow:nth-child(6) { animation-delay: 0.5s; }
+        .slide-active .layout-process-flow .process-step:nth-child(7) { animation-delay: 0.6s; }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .slide h1 { font-size: var(--md-sys-typescale-display-medium); }
+            .slide h2 { font-size: var(--md-sys-typescale-headline-medium); }
+            .slide h3 { font-size: var(--md-sys-typescale-title-large); }
+            .slide h4 { font-size: var(--md-sys-typescale-body-large); }
+            .slide p, .slide li { font-size: var(--md-sys-typescale-label-medium); }
+
+            .layout-2-col, .layout-3-col, .layout-matrix-grid {
+                grid-template-columns: 1fr;
+            }
+            .slide-content {
+                padding: var(--spacing-md);
+            }
+            .takeaway-box {
+                max-width: 90%;
+            }
+            .code-block {
+                max-width: 90%;
+            }
+            .context-wall-text {
+                font-size: clamp(3rem, 10vw, 8rem);
+                letter-spacing: 0.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container" id="presentation-container">
+
+        <div class="slide" id="slide-1">
+            <div class="slide-content layout-1-col">
+                <h1 class="focal-element">The End of the Impossible Choice: How AI Delivers Personalization at Scale</h1>
+                <h3 class="tertiary-element">A presentation for the Executive MBA Program</h3>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-2">
+            <div class="slide-content">
+                <h2>For Decades, Growth Has Forced an Impossible Choice: Scale <span style="color: var(--md-sys-color-accent);">OR</span> Personalization</h2>
+                <div class="layout-2-col" style="width: 100%; position: relative; padding: var(--spacing-lg) 0;">
+                    <h1 class="focal-element" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: var(--md-sys-color-accent); font-size: clamp(4rem, 10vw, 8rem); z-index: 1;">OR</h1>
+                    <div style="z-index: 2; text-align: right; padding-right: var(--spacing-lg);">
+                        <p><span class="material-icons icon-feature">record_voice_over</span><h2>Personalization</h2></p>
+                        <ul>
+                            <li>Deep, 1-to-1 understanding.</li>
+                            <li>High-touch and resonant.</li>
+                            <li>Historically unscalable.</li>
+                        </ul>
+                    </div>
+                    <div style="z-index: 2; text-align: left; padding-left: var(--spacing-lg);">
+                        <p><span class="material-icons icon-feature">hub</span><h2>Scale</h2></p>
+                        <ul>
+                            <li>Mass market reach.</li>
+                            <li>Efficient and automated.</li>
+                            <li>Historically impersonal.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-3">
+            <div class="slide-content">
+                <h2>We've Been Forced to Choose Between High-Touch, Low-Scale or High-Scale, Low-Touch</h2>
+                <div class="layout-2-col" style="width: 100%;">
+                    <div>
+                        <p><span class="material-icons icon-feature">diamond</span><h3>The Bespoke Suit</h3></p>
+                        <ul>
+                            <li>Deeply resonant and builds loyalty.</li>
+                            <li>Perfect for a handful of VIP clients.</li>
+                            <li>Impossible to offer to everyone.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p><span class="material-icons icon-feature">inventory_2</span><h3>The Generic T-Shirt</h3></p>
+                        <ul>
+                            <li>Reaches thousands or millions efficiently.</li>
+                            <li>Often feels impersonal and is ignored.</li>
+                            <li>Can alienate sophisticated customers.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-4" data-cognitive-load="Medium">
+            <div class="slide-content layout-1-col">
+                <h2>The Barrier Has Always Been Our Tools' Inability to Genuinely Understand Human Language</h2>
+                <p>Our automation has traditionally relied on rigid, rule-based systems:</p>
+                <div class="code-block">IF customer email contains "cancel" OR "unhappy"<br/>THEN<br/>&nbsp; send_email("retention_offer_A.txt");</div>
+                <div class="takeaway-box">This approach misses all nuance: Are they cancelling because of price? Bad service? A competitor? The system has no idea.</div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-5">
+            <div class="slide-content layout-1-col">
+                <h2>The Core Challenge for Any AI Has Been to Understand One Simple Thing: Context</h2>
+                <h2 style="margin-top: var(--spacing-lg);"><span class="context-highlight">"I need to get a new mouse</span> for my computer."</h2>
+                <h2 style="margin-bottom: var(--spacing-lg);">"There's a <span class="context-highlight" style="color: var(--md-sys-color-primary);">mouse</span> in the kitchen."</h2>
+                <p class="tertiary-element">Without context, a computer cannot tell the difference. This has been the fundamental barrier.</p>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-6">
+            <div class="slide-content">
+                <h2>Early AI Was Taught to Read Like We Do: One Word at a Time, in Sequence</h2>
+                <div class="layout-process-flow" style="margin-top: var(--spacing-lg); width: 80%;">
+                    <div class="process-step">
+                        <span class="material-icons icon-feature">text_fields</span>
+                        <h3>Word 1</h3>
+                    </div>
+                    <span class="material-icons process-arrow">arrow_forward</span>
+                    <div class="process-step">
+                        <span class="material-icons icon-feature">text_fields</span>
+                        <h3>Word 2</h3>
+                    </div>
+                    <span class="material-icons process-arrow">arrow_forward</span>
+                    <div class="process-step">
+                        <span class="material-icons icon-feature">text_fields</span>
+                        <h3>Word 3</h3>
+                    </div>
+                    <span class="material-icons process-arrow">arrow_forward</span>
+                    <div class="process-step">
+                        <span class="material-icons icon-feature">text_fields</span>
+                        <h3>...</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-7" data-cognitive-load="Medium">
+            <div class="slide-content layout-1-col">
+                <h2>This Sequential Method Creates a "Pinhole" View, Preventing AI From Seeing the Big Picture</h2>
+                <p class="tertiary-element">The AI could only consider the immediate context of the current word it was processing.</p>
+                <div class="slide-7-diagram" style="margin-top: var(--spacing-xl); position: relative; display: flex; flex-direction: column; align-items: center;">
+                    <div class="sentence" id="pinhole-sentence">
+                        <div class="word-box">The</div>
+                        <div class="word-box">AI</div>
+                        <div class="word-box">could</div>
+                        <div class="word-box">only</div>
+                        <div class="word-box">consider</div>
+                        <div class="word-box">the</div>
+                        <div class="word-box">immediate</div>
+                        <div class="word-box">context</div>
+                        <div class="word-box">...</div>
+                    </div>
+                    <div class="pinhole-view" style="width: 250px; height: 100px; top: 50%; left: 50%; transform: translate(-50%, -50%);">"Pinhole" View</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-8">
+            <div class="slide-content slide-8-content">
+                <h2>Ultimately, AI Hit a "Context Wall"—It Could Not Grasp True Meaning</h2>
+                <h1 class="context-wall-text">CONTEXT WALL</h1>
+                <p class="tertiary-element">Progress was blocked. A fundamentally new approach was needed.</p>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-9">
+            <div class="slide-content layout-1-col" style="gap: var(--spacing-lg);">
+                <h2>A 2017 Breakthrough Proposed a Radical Idea: Stop Reading, Start Seeing</h2>
+                <h2 class="focal-element" style="color: var(--md-sys-color-primary);">"Instead of processing words in a line, what if an AI could look at all of them at the same time?"</h2>
+                <p class="tertiary-element">A paper titled "Attention Is All You Need" changed everything.</p>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-10" data-cognitive-load="Medium">
+            <div class="slide-content layout-1-col">
+                <h2>The New Approach: Analyze Every Word in Relation to Every Other Word, All at Once</h2>
+                <p class="tertiary-element">This creates a "panoramic view" of the entire context.</p>
+                <div class="slide-10-diagram-container" id="connection-diagram">
+                    </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-11" data-cognitive-load="Medium">
+            <div class="slide-content">
+                <h2>This "Panoramic View" Is Powered by a Mechanism Called Self-Attention</h2>
+                <div class="layout-2-col" style="width: 100%; text-align: left;">
+                    <div class="content-group">
+                        <h3>What is Self-Attention?</h3>
+                        <p>A method for the AI to calculate a <strong><span class="context-highlight">'relevance score'</span></strong> between every word in a sentence.</p>
+                        <p>It allows the model to determine which other words are most important to understand the meaning of any given word.</p>
+                    </div>
+                    <div class="content-group">
+                        <h3>In Practice:</h3>
+                        <p>For the word "it", Self-Attention asks:</p>
+                        <ul>
+                            <li>How relevant is "robot"? (Score: 0.1)</li>
+                            <li>How relevant is "delivered"? (Score: 0.2)</li>
+                            <li>How relevant is "pizza"? (Score: 0.7)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-12">
+            <div class="slide-content layout-1-col">
+                <h2>In the Sentence "The Robot Delivered the Pizza," Attention Helps the AI Know "It" Refers to the Pizza</h2>
+                <p class="tertiary-element">The AI learns to create connections based on these "relevance scores."</p>
+                <div class="slide-12-diagram">
+                    <div class="sentence-words" id="attention-sentence">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-13">
+            <div class="slide-content">
+                <h2>This Breakthrough Delivered the Speed and Scale Needed for an AI Revolution</h2>
+                <div class="layout-2-col" style="width: 100%;">
+                    <div>
+                        <p><span class="material-icons icon-feature">speed</span><h3>Speed</h3></p>
+                        <ul>
+                            <li>Processing all words at once (in parallel) is perfect for modern computer hardware (GPUs).</li>
+                            <li>Training time was reduced from months to days.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p><span class="material-icons icon-feature">lan</span><h3>Scale</h3></p>
+                        <ul>
+                            <li>This new efficiency made it possible to train models on unprecedented amounts of data.</li>
+                            <li>The models grew from millions to billions of parameters.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-14">
+            <div class="slide-content layout-1-col">
+                <h2>Training This New Architecture on Internet-Scale Data Created the Large Language Model (LLM)</h2>
+                <h1 class="focal-element">Large Language Model</h1>
+                <h3>A New Foundation for Artificial Intelligence</h3>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-15">
+            <div class="slide-content layout-1-col">
+                <h2>At Its Core, an LLM Is an Extremely Powerful Engine for Predicting the Next Word</h2>
+                <p>By training on trillions of words, the model becomes incredibly good at one simple task: given a sequence of text, predict the most probable next word.</p>
+                <div class="takeaway-box">Think of it as the most sophisticated auto-complete in the world, one that has mastered context to make its predictions.</div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-16">
+            <div class="slide-content">
+                <h2>Predicting the Next Word on a Global Scale Unlocks Surprising New Abilities</h2>
+                <div class="layout-3-col" style="width: 100%;">
+                    <div>
+                        <p><span class="material-icons icon-feature">summarize</span><h4>Summarization</h4></p>
+                        <p>The model learns that long documents are often followed by short summaries, so it learns to summarize.</p>
+                    </div>
+                    <div>
+                        <p><span class="material-icons icon-feature">translate</span><h4>Translation</h4></p>
+                        <p>It learns that a sentence in one language is often followed by the same sentence in another, so it learns to translate.</p>
+                    </div>
+                    <div>
+                        <p><span class="material-icons icon-feature">question_answer</span><h4>Q&A</h4></p>
+                        <p>It learns that questions are followed by answers, so it learns to answer questions based on the knowledge in its training data.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-17" data-cognitive-load="Medium">
+            <div class="slide-content">
+                <h2>A Second "Fine-Tuning" Phase Teaches the LLM to Follow Instructions and Be a Helpful Assistant</h2>
+                <div class="layout-process-flow" style="margin-top: var(--spacing-lg); width: 90%;">
+                    <div class="process-step">
+                        <span class="material-icons icon-feature">model_training</span>
+                        <h3>Step 1: Raw LLM</h3>
+                        <p>A powerful text prediction engine.</p>
+                    </div>
+                    <span class="material-icons process-arrow">arrow_forward</span>
+                    <div class="process-step">
+                        <span class="material-icons icon-feature">school</span>
+                        <h3>Step 2: Fine-Tuning</h3>
+                        <p>Learns from high-quality examples of following human instructions.</p>
+                    </div>
+                    <span class="material-icons process-arrow">arrow_forward</span>
+                    <div class="process-step">
+                        <span class="material-icons icon-feature">assistant</span>
+                        <h3>Step 3: Aligned Assistant</h3>
+                        <p>Becomes a helpful tool that can answer questions and perform tasks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-18">
+            <div class="slide-content">
+                <h2>For Us, LLMs Are Transforming How We Understand and Engage with Customers</h2>
+                <div class="layout-matrix-grid" style="width: 100%;">
+                    <div class="content-group" style="padding: var(--spacing-md);">
+                        <p><span class="material-icons icon-feature">insights</span><strong>Instant Customer Insight</strong><br/>Summarize thousands of reviews in seconds to find key themes.</p>
+                    </div>
+                    <div class="content-group" style="padding: var(--spacing-md);">
+                        <p><span class="material-icons icon-feature">diversity_3</span><strong>Hyper-Personalized Outreach</strong><br/>Create tailored email drafts based on customer profiles and past interactions.</p>
+                    </div>
+                    <div class="content-group" style="padding: var(--spacing-md);">
+                        <p><span class="material-icons icon-feature">edit</span><strong>Automated Content Creation</strong><br/>Draft social media posts, blog ideas, and product descriptions in the brand's voice.</p>
+                    </div>
+                    <div class="content-group" style="padding: var(--spacing-md);">
+                        <p><span class="material-icons icon-feature">query_stats</span><strong>Intelligent Market Research</strong><br/>Analyze competitor announcements and market trends from news and reports.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-19">
+            <div class="slide-content layout-1-col">
+                <h2>LLMs Are Powerful but Not Perfect; They Can "Hallucinate" and Require Human Oversight</h2>
+                <p><span class="material-icons icon-feature" style="color: var(--md-sys-color-error);">warning</span><h3>Key Considerations</h3></p>
+                <ul>
+                    <li><strong>Factual Inaccuracy:</strong> LLMs are trained to be plausible, not truthful. They can "hallucinate" or make up facts confidently.</li>
+                    <li><strong>Data Bias:</strong> The model can reflect biases present in its vast training data.</li>
+                </ul>
+                <div class="takeaway-box" style="background-color: var(--theme-urgent-accent);">Treat LLMs as a powerful assistant that requires human review and strategic direction, not as an infallible oracle.</div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-20">
+            <div class="slide-content">
+                <h2>Our Story: The Three Big Ideas to Remember</h2>
+                <div class="layout-3-col" style="width: 100%;">
+                    <div>
+                        <p><span class="material-icons icon-feature">filter_center_focus</span><h3>The "Pinhole Problem"</h3></p>
+                        <p>Old AI was stuck processing word-by-word, missing the big picture.</p>
+                    </div>
+                    <div>
+                        <p><span class="material-icons icon-feature">travel_explore</span><h3>The "Panoramic View"</h3></p>
+                        <p>The "Attention" breakthrough allowed AI to see and weigh all words at once, mastering context.</p>
+                    </div>
+                    <div>
+                        <p><span class="material-icons icon-feature">aod</span><h3>Personalization at Scale</h3></p>
+                        <p>This new understanding allows us to finally break the trade-off between scale and personalization.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-21">
+            <div class="slide-content layout-1-col">
+                <h1 class="focal-element">Thank You</h1>
+                <h2 style="margin-top: var(--spacing-lg);">Q&A</h2>
+                <p class="tertiary-element">Presenter Name<br/>Email Address<br/>LinkedIn Profile</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'previous');
+                if (i === index) {
+                    slide.classList.add('active');
+                } else if (i < index) {
+                    slide.classList.add('previous');
+                }
+            });
+            applyCognitiveLoadSettings(slides[index]);
+            renderDiagrams(slides[index].id);
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                prevSlide();
+            }
+        });
+
+        // Initial slide display
+        showSlide(currentSlide);
+
+
+        // Cognitive Load Manager - Re-implemented in JS for dynamic application
+        class CognitiveLoadManager {
+            applyLoadOptimization(slide, loadLevel) {
+                const root = document.documentElement;
+                if (loadLevel === 'Medium') {
+                    root.style.setProperty('--spacing-multiplier', '1.2');
+                    slide.querySelectorAll('.tertiary-element').forEach(el => {
+                        el.style.opacity = '0.7';
+                    });
+                    this.applyStrongerGrouping(slide);
+                } else if (loadLevel === 'High') {
+                    root.style.setProperty('--spacing-multiplier', '1.5');
+                    slide.querySelectorAll('.secondary-element').forEach(el => {
+                        el.style.opacity = '0.6';
+                    });
+                    this.applyStrongerGrouping(slide);
+                } else { // Low
+                    root.style.setProperty('--spacing-multiplier', '1');
+                    slide.querySelectorAll('.tertiary-element, .secondary-element').forEach(el => {
+                        el.style.opacity = ''; // Reset opacity
+                    });
+                    this.resetGrouping(slide);
+                }
+            }
+
+            applyStrongerGrouping(slide) {
+                const relatedGroups = slide.querySelectorAll('.content-group');
+                relatedGroups.forEach(group => {
+                    group.style.backgroundColor = 'var(--md-sys-color-surface-variant)';
+                    group.style.padding = 'var(--spacing-md)';
+                    group.style.borderRadius = 'var(--md-sys-shape-corner-medium)';
+                });
+            }
+
+            resetGrouping(slide) {
+                const relatedGroups = slide.querySelectorAll('.content-group');
+                relatedGroups.forEach(group => {
+                    group.style.backgroundColor = '';
+                    group.style.padding = '';
+                    group.style.borderRadius = '';
+                });
+            }
+        }
+
+        const cognitiveLoadManager = new CognitiveLoadManager();
+
+        function applyCognitiveLoadSettings(slideElement) {
+            const loadLevel = slideElement.dataset.cognitiveLoad || 'Low';
+            cognitiveLoadManager.applyLoadOptimization(slideElement, loadLevel);
+        }
+
+        // Diagram Rendering Functions
+        function renderDiagrams(slideId) {
+            if (slideId === 'slide-7') {
+                const sentenceElement = document.getElementById('pinhole-sentence');
+                const words = ["The", "AI", "could", "only", "consider", "the", "immediate", "context", "..."];
+                sentenceElement.innerHTML = words.map(word => `<div class="word-box">${word}</div>`).join('');
+
+                const wordBoxes = sentenceElement.querySelectorAll('.word-box');
+                if (wordBoxes.length > 0) {
+                    const fifthWord = wordBoxes[4]; // "consider"
+                    const sentenceRect = sentenceElement.getBoundingClientRect();
+                    const fifthWordRect = fifthWord.getBoundingClientRect();
+
+                    const pinhole = sentenceElement.parentElement.querySelector('.pinhole-view');
+                    const pinholeWidth = fifthWordRect.width * 3 + (5 * 2); // Roughly 3 words + gaps
+                    const pinholeLeft = fifthWordRect.left - sentenceRect.left - fifthWordRect.width - (5*2);
+                    const pinholeTop = fifthWordRect.top - sentenceRect.top - (pinhole.offsetHeight - fifthWordRect.height) / 2;
+
+                    pinhole.style.width = `${pinholeWidth}px`;
+                    pinhole.style.height = `${fifthWordRect.height * 1.5}px`;
+                    pinhole.style.left = `${fifthWordRect.left - (pinholeWidth - fifthWordRect.width) / 2}px`;
+                    pinhole.style.top = `${fifthWordRect.top - (pinhole.offsetHeight - fifthWordRect.height) / 2}px`;
+
+                    pinhole.style.position = 'absolute';
+                    pinhole.style.transform = 'none'; // Override central alignment
+                    pinhole.textContent = '"Pinhole" View';
+                }
+
+            } else if (slideId === 'slide-10') {
+                const container = document.getElementById('connection-diagram');
+                container.innerHTML = ''; // Clear previous
+                const words = ["Every", "word", "is", "connected", "to", "every", "other", "word"];
+                let wordElements = [];
+
+                words.forEach((word, i) => {
+                    const wordDiv = document.createElement('div');
+                    wordDiv.className = 'word';
+                    wordDiv.textContent = word;
+                    wordDiv.id = `word-${i}`;
+                    container.appendChild(wordDiv);
+                    wordElements.push(wordDiv);
+                });
+
+                // Use setTimeout to ensure elements are rendered and have dimensions
+                setTimeout(() => {
+                    for (let i = 0; i < wordElements.length; i++) {
+                        for (let j = i + 1; j < wordElements.length; j++) {
+                            const start = wordElements[i];
+                            const end = wordElements[j];
+
+                            const startRect = start.getBoundingClientRect();
+                            const endRect = end.getBoundingClientRect();
+                            const containerRect = container.getBoundingClientRect();
+
+                            const x1 = startRect.left + startRect.width / 2 - containerRect.left;
+                            const y1 = startRect.top + startRect.height / 2 - containerRect.top;
+                            const x2 = endRect.left + endRect.width / 2 - containerRect.left;
+                            const y2 = endRect.top + endRect.height / 2 - containerRect.top;
+
+                            const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+                            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+                            const line = document.createElement('div');
+                            line.className = 'connection-line';
+                            line.style.width = `${length}px`;
+                            line.style.transform = `rotate(${angle}deg)`;
+                            line.style.left = `${x1}px`;
+                            line.style.top = `${y1}px`;
+                            line.style.transformOrigin = '0 0';
+                            container.appendChild(line);
+                        }
+                    }
+                }, 50); // Small delay to ensure layout rendering
+            } else if (slideId === 'slide-12') {
+                const sentence = "The Robot Delivered the Pizza";
+                const words = sentence.split(" ");
+                const container = document.getElementById('attention-sentence');
+                container.innerHTML = ''; // Clear previous
+
+                let wordDivs = {};
+                words.forEach((word, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'word-item';
+                    div.textContent = word;
+                    div.id = `word-${word.toLowerCase()}-${index}`;
+                    container.appendChild(div);
+                    wordDivs[word.toLowerCase()] = wordDivs[word.toLowerCase()] || [];
+                    wordDivs[word.toLowerCase()].push(div);
+                });
+
+                setTimeout(() => {
+                    const pizzaRect = wordDivs['pizza'][0].getBoundingClientRect();
+                    const itRect = wordDivs['the'][2].getBoundingClientRect(); // "the" after "Delivered"
+
+                    const drawLine = (startEl, endEl, className) => {
+                        const startRect = startEl.getBoundingClientRect();
+                        const endRect = endEl.getBoundingClientRect();
+                        const containerRect = container.getBoundingClientRect();
+
+                        const x1 = startRect.left + startRect.width / 2 - containerRect.left;
+                        const y1 = startRect.top + startRect.height / 2 - containerRect.top;
+                        const x2 = endRect.left + endRect.width / 2 - containerRect.left;
+                        const y2 = endRect.top + endRect.height / 2 - containerRect.top;
+
+                        const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+                        const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+                        const line = document.createElement('div');
+                        line.className = className;
+                        line.style.width = `${length}px`;
+                        line.style.transform = `rotate(${angle}deg)`;
+                        line.style.left = `${x1}px`;
+                        line.style.top = `${y1}px`;
+                        line.style.transformOrigin = '0 0';
+                        container.appendChild(line);
+                    };
+
+                    // "it" to "pizza" (strong) - using "the" as a proxy for "it" as it's not in the original sentence
+                    drawLine(wordDivs['the'][2], wordDivs['pizza'][0], 'line-attention');
+                    // "it" to "robot" (minor)
+                    drawLine(wordDivs['the'][2], wordDivs['robot'][0], 'line-minor');
+
+                }, 50);
+            }
+        }
+
+        // Call render diagrams initially for the first slide if it has one
+        if (slides[currentSlide]) {
+            renderDiagrams(slides[currentSlide].id);
+        }
+
+    </script>
+</body>
+</html>
