@@ -10,11 +10,11 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         :root {
-            /* Design Tokens: Vibrant Theme */
-            --primary-bg: #e0f2f7;
-            --secondary-bg: #ffffff;
-            --accent-color: #f39c12;
-            --text-color: #2c3e50;
+            /* Design Tokens: Dark Mode Theme */
+            --primary-bg: #121212;
+            --secondary-bg: #1E1E1E;
+            --accent-color: #BB86FC;
+            --text-color: #E0E0E0;
 
             /* Typography */
             --font-family: 'Roboto', sans-serif;
@@ -262,13 +262,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             transition: transform 0.2s, box-shadow 0.2s;
         }
         
         .nav-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         
         .nav-button .material-icons {
@@ -281,7 +281,7 @@
             left: 2rem;
             font-size: 1rem;
             color: var(--text-color);
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(30, 30, 30, 0.7);
             padding: 0.5rem 1rem;
             border-radius: 15px;
             z-index: 10;
@@ -296,14 +296,14 @@
 
         #copy-button {
             background-color: var(--accent-color);
-            color: var(--secondary-bg);
+            color: var(--primary-bg);
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 5px;
             cursor: pointer;
             font-family: var(--font-family);
             font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         #copy-button:hover {
@@ -315,7 +315,7 @@
         @media print {
             html, body {
                 overflow: visible;
-                background-color: #fff;
+                background-color: #fff !important;
             }
             #presentation-container {
                 overflow: visible;
@@ -333,12 +333,12 @@
             .slide:last-child {
                 page-break-after: avoid;
             }
-            h1 { color: #000 !important; }
-            .material-icons, p, li { color: #333 !important; }
+            h1, p, li, .slide-title { color: #000 !important; }
+            .material-icons, li .material-icons { color: #333 !important; }
+            .slide-title .material-icons { color: #f39c12 !important; }
             :root {
                 --primary-bg: #fff;
                 --secondary-bg: #fff;
-                --accent-color: #f39c12;
                 --text-color: #000;
             }
             .nav-controls, #progress-bar, #slide-counter, #copy-button-container {
@@ -745,8 +745,8 @@
             // Copy to Clipboard
             const copyButton = document.getElementById('copy-button');
             copyButton.addEventListener('click', () => {
-                const code = document.documentElement.outerHTML;
-                navigator.clipboard.writeText(code).then(() => {
+                const codeToCopy = document.querySelector('html').outerHTML;
+                navigator.clipboard.writeText(codeToCopy).then(() => {
                     copyButton.textContent = 'Copied!';
                     setTimeout(() => {
                         copyButton.textContent = 'Copy Code';
