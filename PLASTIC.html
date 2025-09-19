@@ -3,507 +3,608 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLASTIC: Green Query Optimization</title>
+    <title>PLASTIC: Intelligent Plan Recycling</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
+        /* ---------------------------------- */
+        /* ICDX DESIGN TOKENS & THEME (v4.0)  */
+        /* ---------------------------------- */
         :root {
-            --page-bg-color: #020c1e;
-            --slide-bg-color: #0a192f;
-            --primary-text-color: #e6f1ff;
-            --secondary-text-color: #8892b0;
-            --accent-color: #64ffda;
-            --shadow-color-1: rgba(2, 12, 27, 0.7);
-            --shadow-color-2: rgba(2, 12, 27, 0.6);
-            --title-font: 'Roboto Slab', serif;
-            --body-font: 'Lato', sans-serif;
-            --body-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%230a192f' fill-opacity='0.4'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            --slide-texture: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h16v16H0V0zm4 4h8v8H4V4z' fill='%23172a45' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            /* Serenity Theme */
+            --color-background: #F8F9FA;
+            --color-text-primary: #212529;
+            --color-text-secondary: #495057;
+            --color-accent: #007BFF;
+            --color-accent-light: #E9F4FF;
+            --color-surface: #FFFFFF;
+            --color-border: #DEE2E6;
+
+            /* SVG Textures */
+            --texture-subtle: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DEE2E6' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+            /* Typography */
+            --font-primary: 'Poppins', sans-serif;
+            --font-display: 'Poppins', sans-serif;
+
+            /* Spacing & Sizing */
+            --spacing-unit: 8px;
+            --border-radius: 12px;
+            --slide-max-width: 1200px;
         }
 
-        * {
+        /* ---------------------------------- */
+        /* BASE & RESET                     */
+        /* ---------------------------------- */
+        *, *::before, *::after {
             box-sizing: border-box;
+        }
+        
+        html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: var(--font-primary);
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            overflow: hidden; /* Prevent body scroll */
         }
 
-        html, body {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            font-family: var(--body-font);
-            background-color: var(--page-bg-color);
-            color: var(--primary-text-color);
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: var(--body-texture);
-            z-index: -1;
-        }
-
+        /* ---------------------------------- */
+        /* CORE DESIGN PRINCIPLES (v4.0)    */
+        /* ---------------------------------- */
+        
+        /* A. Consistent Alignment */
         #presentation-container {
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2vw;
-        }
-
-        #slide-area {
-            width: 100%;
-            height: 100%;
-            max-width: 1400px;
-            max-height: 900px;
-            background-color: var(--slide-bg-color);
-            background-image: var(--slide-texture);
-            border-radius: 20px;
-            box-shadow: 0 14px 28px var(--shadow-color-1), 0 10px 10px var(--shadow-color-2);
             position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
         .slide {
             width: 100%;
             height: 100%;
-            padding: clamp(2rem, 5vw, 4rem);
-            display: none; /* Hidden by default */
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.6s ease-in-out;
             position: absolute;
             top: 0;
             left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+            padding: calc(var(--spacing-unit) * 4);
+            /* Grid Structure: Center content block */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Fallback scrolling for small viewports */
+            background-color: var(--color-background);
         }
 
         .slide.active {
-            display: flex;
             opacity: 1;
-            z-index: 10;
+            visibility: visible;
+            z-index: 1;
         }
 
         .slide-content {
             width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+            max-width: var(--slide-max-width);
+            background: var(--color-surface);
+            padding: calc(var(--spacing-unit) * 6) calc(var(--spacing-unit) * 8);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+            border: 1px solid var(--color-border);
+            background-image: var(--texture-subtle);
         }
 
-        .title-container {
+        /* B. Visual Hierarchy & Refined Typography */
+        h1, h2, h3, p, li {
+            overflow-wrap: break-word; /* C. Overflow Handling */
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 5vw, 3.0rem);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin: 0 0 calc(var(--spacing-unit) * 4) 0;
+            line-height: 1.2;
+            text-align: center; /* Title Alignment */
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-            text-align: center;
-        }
-
-        .title-container .material-symbols-sharp {
-            font-size: clamp(3rem, 6vw, 4.5rem);
-            color: var(--accent-color);
-        }
-
-        .slide h1 {
-            font-family: var(--title-font);
-            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-            line-height: 1.2;
-            color: var(--primary-text-color);
-        }
-
-        .slide-body {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 100%;
+            gap: calc(var(--spacing-unit) * 2);
         }
         
-        /* Layouts */
-        .layout-1-column { text-align: center; }
-        .layout-1-column .slide-body { align-items: center; }
-        .layout-1-column .slide-body > * { max-width: 900px; }
-
-        .layout-2-column, .layout-3-column {
-            display: flex;
-            gap: 2rem;
-            align-items: stretch; /* CRITICAL: Ensures columns are same height */
-            height: 100%;
-        }
-
-        .column {
-            flex: 1; /* CRITICAL: Ensures columns share space equally */
-            padding: 2rem;
-            background-color: rgba(0,0,0,0.15);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Content Typography */
-        h2 {
-            font-family: var(--title-font);
-            font-size: clamp(1.5rem, 2.5vw, 2rem);
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-        }
-
-        h3 {
-            font-family: var(--title-font);
-            font-size: clamp(1.3rem, 2vw, 1.6rem);
-            margin-bottom: 1rem;
-            color: var(--primary-text-color);
+        h1 .material-icons {
+            font-size: 1.1em;
+            color: var(--color-accent);
         }
 
         p, li {
-            font-size: clamp(1rem, 1.8vw, 1.25rem);
-            line-height: 1.7;
-            color: var(--secondary-text-color);
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+            text-align: left; /* CRITICAL: Left-align body text */
+            margin: 0;
         }
         
-        .slide-body > p:first-of-type {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: var(--primary-text-color);
-            margin-bottom: 1rem;
-        }
-
-        strong {
-            color: var(--accent-color);
-            font-weight: 700;
-        }
-
         ul {
             list-style: none;
-            padding-left: 0;
-            margin-top: 1rem;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--spacing-unit) * 2);
         }
 
+        /* CRITICAL FIX: List Icon Alignment */
         li {
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            text-align: left;
+            gap: 15px; /* Increased for better visual separation */
         }
 
-        li .material-symbols-sharp {
-            color: var(--accent-color);
-            font-size: 1.5em; /* relative to parent li font-size */
-            margin-top: 0.1em;
+        li .material-icons {
+            flex-shrink: 0;
+            color: var(--color-accent);
+            font-size: 1.4em;
+            margin-top: 0.25em; /* Optical alignment adjustment */
         }
 
-        /* Navigation */
-        #navigation-controls {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+        /* C. White Space and Robustness */
+        .column-container {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 100;
+            gap: calc(var(--spacing-unit) * 4);
+            flex-wrap: wrap; /* Robustness: wrap columns */
+            align-items: center; /* Align items for mixed height columns */
+            justify-content: center;
         }
 
-        .nav-button {
-            background: none;
-            border: none;
-            color: var(--secondary-text-color);
-            cursor: pointer;
-            padding: 5px;
-            transition: color 0.3s ease;
+        .column {
+            flex: 1 1 280px; /* Grow, shrink, with a min-width base */
+            padding: calc(var(--spacing-unit) * 2); /* Breathing room */
+        }
+
+        /* ---------------------------------- */
+        /* DETERMINISTIC LAYOUT ENGINEERING   */
+        /* ---------------------------------- */
+        
+        /* Default Layouts (1, 2, 3 column) */
+        .layout-1-column .column { min-width: 60%; }
+        .layout-2-column .column { flex-basis: 45%; }
+        .layout-3-column .column { flex-basis: 30%; }
+
+        /* Featured-Stat Layout (NUMERIC) */
+        .layout-featured-stat .column-container { align-items: center; }
+        .layout-featured-stat .stat-text { flex: 1 1 300px; }
+        .layout-featured-stat .stat-number-wrapper { flex: 1 1 300px; text-align: center; }
+        .stat-number {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            color: var(--color-accent);
+            font-size: clamp(6rem, 15vw, 10rem);
+            line-height: 1;
         }
         
-        .nav-button:hover {
-            color: var(--accent-color);
+        /* Text-Highlight Layout (TEXTUAL) */
+        .layout-text-highlight .column-container { align-items: center; }
+        .layout-text-highlight .stat-text { flex: 1 1 300px; font-size: clamp(1.1rem, 2.5vw, 1.5rem); line-height: 1.4; }
+        .layout-text-highlight .stat-highlight-wrapper { flex: 1 1 300px; text-align: center; }
+        .stat-highlight {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--color-accent);
+            font-size: clamp(3rem, 8vw, 5rem);
+            line-height: 1.1;
+            overflow-wrap: break-word;
         }
 
-        .nav-button .material-symbols-sharp {
-            font-size: 40px;
+        /* ---------------------------------- */
+        /* ICDX MOTION & ANIMATION SYSTEM   */
+        /* ---------------------------------- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        #progress-dots {
+        .animate-on-scroll {
+            opacity: 0; /* Start hidden */
+        }
+
+        .in-view.animate-on-scroll {
+            animation: fadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        
+        /* ---------------------------------- */
+        /* ACCESSIBILITY & PROFESSIONAL POLISH */
+        /* ---------------------------------- */
+        
+        /* Navigation Controls */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
             display: flex;
             gap: 10px;
         }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            background-color: var(--secondary-text-color);
+        .nav-btn {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
             border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .nav-btn:hover {
+            background: var(--color-accent);
+            color: white;
+            border-color: var(--color-accent);
+        }
+        .nav-btn .material-icons {
+            font-size: 24px;
         }
 
-        .dot.active {
-            background-color: var(--accent-color);
-            transform: scale(1.3);
+        /* Progress Bar */
+        #progress-bar-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: var(--color-border);
+            z-index: 99;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 100%;
+            background-color: var(--color-accent);
+            transition: width 0.4s ease-out;
+        }
+        
+        /* Copy to Clipboard Button */
+        #copy-button-container {
+             text-align: center; margin: 20px;
+        }
+        #copy-code-btn {
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        #copy-code-btn:hover {
+            background-color: #0056b3;
+        }
+        .code-container { display: none; }
+
+        /* Print Stylesheet */
+        @media print {
+            body { overflow: visible; }
+            .slide {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                height: auto;
+                page-break-after: always;
+                box-shadow: none;
+                border: 1px solid #ccc;
+                margin-bottom: 20px;
+            }
+            .nav-controls, #progress-bar-container, #copy-button-container {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div id="presentation-container">
-        <div id="slide-area">
+    <div id="copy-button-container">
+        <button id="copy-code-btn">Copy Presentation Code</button>
+    </div>
+    
+    <main id="presentation-container">
 
-            <div id="slide-1" class="slide active">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">recycling</span>
-                        <h1>PLASTIC is an engine that intelligently recycles database query plans to eliminate redundant optimization work, drastically reducing overhead and improving performance.</h1>
-                    </div>
-                    <div class="slide-body layout-1-column">
-                        <h2>PLASTIC: Green Query Optimization</h2>
-                        <p>A proposal to eliminate wasteful computation in commercial databases.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="slide-2" class="slide">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">sync_problem</span>
-                        <h1>Databases waste significant resources by optimizing nearly every complex query from scratch.</h1>
-                    </div>
-                    <div class="slide-body layout-1-column">
-                        <p>Query optimization is a <strong>computationally intensive and costly process</strong> for any modern database. The system typically treats each query as a new problem, optimizing it "afresh" with no mechanism to amortize the high upfront cost over prior, similar queries. This default behavior creates a persistent and expensive performance bottleneck.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="slide-3" class="slide">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">price_check</span>
-                        <h1>This constant re-optimization represents a major, ongoing drain on computational and financial resources.</h1>
-                    </div>
-                    <div class="slide-body layout-2-column">
+        <section class="slide" data-animation="Fade-In" aria-labelledby="slide1-title">
+            <div class="slide-content animate-on-scroll">
+                <div class="layout-1-column">
+                    <h1 id="slide1-title"><span class="material-icons">memory</span>PLASTIC: Intelligent Plan Recycling</h1>
+                    <div class="column-container">
                         <div class="column">
-                            <h3>Wasted Time</h3>
                             <ul>
-                                <li><span class="material-symbols-sharp">timer</span>The overhead of re-optimization directly translates to slower query response times. As workloads become more complex, this bottleneck worsens, impacting application performance and user experience.</li>
-                            </ul>
-                        </div>
-                        <div class="column">
-                            <h3>Wasted Resources</h3>
-                            <ul>
-                                <li><span class="material-symbols-sharp">memory</span>Every optimization cycle consumes valuable CPU and memory. This brute-force approach inflates the hardware and energy costs required to run the database, directly impacting the operational budget.</li>
+                                <li>Stop Re-Optimizing. Start Recycling.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div id="slide-4" class="slide">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">document_scanner</span>
-                        <h1>Existing plan reuse tools in commercial databases are too limited because they rely on superficial text matching.</h1>
-                    </div>
-                    <div class="slide-body layout-1-column">
-                        <p>Commercial systems like Oracle 9i offer features such as "stored outlines" to reuse plans, but they are fundamentally flawed. Their matching is extremely restrictive, requiring a new query to have a <em>close textual resemblance</em> to a stored one. This misses the vast majority of opportunities, as queries that are structurally identical but textually different are ignored.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="slide-5" class="slide">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">smart_toy</span>
-                        <h1>PLASTIC introduces "Plan Recycling," a novel technique to intelligently reuse optimization work for structurally similar queries.</h1>
-                    </div>
-                    <div class="slide-body layout-1-column">
-                        <p>PLASTIC is a tool designed to help query optimizers significantly amortize their overheads. Rather than relying on text, we identify deep similarities between queries. By grouping queries into clusters, we can use the high-quality, optimizer-generated plan for a single "representative" to execute all future queries in that cluster. This allows the cost of a high-quality optimization to be spread across thousands of queries.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="slide-6" class="slide">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">architecture</span>
-                        <h1>Our system characterizes, clusters, and classifies queries to find and reuse the optimal plan template.</h1>
-                    </div>
-                    <div class="slide-body layout-3-column">
+        <section class="slide" data-animation="Fade-In" aria-labelledby="slide2-title">
+            <div class="slide-content animate-on-scroll">
+                <div class="layout-1-column">
+                    <h1 id="slide2-title"><span class="material-icons">speed</span>Query Optimization is a Major Bottleneck</h1>
+                    <div class="column-container">
                         <div class="column">
-                            <h3>Characterize</h3>
                             <ul>
-                                <li><span class="material-symbols-sharp">analytics</span>Each query is processed by a Feature Vector Extractor, which captures its key structural and statistical properties from the system catalogs.</li>
-                            </ul>
-                        </div>
-                        <div class="column">
-                            <h3>Cluster</h3>
-                            <ul>
-                                <li><span class="material-symbols-sharp">bubble_chart</span>A Similarity Check module compares the query's vector to existing cluster representatives. If no match is found, the optimizer generates a new plan and the query becomes a new representative.</li>
-                            </ul>
-                        </div>
-                        <div class="column">
-                            <h3>Execute</h3>
-                            <ul>
-                                <li><span class="material-symbols-sharp">assignment_turned_in</span>If a match is found, the stored Plan Template is retrieved and the Plan Generator module uses it to execute the current query, saving the full optimization cost.</li>
+                                <li><span class="material-icons">dns</span>Query optimization is computationally intensive.</li>
+                                <li><span class="material-icons">refresh</span>Every query is optimized afresh.</li>
+                                <li><span class="material-icons">report_problem</span>This creates significant system overheads.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div id="slide-7" class="slide">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">auto_awesome</span>
-                        <h1>Our engine is enhanced with proprietary features for superior speed, accuracy, and scope.</h1>
-                    </div>
-                    <div class="slide-body layout-3-column">
+        </section>
+
+        <section class="slide" data-animation="Fade-In" aria-labelledby="slide3-title">
+            <div class="slide-content animate-on-scroll">
+                <div class="layout-1-column">
+                    <h1 id="slide3-title"><span class="material-icons">lock</span>Current Solutions Are Too Restrictive</h1>
+                    <div class="column-container">
                         <div class="column">
-                            <h3>Variable-Sized Clustering</h3>
                             <ul>
-                                <li><span class="material-symbols-sharp">aspect_ratio</span>Provides smaller, more precise clusters in volatile regions of the plan space and larger clusters in stable regions, reducing plan prediction errors by <strong>almost 50%</strong>.</li>
-                            </ul>
-                        </div>
-                        <div class="column">
-                            <h3>Decision-Tree Classifier</h3>
-                            <ul>
-                                <li><span class="material-symbols-sharp">account_tree</span>A fast classifier module (C5.0) identifies the correct cluster an <strong>order of magnitude faster</strong> than linear searching, making matching instantaneous.</li>
-                            </ul>
-                        </div>
-                        <div class="column">
-                            <h3>Expanded Scope</h3>
-                            <ul>
-                                <li><span class="material-symbols-sharp">compare_arrows</span>PLASTIC can now share plan templates even for queries operating on different schemas, dramatically increasing the opportunity for plan reuse.</li>
+                                <li><span class="material-icons">aod</span>Current plan reuse tools are restrictive.</li>
+                                <li><span class="material-icons">text_fields</span>Matching relies on simple text resemblance.</li>
+                                <li><span class="material-icons">warning</span>This misses massive optimization opportunities.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div id="slide-8" class="slide">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">verified</span>
-                        <h1>PLASTIC is proven on commercial databases (IBM DB2, Oracle 9i) to be highly accurate and efficient.</h1>
-                    </div>
-                    <div class="slide-body layout-1-column">
-                        <p>Experiments using the TPC-H benchmark demonstrate clear success:</p>
-                        <ul>
-                            <li><span class="material-symbols-sharp">check_circle</span><strong>High Accuracy:</strong> PLASTIC predicts the correct plan choice in the vast majority of cases, validating the clustering approach.</li>
-                            <li><span class="material-symbols-sharp">gpp_maybe</span><strong>Low Risk:</strong> Even when an incorrect plan is chosen, the resulting query incurs only marginal additional execution costs.</li>
-                            <li><span class="material-symbols-sharp">speed</span><strong>Improved Efficiency:</strong> The benefits are twofold: dramatically faster optimization times and better execution efficiency, as optimizers can always run at their highest setting.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="slide-9" class="slide">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">groups</span>
-                        <h1>Our team consists of leading database researchers from the Indian Institute of Science's Database Systems Lab.</h1>
-                    </div>
-                    <div class="slide-body layout-1-column">
-                        <p>The PLASTIC project was conceived and developed by a team with deep, specialized expertise in database internals, query optimization, and systems architecture. Our academic foundation at one of the world's leading technical institutes provides us with the unique insight required to solve this long-standing and complex industry problem.</p>
+        </section>
+        
+        <section class="slide" data-animation="Fade-In" aria-labelledby="slide4-title">
+            <div class="slide-content animate-on-scroll">
+                <div class="layout-text-highlight">
+                    <h1 id="slide4-title"><span class="material-icons">lightbulb</span>The Insight Everyone Else Misses</h1>
+                    <div class="column-container">
+                        <div class="column stat-text">
+                             <ul>
+                                <li>Structurally different queries...</li>
+                                <li>...can share identical...</li>
+                            </ul>
+                        </div>
+                        <div class="column stat-highlight-wrapper">
+                           <div class="stat-highlight">PLANS</div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div id="slide-10" class="slide">
-                <div class="slide-content">
-                    <div class="title-container">
-                        <span class="material-symbols-sharp">handshake</span>
-                        <h1>We are seeking a strategic partnership to integrate the PLASTIC engine into a major commercial database.</h1>
-                    </div>
-                    <div class="slide-body layout-1-column">
-                        <p>The PLASTIC technology is a proven and powerful innovation that can deliver significant competitive advantages in performance and total cost of ownership. We are looking for a commercial partner to help bring this next-generation optimization technology from the research lab to the global market.</p>
+        <section class="slide" data-animation="Fade-In" aria-labelledby="slide5-title">
+            <div class="slide-content animate-on-scroll">
+                <div class="layout-3-column">
+                    <h1 id="slide5-title"><span class="material-icons">recycling</span>Introducing PLASTIC: Intelligent Plan Recycling</h1>
+                    <div class="column-container">
+                        <div class="column">
+                            <ul>
+                                <li><span class="material-icons">hub</span>Intelligent Plan Recycling</li>
+                                <li>Groups queries by structural similarity.</li>
+                            </ul>
+                        </div>
+                        <div class="column">
+                            <ul>
+                                <li><span class="material-icons">savings</span>Drastically Reduced Overheads</li>
+                                <li>Amortizes expensive optimization costs.</li>
+                            </ul>
+                        </div>
+                        <div class="column">
+                            <ul>
+                                <li><span class="material-icons">rocket_launch</span>Faster & Smarter Queries</li>
+                                <li>Rapidly finds plans, improves efficiency.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div id="navigation-controls">
-                <button id="prev-button" class="nav-button" aria-label="Previous Slide">
-                    <span class="material-symbols-sharp">arrow_circle_left</span>
-                </button>
-                <div id="progress-dots"></div>
-                <button id="next-button" class="nav-button" aria-label="Next Slide">
-                    <span class="material-symbols-sharp">arrow_circle_right</span>
-                </button>
+        <section class="slide" data-animation="Count-Up" aria-labelledby="slide6-title">
+            <div class="slide-content animate-on-scroll">
+                <div class="layout-featured-stat">
+                    <h1 id="slide6-title"><span class="material-icons">query_stats</span>A 10x Leap in Identification Speed</h1>
+                    <div class="column-container">
+                        <div class="column stat-text">
+                            <ul>
+                                <li><span class="material-icons">flash_on</span>Classifier is order of magnitude faster.</li>
+                                <li><span class="material-icons">check_circle</span>Finds the right plan, instantly.</li>
+                            </ul>
+                        </div>
+                        <div class="column stat-number-wrapper">
+                            <div class="stat-number" data-target="10">0</div>x
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <section class="slide" data-animation="Fade-In" aria-labelledby="slide7-title">
+            <div class="slide-content animate-on-scroll">
+                <div class="layout-2-column">
+                    <h1 id="slide7-title"><span class="material-icons">groups</span>Built By Database Systems Experts</h1>
+                    <div class="column-container">
+                        <div class="column">
+                             <ul>
+                                <li><span class="material-icons">person</span>Parag Sarda</li>
+                                <li><span class="material-icons">school</span>Researcher, Indian Institute of Science</li>
+                            </ul>
+                        </div>
+                        <div class="column">
+                            <ul>
+                                <li><span class="material-icons">person</span>Jayant R. Haritsa</li>
+                                <li><span class="material-icons">school</span>Researcher, Indian Institute of Science</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" data-animation="Fade-In" aria-labelledby="slide8-title">
+            <div class="slide-content animate-on-scroll">
+                <div class="layout-1-column">
+                    <h1 id="slide8-title"><span class="material-icons">request_quote</span>Join Us in Redefining Optimization</h1>
+                    <div class="column-container">
+                        <div class="column">
+                            <ul>
+                                <li><span class="material-icons">attach_money</span>Seeking $500K Seed Investment</li>
+                                <li><span class="material-icons">event</span>For 18 months of runway</li>
+                                <li><span class="material-icons">business</span>To commercialize and scale PLASTIC</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <nav class="nav-controls" aria-label="Presentation controls">
+        <button id="prev-btn" class="nav-btn" aria-label="Previous slide"><span class="material-icons">arrow_back</span></button>
+        <button id="next-btn" class="nav-btn" aria-label="Next slide"><span class="material-icons">arrow_forward</span></button>
+    </nav>
+    
+    <div class="code-container">
+        <pre><code id="html-code"></code></pre>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
             const slides = document.querySelectorAll('.slide');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const progressBar = document.getElementById('progress-bar');
+            let currentSlide = 0;
             const totalSlides = slides.length;
-            const progressDotsContainer = document.getElementById('progress-dots');
-            let currentSlide = 1;
 
-            // Create progress dots
-            for (let i = 1; i <= totalSlides; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                dot.dataset.slide = i;
-                if (i === 1) dot.classList.add('active');
-                progressDotsContainer.appendChild(dot);
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                updateProgressBar();
             }
-            const dots = document.querySelectorAll('.dot');
 
-            const showSlide = (slideNumber) => {
-                if (slideNumber < 1 || slideNumber > totalSlides) return;
+            function updateProgressBar() {
+                const progress = ((currentSlide + 1) / totalSlides) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
 
-                slides.forEach(slide => {
-                    slide.classList.remove('active');
-                });
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                showSlide(currentSlide);
+            }
 
-                document.getElementById(`slide-${slideNumber}`).classList.add('active');
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                showSlide(currentSlide);
+            }
 
-                dots.forEach(dot => {
-                    dot.classList.remove('active');
-                });
-                document.querySelector(`.dot[data-slide='${slideNumber}']`).classList.add('active');
-                
-                currentSlide = slideNumber;
-            };
-
-            const nextSlide = () => {
-                const next = (currentSlide % totalSlides) + 1;
-                showSlide(next);
-            };
-
-            const prevSlide = () => {
-                const prev = ((currentSlide - 2 + totalSlides) % totalSlides) + 1;
-                showSlide(prev);
-            };
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
             
-            document.getElementById('next-button').addEventListener('click', nextSlide);
-            document.getElementById('prev-button').addEventListener('click', prevSlide);
-            
-            dots.forEach(dot => {
-                dot.addEventListener('click', () => {
-                    showSlide(parseInt(dot.dataset.slide));
-                });
-            });
-
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'ArrowRight') {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
                     nextSlide();
-                } else if (event.key === 'ArrowLeft') {
+                } else if (e.key === 'ArrowLeft') {
                     prevSlide();
                 }
             });
+
+            // Animation Observer
+            const animationObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const slide = entry.target;
+                        slide.querySelector('.slide-content').classList.add('in-view');
+
+                        // Handle Count-Up Animation
+                        if (slide.dataset.animation === 'Count-Up') {
+                            const numberEl = slide.querySelector('.stat-number');
+                            if (numberEl && !numberEl.classList.contains('counted')) {
+                                animateCountUp(numberEl);
+                                numberEl.classList.add('counted');
+                            }
+                        }
+                        // We could unobserve, but for re-visiting slides, we keep observing
+                        // observer.unobserve(entry.target);
+                    } else {
+                        // Optional: Reset animation when slide is not in view
+                         const slideContent = entry.target.querySelector('.slide-content');
+                         if (slideContent.classList.contains('in-view')) {
+                            slideContent.classList.remove('in-view');
+                            const numberEl = entry.target.querySelector('.stat-number.counted');
+                            if(numberEl) {
+                               numberEl.classList.remove('counted');
+                               numberEl.textContent = '0';
+                            }
+                         }
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            slides.forEach(slide => {
+                slide.querySelector('.slide-content').classList.add('animate-on-scroll');
+                animationObserver.observe(slide);
+            });
+
+            // Count-Up Animation Logic
+            function animateCountUp(el) {
+                const target = parseInt(el.dataset.target, 10);
+                let current = 0;
+                const duration = 1500; // ms
+                const increment = target / (duration / 16); // ~60fps
+
+                function updateCount() {
+                    current += increment;
+                    if (current < target) {
+                        el.textContent = Math.ceil(current);
+                        requestAnimationFrame(updateCount);
+                    } else {
+                        el.textContent = target;
+                    }
+                }
+                requestAnimationFrame(updateCount);
+            }
+
+            // Copy to Clipboard Logic
+            const copyBtn = document.getElementById('copy-code-btn');
+            const htmlCodeContainer = document.getElementById('html-code');
+            htmlCodeContainer.textContent = document.documentElement.outerHTML;
             
-            // Initialize first slide
-            showSlide(1);
+            copyBtn.addEventListener('click', () => {
+                const codeToCopy = `<!DOCTYPE html>${htmlCodeContainer.textContent}`;
+                 navigator.clipboard.writeText(codeToCopy).then(() => {
+                    copyBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy Presentation Code';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            });
+
+            // Initial setup
+            showSlide(currentSlide);
         });
     </script>
 </body>
