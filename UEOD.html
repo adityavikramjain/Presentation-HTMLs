@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Unreasonable Effectiveness of Data</title>
+    <link rel.preconnect href="https://fonts.googleapis.com">
+    <link rel.preconnect href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* ----------------------------------------
+        ICDX-PRO Design & Engineering System
+        Theme: Mint
+        Typography: Elegant & Classic (Lora / Source Sans Pro)
+        ----------------------------------------
+        */
+
+        /* 1. Root & Color System (Mint) */
+        :root {
+            /* Color Palette */
+            --color-dominant-60: #ffffff;
+            --color-secondary-30: #E6F8F0; /* Light Mint */
+            --color-accent-10: #008A4D; /* Strong Mint Green */
+            --color-text-primary: #333333; /* Charcoal */
+            --color-text-secondary: #555555;
+            --color-background: #F9FCFA; /* Off-white green tint */
+            --color-border: #DDEEE5;
+
+            /* 2. Typographic System (Modular Scale) */
+
+            /* A. Font Pairings & Weights (Elegant & Classic) */
+            --font-family-header: 'Lora', serif;
+            --font-family-body: 'Source Sans Pro', sans-serif;
+            --font-weight-header: 500; /* Mandate: 500 (Medium) */
+            --font-weight-body: 400; /* Mandate: 400 (Regular) */
+            --font-weight-body-bold: 600; /* Mandate: 600 (SemiBold) */
+
+            /* B. The Modular Scale (Perfect Fourth: 1.333) */
+            --font-size-base: clamp(1rem, 1.5vw, 1.125rem); /* 16px to 18px */
+            --type-scale-ratio: 1.333;
+            
+            /* Calculated Scale */
+            --font-size-caption: calc(var(--font-size-base) / var(--type-scale-ratio)); /* ~12-13.5px */
+            --font-size-body: var(--font-size-base); /* ~16-18px */
+            --font-size-h3: calc(var(--font-size-body) * var(--type-scale-ratio)); /* ~21-24px */
+            --font-size-h2: calc(var(--font-size-h3) * var(--type-scale-ratio)); /* ~28-32px */
+            --font-size-h1: calc(var(--font-size-h2) * var(--type-scale-ratio)); /* ~37-42px */
+
+            /* 3. Iconography Sizing */
+            --icon-size-feature: clamp(2.5rem, 4vw, 3.5rem);
+            --icon-size-inline: 1.5em; /* 1.5x the font size of its container */
+            
+            /* 4. Layout & Spacing */
+            --slide-padding: 4rem;
+            --grid-gap: 2rem;
+        }
+
+        /* 3. Global Resets & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            font-family: var(--font-family-body);
+            font-weight: var(--font-weight-body);
+            font-size: var(--font-size-base);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 4. Presentation Container */
+        .presentation-container {
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            max-height: 900px;
+            aspect-ratio: 16 / 9;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 10px 30px rgba(0, 70, 30, 0.05);
+            position: relative;
+            background-color: var(--color-dominant-60);
+        }
+
+        /* 5. Slide Structure */
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: var(--slide-padding);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0.4s;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem; /* Space between title and content grid */
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* 6. Typographic Elements (Applying Modular Scale) */
+        .slide-title {
+            font-family: var(--font-family-header);
+            font-weight: var(--font-weight-header);
+            font-size: var(--font-size-h1);
+            line-height: 1.2;
+            color: var(--color-text-primary);
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .takeaway-box {
+            grid-column: 1 / -1; /* Span all 12 columns */
+            background-color: var(--color-secondary-30);
+            border-left: 5px solid var(--color-accent-10);
+            padding: 1.5rem;
+            
+            /* Apply h2 scale from modular system */
+            font-family: var(--font-family-header);
+            font-weight: var(--font-weight-header);
+            font-size: var(--font-size-h2);
+            color: var(--color-text-primary);
+            line-height: 1.4;
+            margin-bottom: 1rem; /* Space below box */
+        }
+        
+        p, li {
+            font-size: var(--font-size-body);
+            line-height: 1.6; /* Readability Mandate */
+            color: var(--color-text-primary);
+            text-align: left; /* Readability Mandate */
+        }
+
+        strong {
+            font-weight: var(--font-weight-body-bold);
+            color: var(--color-text-primary);
+        }
+        
+        .citation {
+            font-size: var(--font-size-caption);
+            color: var(--color-text-secondary);
+            margin-left: 0.25rem;
+            vertical-align: super;
+            text-decoration: none;
+        }
+
+        /* 7. The 12-Column Grid System & Layouts */
+        .slide-content {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--grid-gap);
+            width: 100%;
+            flex-grow: 1; /* Fill remaining slide height */
+            align-content: start;
+        }
+
+        /* Layout: 1-Column */
+        .layout-1-column .column-1 {
+            grid-column: 2 / span 10; /* Centered with whitespace */
+        }
+
+        /* Layout: 2-Column */
+        .layout-2-column .column-1 {
+            grid-column: 1 / span 6;
+            border-right: 1px solid var(--color-border);
+            padding-right: var(--grid-gap);
+        }
+
+        .layout-2-column .column-2 {
+            grid-column: 7 / span 6;
+            padding-left: var(--grid-gap);
+        }
+
+        /* 8. Content Blocks & Iconography */
+        .column ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .column li {
+            display: flex;
+            /* Vertical Alignment Mandate */
+            align-items: center; 
+            font-size: var(--font-size-h3); /* Main content points are h3 */
+            line-height: 1.5;
+        }
+
+        .column li svg {
+            /* Contextual Sizing Mandate */
+            width: var(--icon-size-inline);
+            height: var(--icon-size-inline);
+            fill: currentColor;
+            color: var(--color-accent-10);
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* 9. Interaction & Navigation */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 6px;
+            background-color: var(--color-accent-10);
+            transition: width 0.2s ease-out;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 1rem;
+            right: var(--slide-padding);
+            font-size: var(--font-size-caption);
+            color: var(--color-text-secondary);
+        }
+
+    </style>
+</head>
+<body>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="icon-ads_click" viewBox="0 0 24 24"><path d="M11.64 3.03c-.2.08-.4.12-.6.12-.22 0-.43-.05-.63-.15-.39-.2-.68-.52-.8-.91-.12-.39-.04-.8.21-1.12.25-.32.6-.5.98-.5.39 0 .74.18.99.5.25.32.34.73.21 1.12-.12.4-.41.72-.82.91zm4.23 15.32c-.44 0-.87-.07-1.28-.2-.03-.01-.06-.01-.09-.02l-.08-.02c-.1-.02-.2-.05-.29-.07-.3-.08-.59-.18-.87-.29-.28-.11-.55-.23-.81-.37-.53-.28-1.02-.6-1.47-.96-.45-.36-.87-.77-1.24-1.22-.37-.45-.69-.94-.95-1.46-.26-.52-.46-1.07-.59-1.64-.09-.38-.15-.76-.2-1.15-.03-.28-.05-.55-.06-.83v-.1c0-.03 0-.06-.01-.09 0-.07-.01-.14-.01-.21 0-.15 0-.29.01-.44 0-.07.01-.14.01-.21 0-.03 0-.06.01-.09v-.1c.01-.28.03-.55.06-.83.05-.39.11-.77.2-1.15.13-.57.33-1.12.59-1.64.26-.52.58-1.01.95-1.46.37-.45.79-.86 1.24-1.22.45-.36.94-.68 1.47-.96.26-.14.53-.26.81-.37.28-.11.57-.21.87-.29.1-.02.19-.05.29-.07l.08-.02c.03-.01.06-.01.09-.02.41-.13.84-.2 1.28-.2.53 0 1.05.09 1.54.28.08.03.16.06.24.09.47.19.92.42 1.34.7.42.28.81.6 1.17.96s.68.77.96 1.17c.28.42.51.87.7 1.34.03.08.06.16.09.24.19.49.28 1.01.28 1.54s-.09 1.05-.28 1.54c-.03.08-.06.16-.09.24-.19.47-.42.92-.7 1.34-.28.42-.6.81-.96 1.17s-.77.68-1.17.96c-.42.28-.87.51-1.34.7-.08.03-.16.06-.24.09-.49.19-1.01.28-1.54.28zm.97-1.6c.15.02.3.03.45.03.35 0 .69-.05.99-.15.05-.02.09-.03.14-.05.34-.13.66-.3.95-.5.29-.2.56-.42.8-.68.24-.26.46-.54.65-.84.19-.3.35-.62.48-.95.02-.05.03-.09.05-.14.1-.3.15-.64.15-.99s-.05-.69-.15-.99c-.02-.05-.03-.09-.05-.14-.13-.33-.29-.65-.48-.95-.19-.3-.41-.58-.65-.84-.24-.26-.51-.48-.8-.68-.29-.2-.61-.37-.95-.5-.05-.02-.09-.03-.14-.05-.3-.1-.64-.15-.99-.15-.15 0-.3.01-.45.03-.01 0-.02.01-.03.01-.13.02-.26.04-.39.07-.29.07-.58.16-.85.27-.27.11-.53.24-.78.38-.5.28-.97.6-1.4.96-.43.36-.82.76-1.16 1.2-.34.44-.63.92-.86 1.42-.23.5-.4 1.04-.52 1.59-.08.36-.14.73-.18 1.1-.03.26-.04.53-.05.79 0 .07 0 .14-.01.21 0 .14.01.28.01.42 0 .07 0 .14.01.21.01.26.02.53.05.79.04.37.1.74.18 1.1.12.55.29 1.09.52 1.59.23.5.52.98.86 1.42.34.44.73.84 1.16 1.2.43.36.9.68 1.4.96.25.14.51.27.78.38.27.11.56.2.85.27.13.03.26.05.39.07.01 0 .02.01.03.01zM11 6.5h2V10h-2zM11 11h2v6h-2z"/></symbol>
+        <symbol id="icon-all_inbox" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 12h-3.33C14.28 15 13.9 16.38 13 17.29c.63.48 1.37.71 2.25.71 1.34 0 2.59-.52 3.54-1.46V15zm-4.75-2.01c.14-1.15.54-2.22 1.11-3.11.9-.13 1.86-.2 2.89-.2.15 0 .29 0 .44.01.49 1.11.76 2.33.76 3.59 0 1.94-.49 3.75-1.33 5.3C13.43 19 12.09 19 10.95 19c-1.2 0-2.3-.39-3.23-1.06-.41.61-.67 1.32-.72 2.06H5V5h14v5.33c-1.31-.83-2.82-1.3-4.44-1.3-.8 0-1.58.11-2.31.31zM5 12.5c0-1.6.62-3.09 1.6-4.2C7.38 7.7 8.16 7.16 9.06 6.81 8.71 7.4 8.4 8.08 8.16 8.82 7.18 10.94 7.3 13.07 8.35 15.08c.37.71.8 1.36 1.29 1.95C7.99 16.2 6.96 15.01 6.27 13.6c-.34-.7-.6-1.44-.77-2.2H5v-.8z"/></symbol>
+        <symbol id="icon-article" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm0-4H7v-2h10v2zm0-4H7V7h10v2z"/></symbol>
+        <symbol id="icon-auto_stories" viewBox="0 0 24 24"><path d="M19 1H5c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-1 18H6c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h1v10l2.5-1.5L12 13V3h6c.55 0 1 .45 1 1v15c0 .55-.45 1-1 1z"/></symbol>
+        <symbol id="icon-autorenew" viewBox="0 0 24 24"><path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/></symbol>
+        <symbol id="icon-bubble_chart" viewBox="0 0 24 24"><path d="M16.99 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-9.9 0C8.75 11 10.1 9.66 10.1 8s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm9.9 1c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3 3zm-9.9 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3 3z"/></symbol>
+        <symbol id="icon-chat" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></symbol>
+        <symbol id="icon-check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></symbol>
+        <symbol id="icon-check_circle" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></symbol>
+        <symbol id="icon-close" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol>
+        <symbol id="icon-construction" viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4zM7.2 10.3c-.2 0-.4-.1-.5-.2l-1.4-1.4c-.3-.3-.3-.8 0-1.1l.1-.1c.3-.3.8-.3 1.1 0l1.4 1.4c.1.1.2.3.2.5s-.1.4-.2.5l-.1.1c-.2.1-.3.2-.5.2z"/></symbol>
+        <symbol id="icon-content_copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></symbol>
+        <symbol id="icon-data_object" viewBox="0 0 24 24"><path d="M10.1 13c-.42 0-.8.32-1.01.74-.75 1.5-1.63 2.81-2.6 3.96C5.55 18.8 4.3 19.52 3 20.02V21h18v-.98c-1.3-.5-2.55-1.22-3.49-2.32-1.04-1.22-1.95-2.55-2.68-4.02-.21-.42-.59-.74-1.01-.74h-1.72zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></symbol>
+        <symbol id="icon-data_usage" viewBox="0 0 24 24"><path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.06.5-9 4.76-9 9.95 0 5.52 4.48 10 10 10 3.31 0 6.24-1.61 8.06-4.09l-2.6-1.53C16.17 17.98 14.21 19 12 19z"/></symbol>
+        <symbol id="icon-dataset" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7 17H5V5h2v12zm4 0H9V5h2v12zm4 0h-2V5h2v12zm4 0h-2V5h2v12z"/></symbol>
+        <symbol id="icon-edit" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></symbol>
+        <symbol id="icon-edit_note" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83zM21 5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5zM7 7h10v2H7V7zm10 6H7v-2h10v2zm-4 4H7v-2h6v2z"/></symbol>
+        <symbol id="icon-error" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></symbol>
+        <symbol id="icon-foundation" viewBox="0 0 24 24"><path d="M19 12h3L12 3 2 12h3v9h14v-9zM7 19v-5.97l5-4.29 5 4.29V19H7zM5 10.08l7-6.01 7 6.01V11H5v-.92z"/></symbol>
+        <symbol id="icon-format_quote" viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></symbol>
+        <symbol id="icon-functions" viewBox="0 0 24 24"><path d="M18 4H6v2l6.5 6L6 18v2h12v-3h-7l5-5-5-5h7z"/></symbol>
+        <symbol id="icon-grid_view" viewBox="0 0 24 24"><path d="M3 3h8v8H3zm0 10h8v8H3zm10 0h8v8h-8zm0-10h8v8h-8z"/></symbol>
+        <symbol id="icon-hearing" viewBox="0 0 24 24"><path d="M6.83 4.42C5.08 5.68 4 7.7 4 10c0 2.22 1.01 4.18 2.6 5.48L3 18.99v2h18v-2l-3.6-3.51c1.59-1.3 2.6-3.26 2.6-5.48 0-2.3-1.08-4.32-2.83-5.58C17.16 3.53 14.7 3 12 3c-2.4 0-4.63.45-6.66 1.25L6.83 4.42zM12 13c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm7-3c0 1.83-1.04 3.4-2.55 4.14L15 12.7c.6-.54.98-1.3.98-2.13 0-1.48-1.2-2.68-2.68-2.68s-2.68 1.2-2.68 2.68c0 .83.38 1.59.98 2.13L10.55 14.14C9.04 13.4 8 11.83 8 10c0-2.53 2.34-4.61 5.18-3.95.83.19 1.59.59 2.22 1.15C16.48 8.08 17 9 17 10h2zm-2.02 6.06L18 17.07v.93h-1.07l-2.9-2.9C13.69 15.06 13.35 15 13 15h-2c-.35 0-.69.06-1.03.1l-2.9 2.9H6v-.93l1.02-1.01C5.7 14.93 5 13.53 5 12V9.01c0-1.67 1.33-3 3-3h8c1.67 0 3 1.33 3 3V12c0 1.53-.7 2.93-2.02 3.86v.2z"/></symbol>
+        <symbol id="icon-help_outline" viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></symbol>
+        <symbol id="icon-home_repair_service" viewBox="0 0 24 24"><path d="M18 16h-2v-1H8v1H6v-1H2v5h20v-5h-4zM8 18H6v-1h2v1zm4 0h-2v-1h2v1zm4 0h-2v-1h2v1zm2-10h-1V3c0-.55-.45-1-1-1H6c-.55 0-1 .45-1 1v5H4c-1.1 0-2 .9-2 2v3h20V10c0-1.1-.9-2-2-2zM7 8V4h10v4H7z"/></symbol>
+        <symbol id="icon-hub" viewBox="0 0 24 24"><path d="M11.33 4.01C11.13 4 10.93 4 10.72 4c-3.73 0-6.85 2.55-7.61 6H1l3.32 3.32L7.64 10H5.11c.7-2.73 3.14-4.75 5.92-4.96l-1.99-1.99L11.33 4.01zm1.34 1.98 1.99 1.99C17.39 8.25 19.83 10.27 20.53 13H23l-3.32 3.32L16.36 13h2.53c-.76-3.45-3.88-6-7.61-6-.21 0-.41 0-.62.01L12.67 5.99zm-.72 4.01c-1.3 0-2.4.84-2.82 2H8.38c.41-1.16 1.51-2 2.81-2s2.4.84 2.82 2h-1.77c-.42-1.16-1.52-2-2.82-2z"/></symbol>
+        <symbol id="icon-image_search" viewBox="0 0 24 24"><path d="M18 13v-3l-3 3h3zm-6 2h-3l3 3v-3zm6-6h-3l3-3v3zm-6 0h-3l3-3v3zm10 0v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h12l2 2 4-4v10zm-2 0h-2l-2-2H4v12h16V5zM9.5 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5zM15 13c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1 1z"/></symbol>
+        <symbol id="icon-imagesmode" viewBox="0 0 24 24"><path d="M12 22H3c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h9v11l3-2 3 2V2c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2h-9zM5 4h5v8l-2.5-1.5L5 12V4z"/></symbol>
+        <symbol id="icon-info" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></symbol>
+        <symbol id="icon-inventory" viewBox="0 0 24 24"><path d="M5 2c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v3h-1V3c0-.55-.45-1-1-1H8c-.55 0-1 .45-1 1v1H5V2zM20.24 6H3.76C2.79 6 2 6.79 2 7.76v11.48C2 20.21 2.79 21 3.76 21h16.48c.97 0 1.76-.79 1.76-1.76V7.76C22 6.79 21.21 6 20.24 6zM9 18H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></symbol>
+        <symbol id="icon-inventory_2" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-.9-2-2-2zm-1 18H5V9h14v11zm-2-5h-2v-2h2v2zm-4-2H7v2h6v-2zm-2-2H9v-2h2v2zm4 0h-2v-2h2v2zM5 7V4h14v3H5z"/></symbol>
+        <symbol id="icon-list" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zm0-12v2h14V7H7z"/></symbol>
+        <symbol id="icon-looks_one" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2V9h-2V7h4v10z"/></symbol>
+        <symbol id="icon-looks_3" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 10c0 .55-.45 1-1 1h-2v2h-2v-2H8v-2h4v-2H8V9h4c.55 0 1 .45 1 1v2c0 .55-.45 1-1 1h-2v2h2c.55 0 1 .45 1 1z"/></symbol>
+        <symbol id="icon-looks_two" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 8c0 .55-.45 1-1 1h-2v2h4v2H9v-4c0-.55.45-1 1-1h2V9H9V7h4c.55 0 1 .45 1 1v2z"/></symbol>
+        <symbol id="icon-memory" viewBox="0 0 24 24"><path d="M15 9H9v6h6V9zm-2 4h-2v-2h2v2zm8-2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2zm-4 6H7V7h10v10z"/></symbol>
+        <symbol id="icon-menu_book" viewBox="0 0 24 24"><path d="M3 19h18V5H3v14zm8-7h6v2h-6v-2z" opacity=".3"/><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 19V5h14v14H5zm10-7h-6v2h6v-2z"/></symbol>
+        <symbol id="icon-mic" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></symbol>
+        <symbol id="icon-model_training" viewBox="0 0 24 24"><path d="m18 1 6 5-6 5V1zM9.5 12c-1.03 0-1.9.62-2.29 1.5-1.02.23-1.92.7-2.65 1.34-.14.12-.3.21-.46.3-.77.44-1.49.95-2.1 1.55C1.04 17.6 1 18.78 1 20c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2 0-1.22-.04-2.4-.99-3.3-.61-.6-1.33-1.11-2.1-1.55-.16-.09-.32-.18-.46-.3-.73-.64-1.63-1.11-2.65-1.34C11.4 12.62 10.53 12 9.5 12zM2 20v-1.34c.3-.29.63-.56.99-.79.52-.33 1.09-.58 1.7-.75.61-.17 1.25-.26 1.9-.26s1.29.09 1.9.26c.61.17 1.18.42 1.7.75.36.23.69.5.99.79V20H2zm8-2c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></symbol>
+        <symbol id="icon-money_off" viewBox="0 0 24 24"><path d="M12.5 6.9c1.78 0 2.44.85 2.5 2.1h-5c.06-1.25.72-2.1 2.5-2.1zm2.5 6.1c0 .55-.45 1-1 1H10c-.55 0-1-.45-1-1v-1h6v1zm-2.92-9.02L2.1 2.45 4.55 4.9C3.38 6.22 2.33 8.01 2.05 10h5.02c.18-.75.56-1.4 1.08-1.92L11.5 11.43v.67h-1v-1h-2v1H8c0 1.1.9 2 2 2h.1l2.45 2.45c-.3.08-.63.15-.98.15-2.76 0-5-2.24-5-5H2c0 3.42 2.7 6.17 6 6.92V22h8v-2.08c1.3-.29 2.48-.88 3.47-1.71l2.08 2.08 1.41-1.41L3.51 3.96 12.08 12.55c.06-.05.11-.1.17-.15.53-.49.9-1.13 1.08-1.9h5.02c-.28-1.99-1.33-3.78-2.5-5.1-.31.06-.62.1-.95.1-1.01 0-1.91-.39-2.61-1.02zM14 13h1v-1h1.57l1.43 1.43C17.61 14.15 17 15.02 17 16c0 2.21-1.79 4-4 4-.69 0-1.33-.18-1.89-.48l1.45-1.45c.14.03.29.03.44.03s.3-.01.44-.03l1.45-1.45c.3.56.41 1.2.41 1.89h-5.88l1.45-1.45c.14.03.29.03.44.03s.3-.01.44-.03L14 13.01V13z"/></symbol>
+        <symbol id="icon-new_releases" viewBox="0 0 24 24"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.18L12 3 8.6 1.52 6.71 4.7l-3.61.81.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.48 1.89-3.18 3.61-.81-.34-3.69zM11 15h2v2h-2zm0-8h2v6h-2z"/></symbol>
+        <symbol id="icon-percent" viewBox="0 0 24 24"><path d="M7.5 4C8.88 4 10 5.12 10 6.5S8.88 9 7.5 9 5 7.88 5 6.5 6.12 4 7.5 4zm0 2C7.78 6 8 6.22 8 6.5S7.78 7 7.5 7 7 6.78 7 6.5 7.22 6 7.5 6zm9 11.5c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5-2.5 1.12-2.5 2.5 1.12 2.5 2.5 2.5zm0-3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zM5.41 20 20 5.41 18.59 4 4 18.59z"/></symbol>
+        <symbol id="icon-psychology" viewBox="0 0 24 24"><path d="M11.5 2C6.8 2 3 5.8 3 10.5S6.8 19 11.5 19h.5v3c4.1-1.9 6-5.4 6-9.5C18 5.8 14.2 2 9.5 2h2zm.5 15h-.5C8 17 5 14.1 5 10.5S8 4 11.5 4S16 6.9 16 10.5 13.8 17 12 17zm-1-8c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5zm3 3c0 .8-.7 1.5-1.5 1.5S11 12.8 11 12s.7-1.5 1.5-1.5 1.5.7 1.5 1.5zM9 9c-.8 0-1.5.7-1.5 1.5S8.2 12 9 12s1.5-.7 1.5-1.5S9.8 9 9 9z"/></symbol>
+        <symbol id="icon-public" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1h-2v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.43-1.06 4.62-2.78 6.16z"/></symbol>
+        <symbol id="icon-query_stats" viewBox="0 0 24 24"><path d="M19.88 18.47c.44-.7.7-1.51.7-2.47 0-2.76-2.24-5-5-5s-5 2.24-5 5 2.24 5 5 5c.96 0 1.77-.26 2.47-.7l3.76 3.76 1.41-1.41-3.76-3.76zM15.88 19c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3zM10 2H2v8h8V2zM4 8V4h4v4H4zm6 10H2v8h8v-8zm-2 6v-4h4v4h-4zM19 10h-8v8h8v-8zm-2 6h-4v-4h4v4zM12 2v4h4V2h-4z"/></symbol>
+        <symbol id="icon-receipt_long" viewBox="0 0 24 24"><path d="M19.5 3.5 18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v19.5l1.5-1.5L6 21.5l1.5-1.5L9 21.5l1.5-1.5L12 21.5l1.5-1.5L15 21.5l1.5-1.5L18 21.5l1.5-1.5L21 21.5V2l-1.5 1.5zM19 19.01H5V4.99h14v14.02zM17 15H7v-2h10v2zm0-4H7v-2h10v2z"/></symbol>
+        <symbol id="icon-record_voice_over" viewBox="0 0 24 24"><path d="M9 9c0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3-3 1.34-3 3zm12-4c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm-9.39 6.26C9.21 11.23 7 9.21 7 6.61v-1.1c1.39.49 2.76 1.13 4.14 1.89C12 7.8 12 8.32 12 9c0 1.05-.33 2-.9 2.82l-2.07 1.44zM16 9c0 .68-.02 1.2-.14 1.61C17.24 9.47 18.61 8.83 20 8.31v1.1C20 12 18 14 15.39 14.26L17.46 12.82C17.76 11.96 18 10.99 18 10c0-1.66-1.34-3-3-3s-3 1.34-3 3zm-6.04 7.91C9.68 16.98 9.36 17 9 17c-2.76 0-5-2.24-5-5s2.24-5 5-5c.36 0 .68.02.96.04l-2.01 1.39C7.59 8.79 7.32 9.17 7.09 9.58c-.8 1.42-.92 3.01-.36 4.54l1.23 3.4c.03.08.06.16.1.24zM15 17c.36 0 .68-.02.96-.04l1.23-3.4c.56-1.53.44-3.12-.36-4.54-.23-.41-.5-.79-.86-1.15l-2.01-1.39c.28-.02.6-.04.96-.04 2.76 0 5 2.24 5 5s-2.24 5-5 5z"/></symbol>
+        <symbol id="icon-rule" viewBox="0 0 24 24"><path d="M16 5H8c-1.66 0-3 1.34-3 3v8c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V8c0-1.66-1.34-3-3-3zm1 11c0 .55-.45 1-1 1H8c-.55 0-1-.45-1-1V8c0-.55.45-1 1-1h8c.55 0 1 .45 1 1v8zM8 12h8v2H8zm0-4h8v2H8z"/></symbol>
+        <symbol id="icon-rules" viewBox="0 0 24 24"><path d="m21.6 8.2-1.2-1.2c-.4-.4-.9-.6-1.4-.6H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V9.6c0-.5-.2-1-.6-1.4zM19 19H5V8h14v11zM10.05 17l-3.5-3.5L7.9 12.16 10.05 14.3l5.66-5.66L17.06 10l-7.01 7zM9 4c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zm-4 4H1v6h4V8z"/></symbol>
+        <symbol id="icon-scale" viewBox="0 0 24 24"><path d="M14 10H2v2h12v-2zm0-4H2v2h12V6zM2 16h8v-2H2v2zm19.5-4.5c0-1.38-1.12-2.5-2.5-2.5s-2.5 1.12-2.5 2.5 1.12 2.5 2.5 2.5 2.5-1.12 2.5-2.5zm-3 0c0-.28.22-.5.5-.5s.5.22.5.5-.22.5-.5.5-.5-.22-.5-.5zM6 22H4v-5l-3-3v-2h10v2l-3 3v5zm-2-2h2v-5.3l3-3V11H3v.7l3 3V20z"/></symbol>
+        <symbol id="icon-school" viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73V12.27l5 2.73 5-2.73v3.72z"/></symbol>
+        <symbol id="icon-search" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></symbol>
+        <symbol id="icon-security" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></symbol>
+        <symbol id="icon-sentiment_dissatisfied" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM9 10c.83 0 1.5-.67 1.5-1.5S9.83 7 9 7s-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm6 0c.83 0 1.5-.67 1.5-1.5S15.83 7 15 7s-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-5 4c-.78 1.11-2.05 1.8-3.5 1.8-2.31 0-4.24-1.62-4.89-3.79l.89-.31c.54 1.74 2.14 3.1 4 3.1 1.45 0 2.73-.73 3.5-1.8l.88.59zM15.5 15.8c1.86 0 3.46-1.36 4-3.1l.89.31C19.74 15.38 17.81 17 15.5 17c-1.45 0-2.73-.73-3.5-1.8l.88-.59c.78 1.11 2.05 1.8 3.5 1.8z"/></symbol>
+        <symbol id="icon-sensors" viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7v3.08c-2.83 1.03-5 3.8-5 7.02 0 4.08 3.05 7.44 7 7.93V20h2v-4.08c3.95-.49 7-3.85 7-7.92 0-3.22-2.17-5.99-5-7.02V7c0-2.76-2.24-5-5-5zm0 16c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></symbol>
+        <symbol id="icon-settings_input_component" viewBox="0 0 24 24"><path d="M5 2c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v2H5V2zM19 12v3h-3v-3h3zm-5 0v3h-3v-3h3zm-5 0v3H6v-3h3zm11 5H4v-2c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v2zm-3-3h-3v-3h3v3zm-5 0h-3v-3h3v3zm5-5H9v-3h6v3zM8 7H5v3h3V7z"/></symbol>
+        <symbol id="icon-smart_toy" viewBox="0 0 24 24"><path d="M19 9h-2v2h-2V9H9V7h2V5h2v2h2v2zm-8-3c.83 0 1.5.67 1.5 1.5S11.83 9 11 9s-1.5-.67-1.5-1.5S10.17 6 11 6zm6 0c.83 0 1.5.67 1.5 1.5S17.83 9 17 9s-1.5-.67-1.5-1.5S16.17 6 17 6zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></symbol>
+        <symbol id="icon-storefront" viewBox="0 0 24 24"><path d="M18.36 9.01 17.65 6.3C17.43 5.36 16.5 4.5 15.48 4.5H8.52c-1.02 0-1.94.86-2.17 1.8l-.71 2.71C4.24 13.04 4 17.34 4 18c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2 0-.66-.24-4.96-1.64-8.99zM8.91 6.5h6.18l.5 2H8.41l.5-2zM18 18H6v-.88c0-1.01.52-1.92 1.34-2.45.62-.39 1.31-.57 2-.57.83 0 1.6.26 2.26.75.69.51 1.52.75 2.4.75s1.71-.24 2.4-.75c.66-.49 1.43-.75 2.26-.75.69 0 1.38.18 2 .57.82.53 1.34 1.44 1.34 2.45V18z"/></symbol>
+        <symbol id="icon-table" viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM8 19H4v-2h4v2zm0-4H4v-2h4v2zm0-4H4V9h4v2zm0-4H4V5h4v2zm6 12h-4v-2h4v2zm0-4h-4v-2h4v2zm0-4h-4V9h4v2zm0-4h-4V5h4v2zm6 12h-4v-2h4v2zm0-4h-4v-2h4v2zm0-4h-4V9h4v2zm0-4h-4V5h4v2z"/></symbol>
+        <symbol id="icon-task_alt" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14.04 17.66l-3.54-3.54 1.41-1.41 2.12 2.12 4.24-4.24L19.66 12l-5.62 5.66z"/></symbol>
+        <symbol id="icon-thumb_down" viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></symbol>
+        <symbol id="icon-thumb_up" viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></symbol>
+        <symbol id="icon-timeline" viewBox="0 0 24 24"><path d="M12 4C7.03 4 3 8.03 3 13s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm-1-11h2v5h-2zm-3-3h2v2h-2zm6 0h2v2h-2z"/></symbol>
+        <symbol id="icon-trending_down" viewBox="0 0 24 24"><path d="M16 18l2.29-2.29-4.88-4.88-4 4L2 7.41 3.41 6l6 6 4-4 6.3 6.29L22 12v6z"/></symbol>
+        <symbol id="icon-trending_up" viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></symbol>
+        <symbol id="icon-volume_up" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></symbol>
+        <symbol id="icon-warning" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></symbol>
+        <symbol id="icon-work" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></symbol>
+    </svg>
+
+    <main class="presentation-container">
+        
+        <div class="slide active" data-slide="1">
+            <h1 class="slide-title">The Unreasonable Effectiveness of Data: Why Data Scale Trumps Algorithmic Elegance</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-article"></use></svg>
+                            <span>Understanding the 2009 Paper That Defined Modern AI Strategy</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="2">
+            <h1 class="slide-title">We Envy Physics: The Quest for Simple, Elegant "Laws"</h1>
+            <div class="slide-content layout-2-column">
+                <div class="takeaway-box">Why can't we find simple laws for complex human systems like language?</div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-functions"></use></svg>
+                            <span><strong>Physics: Simple, Elegant</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-percent"></use></svg>
+                            <span>Possesses simple, universal laws like $f=ma$. </span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-check_circle"></use></svg>
+                            <span>Highly predictable and explainable.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column-2">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-psychology"></use></svg>
+                            <span><strong>Human Science: Complex, Messy</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-edit_note"></use></svg>
+                            <span>Fields like economics and linguistics resist simple math. <span class="citation">[9]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-warning"></use></svg>
+                            <span>Vast, contextual, and defies simple rules.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="3">
+            <h1 class="slide-title">The Old Approach: Finding "Elegant Models" for Human Language</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-construction"></use></svg>
+                            <span><strong>The Goal:</strong> Hand-craft a "perfect" model, like a detailed grammar or a complex, rule-based ontology. </span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-smart_toy"></use></svg>
+                            <span><strong>The Belief:</strong> A "smarter," more intricate algorithm was the key to unlocking AI.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-hub"></use></svg>
+                            <span>This "deep approach" relied on hand-coded networks of relations. </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="4">
+            <h1 class="slide-title">The Problem: Language is Vast, Messy, and Defies Simple Rules</h1>
+            <div class="slide-content layout-1-column">
+                <div class="takeaway-box">The "elegant model" approach was doomed. We were trying to find a simple blueprint for a system that has no simple blueprint.</div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-menu_book"></use></svg>
+                            <span>An "incomplete" grammar of English runs over 1,700 pages. <span class="citation">[10]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-new_releases"></use></svg>
+                            <span>Language is not static. New words are coined and usages are modified daily. <span class="citation">[53]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-sentiment_dissatisfied"></use></svg>
+                            <span>These fields are "doomed to complex theories" without the elegance of physics. <span class="citation">[11]</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="5">
+            <h1 class="slide-title">The AI You See (ChatGPT) Is Built on This Paper's Core Principle</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-chat"></use></svg>
+                            <span>You see the power of modern Generative AI and Large Language Models.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-foundation"></use></svg>
+                            <span>Today, we will explore the fundamental 2009 paper that established the <strong>principle</strong> that makes these tools possible.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-school"></use></svg>
+                            <span>This is the foundational concept that enables the technology you use every day.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="6">
+            <h1 class="slide-title">A New Asset Emerges: The Shift from "Million-Word" to "Trillion-Word" Scale</h1>
+            <div class="slide-content layout-2-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-inventory_2"></use></svg>
+                            <span><strong>The Past: Brown Corpus (1960s)</strong> <span class="citation">[13]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-data_usage"></use></svg>
+                            <span><strong>One Million</strong> English words. <span class="citation">[13]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-check_circle"></use></svg>
+                            <span>Carefully curated and annotated.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column-2">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-public"></use></svg>
+                            <span><strong>The New Reality: Google Corpus (2006)</strong> <span class="citation">[14]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-dataset"></use></svg>
+                            <span><strong>One Trillion</strong> English words. <span class="citation">[14]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-warning"></use></svg>
+                            <span>Unfiltered, messy, full of errors. <span class="citation">[15]</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="7">
+            <h1 class="slide-title">The 1T-Word Corpus is Messy—And It Doesn't Matter</h1>
+            <div class="slide-content layout-1-column">
+                <div class="takeaway-box"><strong>Scale &gt; Perfection.</strong></div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-format_quote"></use></svg>
+                            <span><strong>"The fact that it's a million times larger... outweighs these drawbacks."</strong> <span class="citation">[16]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-scale"></use></svg>
+                            <span>This massive scale "captures even very rare aspects of human behavior" and language. <span class="citation">[17]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-info"></use></svg>
+                            <span>The unfiltered, error-filled Web data is now the basis for our models. <span class="citation">[15, 18]</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="8">
+            <h1 class="slide-title">The Thesis: We Must Embrace Complexity and Use the "Unreasonable Effectiveness of Data"</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-format_quote"></use></svg>
+                            <span>"We should stop acting as if our goal is to author extremely elegant theories, and instead embrace complexity and make use of the best ally we have: <strong>the unreasonable effectiveness of data</strong>." </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="9">
+            <h1 class="slide-title">Insight: A "Fluent Speaker" (Simple Model + Big Data) Beats a "Grammar Professor" (Complex Model + Small Data)</h1>
+            <div class="slide-content layout-2-column">
+                <div class="takeaway-box"><strong>The Paper's Finding:</strong> "...invariably, simple models and a lot of data trump more elaborate models based on less data." </div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-school"></use></svg>
+                            <span><strong>The "Grammar Professor"</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-auto_stories"></use></svg>
+                            <span><strong>(Complex Model, Small Data)</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-rule"></use></svg>
+                            <span>Knows every intricate grammar rule.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-close"></use></svg>
+                            <span>Has only read 100 books. Cannot speak fluently.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column-2">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-record_voice_over"></use></svg>
+                            <span><strong>The "Fluent Speaker"</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-volume_up"></use></svg>
+                            <span><strong>(Simple Model, Massive Data)</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-hearing"></use></svg>
+                            <span>Knows few formal rules.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-check"></use></svg>
+                            <span>Has <strong>heard</strong> billions of real sentences. "Just knows" what sounds right.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="10">
+            <h1 class="slide-title">Case 1: Machine Translation Runs on "Memorization," Not "Rules"</h1>
+            <div class="slide-content layout-2-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-edit"></use></svg>
+                            <span><strong>Old Way: Elaborate Rules</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-hub"></use></svg>
+                            <span>Relied on complex syntactic and semantic patterns. <span class="citation">[37]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-trending_down"></use></svg>
+                            <span>Brittle, complex, and ineffective.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column-2">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-table"></use></svg>
+                            <span><strong>New Way: Statistical "Memorization"</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-memory"></use></svg>
+                            <span>Consist mostly of "large memorized phrase tables." <span class="citation">[38]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-trending_up"></use></svg>
+                            <span>Matches phrases from massive data. Wins.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="11">
+            <h1 class="slide-title">Case 2: The "Data Threshold" in Visuals</h1>
+            <div class="slide-content layout-2-column">
+                <div class="takeaway-box">Performance isn't just about the model; it's about hitting a "threshold of sufficient data." <span class="citation">[41]</span></div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-image_search"></use></svg>
+                            <span><strong>Small Data: Thousands of Photos</strong> <span class="citation">[44]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-thumb_down"></use></svg>
+                            <span>The <strong>same</strong> algorithm performed poorly at scene completion. <span class="citation">[44]</span></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column-2">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-imagesmode"></use></svg>
+                            <span><strong>Massive Data: Millions of Photos</strong> <span class="citation">[45]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-thumb_up"></use></svg>
+                            <span>The <strong>same</strong> algorithm performed quite well. <span class="citation">[45]</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="12">
+            <h1 class="slide-title">Why It Works: It "Memorizes" the Entire "Long Tail" of Niche Tastes</h1>
+            <div class="slide-content layout-1-column">
+                <div class="takeaway-box">Big data captures the entire Long Tail of reality, which "elegant" models miss.</div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-timeline"></use></svg>
+                            <span><strong>The "Long Tail":</strong> The Web consists of "individually rare but collectively frequent events." </span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-storefront"></use></svg>
+                            <span><strong>Amazon Example:</strong> An "elegant" model creates 100 shopper "types." A "big data" model just <strong>remembers</strong> that people who buy "19th-century shipbuilding history" <strong>also</strong> buy "artisanal goat cheese."</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-warning"></use></svg>
+                            <span>"throwing away rare events is almost always a bad idea." <span class="citation">[55]</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="13">
+            <h1 class="slide-title">Let Language Do the Work: Trust Words, Not Abstract Clusters</h1>
+            <div class="slide-content layout-1-column">
+                <div class="takeaway-box">Simple n-gram models or linear classifiers based on millions of <strong>specific features</strong> (words) perform better. <span class="citation">[40]</span></div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-format_quote"></use></svg>
+                            <span>"Human language has evolved over millennia to have words for the important concepts; let's use them." <span class="citation">[58]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-bubble_chart"></use></svg>
+                            <span>Abstract representations (like clusters from latent analysis) are hard to learn and "tend to lose information." <span class="citation">[59]</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="14">
+            <h1 class="slide-title">Modern Proof: LLMs (like ChatGPT) Are the Ultimate Example of This Thesis</h1>
+            <div class="slide-content layout-1-column">
+                <div class="takeaway-box">This is the 2009 paper's thesis fully realized: <strong>Simple(r) Model + Massive Data &gt; All Else.</strong></div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-model_training"></use></svg>
+                            <span>LLMs are not "taught" grammar rules in the old, "elegant" way.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-data_object"></use></svg>
+                            <span>They are relatively simple architectures (transformers) that "learn" statistical patterns by processing <strong>internet-scale data</strong>.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="15">
+            <h1 class="slide-title">The Strategic "So What?" for Business Leaders</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-query_stats"></use></svg>
+                            <span>How this 2009 paper defines your business strategy today.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="16">
+            <h1 class="slide-title">The Strategic Shift: From "Better Models" to "Better Data Pipelines"</h1>
+            <div class="slide-content layout-2-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-smart_toy"></use></svg>
+                            <span><strong>Old Strategy: Focus on Model</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-science"></use></svg>
+                            <span>"We need a smarter algorithm."</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-dataset"></use></svg>
+                            <span>"Let's buy a small, clean dataset."</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column-2">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-settings_input_component"></use></svg>
+                            <span><strong>New Strategy: Focus on Data</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-all_inbox"></use></svg>
+                            <span>"We need a better data acquisition pipeline."</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-public"></use></svg>
+                            <span>"How do we get massive, proprietary, real-world data?"</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="17">
+            <h1 class="slide-title">Data as a Moat: Why Google Search Stays Ahead of Bing</h1>
+            <div class="slide-content layout-1-column">
+                <div class="takeaway-box">A massive, auto-generating data asset is the most defensible competitive advantage.</div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-content_copy"></use></svg>
+                            <span><strong>Algorithms are easy to copy.</strong> Microsoft can hire brilliant engineers and copy the <strong>ideas</strong> behind Google's models.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-security"></use></svg>
+                            <span><strong>Proprietary data is hard to copy.</strong> They cannot replicate Google's <strong>20+ years</strong> of data on trillions of searches, clicks, and user behaviors.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="18">
+            <h1 class="slide-title">Your Goal: Make Data Acquisition a Core Business Strategy</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-help_outline"></use></svg>
+                            <span>This is the key question for your business proposals:</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-task_alt"></use></svg>
+                            <span><strong>"How will our business acquire a unique, massive, and proprietary data asset that gets better with every user interaction?"</strong></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="19">
+            <h1 class="slide-title">Strategic Data Acquisition: How to Build Your "Data Flywheel"</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-autorenew"></use></svg>
+                            <span><strong>A "Data Flywheel":</strong> More Users -&gt; More Data -&gt; Better Product -&gt; More Users...</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-list"></use></svg>
+                            <span><strong>Potential Sources:</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-edit_note"></use></svg>
+                            <span>User-Generated Content (reviews, posts, images)</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-ads_click"></use></svg>
+                            <span>Interaction Data (clicks, searches, logs, view time)</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-receipt_long"></use></svg>
+                            <span>Transactional Data (purchases, baskets)</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-sensors"></use></svg>
+                            <span>IoT/Sensor Data (location, environment)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="20">
+            <h1 class="slide-title">A Warning: Favor the "Messy Garage" (Effectiveness) Over the "Perfect Toolkit" (Formalism)</h1>
+            <div class="slide-content layout-2-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-work"></use></svg>
+                            <span><strong>The "Perfect Toolkit"</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-grid_view"></use></svg>
+                            <span><strong>(e.g., Semantic Web)</strong> <span class="citation">[80, 82]</span></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-error"></use></svg>
+                            <span>A clean, rigid, labeled toolkit. Fails when a new, unplanned tool appears.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-money_off"></use></svg>
+                            <span>"Too expensive to formalize" the long tail of concepts. <span class="citation">[100, 101]</span></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column-2">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-home_repair_service"></use></svg>
+                            <span><strong>The "Messy Garage"</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-inventory"></use></svg>
+                            <span><strong>(The Paper's Way)</strong></span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-search"></use></svg>
+                            <span>A chaotic garage with <strong>millions</strong> of tools. You infer meaning from context at scale. <span class="citation">[29]</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="21">
+            <h1 class="slide-title">Example: Data Teaches Us "HP" Means "Hewlett-Packard," Not a Human</h1>
+            <div class="slide-content layout-1-column">
+                <div class="takeaway-box">We let the "Web-scale data" solve the problem for us. <span class="citation">[134]</span></div>
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-rules"></use></svg>
+                            <span><strong>Formalism:</strong> A human must create a rule: "HP = Hewlett-Packard." This doesn't scale.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-query_stats"></use></svg>
+                            <span><strong>Effectiveness:</strong> By analyzing <strong>millions</strong> of tables, the machine <strong>learns</strong> that "HP" in a column with "Microsoft" and "Apple" refers to a tech company. <span class="citation">[128, 141]</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="22">
+            <h1 class="slide-title">Key Takeaways for Your Business Proposals</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-looks_one"></use></svg>
+                            <span><strong>Scale Trumps Elegance:</strong> "Simple models and a lot of data trump more elaborate models based on less data." </span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-looks_two"></use></svg>
+                            <span><strong>Data is the Moat:</strong> An algorithm can be copied; a massive, proprietary data asset cannot.</span>
+                        </li>
+                        <li>
+                            <svg><use xlink:href="#icon-looks_3"></use></svg>
+                            <span><strong>Follow the Data:</strong> "Choose a representation that can use unsupervised learning on unlabeled data, which is so much more plentiful..." <span class="citation">[165, 171]</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="23">
+            <h1 class="slide-title">The Final Mandate: "Go out and gather some data, and see what it can do."</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-format_quote"></use></svg>
+                            <span>"Now go out and gather some data, and see what it can do." </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide" data-slide="24">
+            <h1 class="slide-title">Q&A</h1>
+            <div class="slide-content layout-1-column">
+                <div class="column-1">
+                    <ul>
+                        <li>
+                            <svg><use xlink:href="#icon-mic"></use></svg>
+                            <span>Thank You</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+        </div>
+        <div class="slide-number"></div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const progressBar = document.querySelector('.progress-bar');
+            const slideNumberEl = document.querySelector('.slide-number');
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                // Hide current slide
+                slides[currentSlide].classList.remove('active');
+
+                // Update current slide index
+                currentSlide = index;
+                if (currentSlide >= totalSlides) {
+                    currentSlide = 0;
+                }
+                if (currentSlide < 0) {
+                    currentSlide = totalSlides - 1;
+                }
+
+                // Show new slide
+                slides[currentSlide].classList.add('active');
+
+                // Update progress bar
+                const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+
+                // Update slide number
+                slideNumberEl.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            }
+
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+
+            function prevSlide() {
+                showSlide(currentSlide - 1);
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                    e.preventDefault();
+                    prevSlide();
+                }
+            });
+
+            // Handle citation and bold markdown
+            slides.forEach(slide => {
+                slide.innerHTML = slide.innerHTML
+                    .replace(/\+)\]/g, '<span class="citation">[$1]</span>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            });
+            
+            // Initial slide setup
+            showSlide(0);
+        });
+    </script>
+
+</body>
+</html>
