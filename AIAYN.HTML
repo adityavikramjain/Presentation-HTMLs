@@ -6,406 +6,730 @@
     <title>Attention Is All You Need</title>
     
     <!-- 
-      M3 DEPENDENCY: Load Google Material Symbols
-      This is the M3-specified icon library.
-    -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    
-    <!-- 
-      M3 DEPENDENCY: Load Selected Google Fonts (Modern Serif Style)
-      - Roboto Serif (Header, Weight 600 - SemiBold)
-      - Roboto (Body, Weight 400 - Regular)
+      Virtuoso M3 System: Importing selected fonts and icons.
+      Theme: Trust & Authority
+      Fonts: Playfair Display (Display), Source Sans Pro (Body)
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:opsz,wght@8..144,600&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <style>
         /*
-         * ===================================================================
-         * M3 FOUNDATION: CORE TOKENS & THEME
-         * ===================================================================
-         */
+          Virtuoso M3 System Definition
+          Theme: Trust & Authority
+          Cognitive Load: Medium (1.2x)
+        */
 
+        /* --- 2.1. Grid, Shape & Spacing --- */
         :root {
-            /* * M3 SHAPE (Corner Radius) TOKENS
-             * Defines the corner rounding for components.
-             */
-            --md-sys-shape-corner-small: 4px;
-            --md-sys-shape-corner-medium: 12px;  /* Used for standard cards */
-            --md-sys-shape-corner-large: 28px;   /* Used for prominent elements */
+          /* 12-Column Grid */
+          --grid-columns: 12;
+          --grid-golden-major: 8; /* 8 of 12 */
+          --grid-golden-minor: 4; /* 4 of 12 */
+
+          /* Shape System */
+          --md-sys-shape-corner-none: 0px;
+          --md-sys-shape-corner-xsmall: 4px;
+          --md-sys-shape-corner-small: 8px;
+          --md-sys-shape-corner-medium: 12px;
+          --md-sys-shape-corner-large: 16px;
+          --md-sys-shape-corner-xlarge: 28px;
+          --md-sys-shape-corner-full: 50%;
+
+          /* Elevation */
+          --md-sys-elevation-0: none;
+          --md-sys-elevation-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+          --md-sys-elevation-2: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+          --md-sys-elevation-3: 0px 3px 5px 0px rgba(0, 0, 0, 0.30), 0px 6px 12px 4px rgba(0, 0, 0, 0.15);
+
+          /* Cognitive Load Spacing System */
+          /* Multiplier set to 1.2 for Medium Cognitive Load */
+          --spacing-multiplier: 1.2;
+          --spacing-base-xs: 0.5rem;  /* 8px */
+          --spacing-base-sm: 1rem;    /* 16px */
+          --spacing-base-md: 2rem;    /* 32px */
+          --spacing-base-lg: 3rem;    /* 48px */
+          --spacing-base-xl: 4rem;    /* 64px */
             
-            /* * M3 ELEVATION (Shadow) TOKENS
-             * Defines the z-axis depth for components.
-             */
-            /* Level 1: Standard Cards */
-            --md-sys-elevation-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-            /* Level 3: Emphasized elements like Takeaway Box */
-            --md-sys-elevation-3: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+          /* Final spacing values apply the multiplier */
+          --spacing-xs: calc(var(--spacing-base-xs) * var(--spacing-multiplier));
+          --spacing-sm: calc(var(--spacing-base-sm) * var(--spacing-multiplier));
+          --spacing-md: calc(var(--spacing-base-md) * var(--spacing-multiplier));
+          --spacing-lg: calc(var(--spacing-base-lg) * var(--spacing-multiplier));
+          --spacing-xl: calc(var(--spacing-base-xl) * var(--spacing-multiplier));
+        }
+        
+        /* --- 2.2. Advanced Color Psychology System --- */
+        :root {
+          /* Trust & Authority Theme */
+          --theme-trust-primary: #1565C0;
+          --theme-trust-on-primary: #FFFFFF;
+          --theme-trust-primary-container: #D3E3FF;
+          --theme-trust-on-primary-container: #001D36;
+          --theme-trust-secondary: #535F70;
+          --theme-trust-on-secondary: #FFFFFF;
+          --theme-trust-secondary-container: #D7E3F8;
+          --theme-trust-on-secondary-container: #101C2B;
+          --theme-trust-tertiary: #6B5778;
+          --theme-trust-on-tertiary: #FFFFFF;
+          --theme-trust-tertiary-container: #F3DAFF;
+          --theme-trust-on-tertiary-container: #251431;
+          --theme-trust-error: #BA1A1A;
+          --theme-trust-on-error: #FFFFFF;
+          --theme-trust-error-container: #FFDAD6;
+          --theme-trust-on-error-container: #410002;
+          --theme-trust-surface: #FDFBFF;
+          --theme-trust-on-surface: #1A1C1E;
+          --theme-trust-surface-variant: #DFE2EB;
+          --theme-trust-on-surface-variant: #43474E;
+          --theme-trust-outline: #73777F;
+          --theme-trust-shadow: #000000;
+          --theme-trust-surface-container-low: #F3F4F7;
+          --theme-trust-surface-container: #EDEDF1;
 
-            /* * M3 COLOR (Theme: "Ember & Slate")
-             * Defines the M3 color roles.
-             * WCAG AA Check: #ECEFF1 on #37474F has a contrast ratio of 10.7:1 (Passes > 4.5:1).
-             */
-            --md-sys-color-primary: #FF5722; /* Deep Orange */
-            --md-sys-color-on-primary: #FFFFFF;
-            --md-sys-color-secondary: #B0BEC5; /* Light Cool Gray */
-            --md-sys-color-tertiary: #FFC107; /* Amber Accent */
-            --md-sys-color-surface: #37474F; /* Cool Dark Gray (Base Background) */
-            --md-sys-color-surface-container: #455A64; /* Card Backgrounds */
-            --md-sys-color-on-surface: #ECEFF1; /* Main Text (Off-white) */
-            --md-sys-color-outline: #78909C;
-
-            /* * M3 TYPOGRAPHY (Style: "Modern Serif")
-             * Defines the font families and weights.
-             */
-            --font-family-header: 'Roboto Serif', serif;
-            --font-family-body: 'Roboto', sans-serif;
-            --font-weight-header: 600; /* Per spec: Max 600 */
-            --font-weight-body: 400;
-
-            /* * M3 TYPE SCALE (Harmonious Proportion)
-             * Defines the M3 typographic roles using a modular scale.
-             */
-            --font-size-base: clamp(1rem, 1.5vw, 1.125rem); 
-            --type-scale-ratio: 1.333; 
-            --md-sys-typescale-label-medium: calc(var(--font-size-base) / var(--type-scale-ratio)); /* Captions */
-            --md-sys-typescale-body-large: var(--font-size-base); /* Body */
-            --md-sys-typescale-title-large: calc(var(--font-size-base) * var(--type-scale-ratio)); /* Sub-headers */
-            --md-sys-typescale-headline-medium: calc(var(--md-sys-typescale-title-large) * var(--type-scale-ratio)); /* Takeaway Box */
-            --md-sys-typescale-display-medium: calc(var(--md-sys-typescale-headline-medium) * var(--type-scale-ratio)); /* Slide Titles */
-
-            /* * M3 ICONOGRAPHY (Google Material Symbols)
-             * Defines the icon settings and sizes.
-             */
-            /* Use Optical Size 48px, Weight 400 (Regular), No Fill, Default Grade */
-            --md-icon-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
-            --md-icon-size-feature: clamp(3rem, 5vw, 4rem);
-            --md-icon-size-inline: 1.6em;
+          /* Innovation & Growth Theme */
+          --theme-growth-primary: #006D3A;
+          --theme-growth-on-primary: #FFFFFF;
+          --theme-growth-primary-container: #9BF6B5;
+          --theme-growth-on-primary-container: #00210E;
+          --theme-growth-secondary: #4E6354;
+          --theme-growth-on-secondary: #FFFFFF;
+          --theme-growth-secondary-container: #D0E8D6;
+          --theme-growth-on-secondary-container: #0B1F13;
+          --theme-growth-tertiary: #3E6374;
+          --theme-growth-on-tertiary: #FFFFFF;
+          --theme-growth-tertiary-container: #C1E8FB;
+          --theme-growth-on-tertiary-container: #001F2A;
+          --theme-growth-error: #BA1A1A;
+          --theme-growth-on-error: #FFFFFF;
+          --theme-growth-error-container: #FFDAD6;
+          --theme-growth-on-error-container: #410002;
+          --theme-growth-surface: #FBFDF7;
+          --theme-growth-on-surface: #1A1C1A;
+          --theme-growth-surface-variant: #DDE5DA;
+          --theme-growth-on-surface-variant: #414942;
+          --theme-growth-outline: #717972;
+          --theme-growth-shadow: #000000;
+          --theme-growth-surface-container-low: #F2F5F0;
+          --theme-growth-surface-container: #ECEEED;
         }
 
-        /*
-         * ===================================================================
-         * M3 BASE STYLES & TYPOGRAPHY
-         * ===================================================================
-         */
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        /* Master mapping function */
+        .theme-trust {
+          --md-sys-color-primary: var(--theme-trust-primary);
+          --md-sys-color-on-primary: var(--theme-trust-on-primary);
+          --md-sys-color-primary-container: var(--theme-trust-primary-container);
+          --md-sys-color-on-primary-container: var(--theme-trust-on-primary-container);
+          --md-sys-color-secondary: var(--theme-trust-secondary);
+          --md-sys-color-on-secondary: var(--theme-trust-on-secondary);
+          --md-sys-color-secondary-container: var(--theme-trust-secondary-container);
+          --md-sys-color-on-secondary-container: var(--theme-trust-on-secondary-container);
+          --md-sys-color-tertiary: var(--theme-trust-tertiary);
+          --md-sys-color-on-tertiary: var(--theme-trust-on-tertiary);
+          --md-sys-color-tertiary-container: var(--theme-trust-tertiary-container);
+          --md-sys-color-on-tertiary-container: var(--theme-trust-on-tertiary-container);
+          --md-sys-color-error: var(--theme-trust-error);
+          --md-sys-color-on-error: var(--theme-trust-on-error);
+          --md-sys-color-error-container: var(--theme-trust-error-container);
+          --md-sys-color-on-error-container: var(--theme-trust-on-error-container);
+          --md-sys-color-surface: var(--theme-trust-surface);
+          --md-sys-color-on-surface: var(--theme-trust-on-surface);
+          --md-sys-color-surface-variant: var(--theme-trust-surface-variant);
+          --md-sys-color-on-surface-variant: var(--theme-trust-on-surface-variant);
+          --md-sys-color-outline: var(--theme-trust-outline);
+          --md-sys-color-shadow: var(--theme-trust-shadow);
+          --md-sys-color-surface-container-low: var(--theme-trust-surface-container-low);
+          --md-sys-color-surface-container: var(--theme-trust-surface-container);
+        }
+        .theme-growth {
+          --md-sys-color-primary: var(--theme-growth-primary);
+          --md-sys-color-on-primary: var(--theme-growth-on-primary);
+          --md-sys-color-primary-container: var(--theme-growth-primary-container);
+          --md-sys-color-on-primary-container: var(--theme-growth-on-primary-container);
+          --md-sys-color-secondary: var(--theme-growth-secondary);
+          --md-sys-color-on-secondary: var(--theme-growth-on-secondary);
+          --md-sys-color-secondary-container: var(--theme-growth-secondary-container);
+          --md-sys-color-on-secondary-container: var(--theme-growth-on-secondary-container);
+          --md-sys-color-tertiary: var(--theme-growth-tertiary);
+          --md-sys-color-on-tertiary: var(--theme-growth-on-tertiary);
+          --md-sys-color-tertiary-container: var(--theme-growth-tertiary-container);
+          --md-sys-color-on-tertiary-container: var(--theme-growth-on-tertiary-container);
+          --md-sys-color-error: var(--theme-growth-error);
+          --md-sys-color-on-error: var(--theme-growth-on-error);
+          --md-sys-color-error-container: var(--theme-growth-error-container);
+          --md-sys-color-on-error-container: var(--theme-growth-on-error-container);
+          --md-sys-color-surface: var(--theme-growth-surface);
+          --md-sys-color-on-surface: var(--theme-growth-on-surface);
+          --md-sys-color-surface-variant: var(--theme-growth-surface-variant);
+          --md-sys-color-on-surface-variant: var(--theme-growth-on-surface-variant);
+          --md-sys-color-outline: var(--theme-growth-outline);
+          --md-sys-color-shadow: var(--theme-growth-shadow);
+          --md-sys-color-surface-container-low: var(--theme-growth-surface-container-low);
+          --md-sys-color-surface-container: var(--theme-growth-surface-container);
         }
 
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
+        /* --- 2.3. Typography as Visual Architecture --- */
+        :root {
+          /* Font Selection (Set by Virtuoso) */
+          --font-display: "Playfair Display", Georgia, serif;
+          --font-body: "Source Sans Pro", Helvetica, sans-serif;
 
+          /* Modular Scale (Perfect Fourth: 1.333) */
+          --type-scale-ratio: 1.333;
+          --font-size-base: clamp(1rem, 1.5vw, 1.125rem);
+            
+          --md-sys-typescale-label-small: calc(var(--font-size-base) / var(--type-scale-ratio) / var(--type-scale-ratio)); /* Captions */
+          --md-sys-typescale-label-medium: calc(var(--font-size-base) / var(--type-scale-ratio)); /* Metadata, Chips */
+          --md-sys-typescale-label-large: var(--font-size-base); /* Body text, Buttons */
+          --md-sys-typescale-body-large: var(--font-size-base);
+          --md-sys-typescale-title-large: calc(var(--font-size-base) * var(--type-scale-ratio)); /* Subheadings */
+          --md-sys-typescale-headline-medium: calc(var(--md-sys-typescale-title-large) * var(--type-scale-ratio)); /* Key points */
+          --md-sys-typescale-display-medium: calc(var(--md-sys-typescale-headline-medium) * var(--type-scale-ratio)); /* Slide titles */
+          --md-sys-typescale-display-large: calc(var(--md-sys-typescale-display-medium) * var(--type-scale-ratio)); /* Hero text */
+            
+          /* Font Weight */
+          --font-weight-light: 300;
+          --font-weight-regular: 400;
+          --font-weight-medium: 500;
+          --font-weight-bold: 600; /* Elegance cap */
+            
+          /* Line Height */
+          --line-height-tight: 1.2;   /* Headlines */
+          --line-height-normal: 1.45; /* Body */
+        }
+        
+        /* --- 2.4. Visual Hierarchy Implementation --- */
         body {
-            font-family: var(--font-family-body);
-            font-weight: var(--font-weight-body);
-            line-height: 1.7;
-            background-color: var(--md-sys-color-surface);
-            color: var(--md-sys-color-on-surface);
+          font-family: var(--font-body);
+          background-color: var(--md-sys-color-surface);
+          color: var(--md-sys-color-on-surface);
+          margin: 0;
+          padding: 0;
+          overflow: hidden; /* Prevent scrolling */
+        }
+        h1, h2, h3, h4, h5, h6 {
+          font-family: var(--font-display);
+          font-weight: var(--font-weight-bold);
+          line-height: var(--line-height-tight);
+          color: var(--md-sys-color-primary);
+          margin: 0 0 var(--spacing-sm) 0;
         }
 
-        /* Base Typography Roles */
-        h1, h2, h3, .slide-title {
-            font-family: var(--font-family-header);
-            font-weight: var(--font-weight-header);
-            line-height: 1.2;
-            margin-bottom: 1rem;
+        /* Focal Point Dominance System */
+        .focal-element {
+          font-size: var(--md-sys-typescale-display-medium); /* Adjusted for slide titles */
+          font-weight: var(--font-weight-bold);
+          color: var(--md-sys-color-primary);
+          /* animation: subtlePulse 3s ease-in-out infinite; */ /* Turned off for less distraction */
         }
-
-        p, li {
-            font-size: var(--md-sys-typescale-body-large);
-            max-width: 65ch; /* Optimal line length for reading */
-            margin-bottom: 1rem;
+        h1.focal-element {
+            font-size: var(--md-sys-typescale-display-large); /* Hero titles */
         }
-        
-        ul {
-            list-style: none;
-            padding-left: 0;
+        .secondary-element {
+          font-size: var(--md-sys-typescale-headline-medium);
+          font-weight: var(--font-weight-medium);
+          color: var(--md-sys-color-on-surface);
+          opacity: 0.87;
+          line-height: var(--line-height-tight);
         }
-
-        li {
-            padding-left: 1.5em;
-            position: relative;
+        .tertiary-element {
+          font-size: var(--md-sys-typescale-body-large);
+          font-weight: var(--font-weight-regular);
+          color: var(--md-sys-color-on-surface);
+          opacity: 0.8;
+          line-height: var(--line-height-normal);
+          max-width: 75ch; /* Readability */
         }
-        
-        li:before {
-            content: '•';
+        .tertiary-element strong, .secondary-element strong {
             color: var(--md-sys-color-primary);
-            position: absolute;
-            left: 0;
-            top: 0;
-            font-size: 1.2em;
+            font-weight: var(--font-weight-medium);
         }
-        
         code {
             font-family: monospace;
-            background-color: rgba(0,0,0,0.2);
+            font-size: 0.95em;
+            background-color: var(--md-sys-color-surface-container);
             padding: 0.2em 0.4em;
-            border-radius: var(--md-sys-shape-corner-small);
+            border-radius: var(--md-sys-shape-corner-xsmall);
         }
 
-        /* Specific M3 Type Scale Implementations */
-        .slide-title {
-            font-size: var(--md-sys-typescale-display-medium);
-            color: var(--md-sys-color-primary);
-            margin-bottom: 2rem;
-            grid-column: 1 / -1; /* Title spans all 12 columns */
+        /* --- 2.5. Icon System --- */
+        :root {
+          --icon-size-hero: clamp(4rem, 8vw, 6rem);
+          --icon-size-feature: clamp(2.5rem, 4vw, 3rem);
+          --icon-size-inline: 1.5em;
+          --icon-size-bullet: 1.2em;
         }
-
-        .citation {
-            font-size: var(--md-sys-typescale-label-medium);
-            color: var(--md-sys-color-secondary);
-            font-style: italic;
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-hero {
+          font-size: var(--icon-size-hero);
+          color: var(--md-sys-color-primary);
+          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+          font-variation-settings: 'wght' 300;
+        }
+        .icon-decorative {
+          position: absolute;
+          font-size: 20rem;
+          opacity: 0.05;
+          color: var(--md-sys-color-primary);
+          z-index: 0;
+          top: 50%;
+          right: -5%;
+          transform: translateY(-50%);
+          pointer-events: none;
         }
         
-        /* Inline content styling */
-        strong {
-            color: var(--md-sys-color-primary); /* Make 'strong' text use the primary color */
-            font-weight: 600;
+        /* --- 2.6. Animation System --- */
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
+        .slide-active .focal-element {
+          animation: fadeInUp 0.5s ease-out;
+        }
+        .slide-active .secondary-element {
+          animation: fadeInUp 0.5s ease-out 0.15s backwards;
+        }
+        .slide-active .tertiary-element,
+        .slide-active .icon-list,
+        .slide-active .m3-banner-filled,
+        .slide-active .visual-light,
+        .slide-active .m3-card-outlined,
+        .slide-active .code-block-analogy,
+        .slide-active .styled-list,
+        .slide-active .dependency-visual-broken {
+          animation: fadeInUp 0.5s ease-out 0.3s backwards;
+        }
+        /* Staggered animation for lists/cards */
+        .slide-active .m3-card-outlined:nth-child(2),
+        .slide-active .icon-list:nth-child(2),
+        .slide-active .styled-list li:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        .slide-active .m3-card-outlined:nth-child(3),
+        .slide-active .icon-list:nth-child(3),
+        .slide-active .styled-list li:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes subtlePulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.02); }
+        }
+
+        /* --- 2.7. M3 Component Library (Static) --- */
         
-        em {
-            font-style: italic;
-            color: var(--md-sys-color-secondary);
+        /* Buttons */
+        .m3-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 10px 24px;
+          border-radius: var(--md-sys-shape-corner-full);
+          font-family: var(--font-body);
+          font-weight: var(--font-weight-medium);
+          font-size: var(--md-sys-typescale-label-large);
+          text-decoration: none;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease-out;
+          text-align: center;
+        }
+        .m3-button .material-symbols-outlined {
+          font-size: 1.2em;
+          margin-right: 8px;
+        }
+        .m3-button-filled {
+          background-color: var(--md-sys-color-primary);
+          color: var(--md-sys-color-on-primary);
+          box-shadow: var(--md-sys-elevation-0);
+        }
+        .m3-button-filled:hover {
+          box-shadow: var(--md-sys-elevation-1);
+          background-color: color-mix(in srgb, var(--md-sys-color-primary) 92%, black 8%);
+        }
+        .m3-button-outlined {
+          background-color: transparent;
+          color: var(--md-sys-color-primary);
+          border: 1px solid var(--md-sys-color-outline);
+        }
+        .m3-button-outlined:hover {
+          background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
         }
 
-        /*
-         * ===================================================================
-         * M3 COMPONENTS & ICONOGRAPHY
-         * ===================================================================
-         */
+        /* Chips */
+        .m3-chip-set {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .m3-chip {
+          display: inline-flex;
+          align-items: center;
+          padding: 6px 12px;
+          border-radius: var(--md-sys-shape-corner-small);
+          font-size: var(--md-sys-typescale-label-medium);
+          font-weight: var(--font-weight-medium);
+          line-height: 1.2;
+          border: 1px solid var(--md-sys-color-outline);
+          background-color: transparent;
+          color: var(--md-sys-color-on-surface-variant);
+        }
+        .m3-chip-suggestion {
+          background-color: var(--md-sys-color-surface-container-low);
+          border-color: var(--md-sys-color-surface-container-low);
+          color: var(--md-sys-color-on-surface);
+        }
+        .m3-chip-suggestion:hover {
+          background-color: var(--md-sys-color-surface-container);
+        }
+        .m3-chip .material-symbols-outlined {
+          font-size: 1.1em;
+          margin-right: 6px;
+        }
 
-        /* The Material Card component */
-        .md-card {
-            background: var(--md-sys-color-surface-container);
-            border-radius: var(--md-sys-shape-corner-medium);
-            box-shadow: var(--md-sys-elevation-1);
-            padding: 24px;
+        /* Cards */
+        .m3-card {
+          padding: var(--spacing-md);
+          border-radius: var(--md-sys-shape-corner-medium);
+          background-color: var(--md-sys-color-surface);
+          height: 100%;
+          box-sizing: border-box;
+        }
+        .m3-card-elevated {
+          background-color: var(--md-sys-color-surface);
+          box-shadow: var(--md-sys-elevation-1);
+          transition: box-shadow 0.2s ease-out;
+        }
+        .m3-card-elevated:hover {
+          box-shadow: var(--md-sys-elevation-2);
+        }
+        .m3-card-filled {
+          background-color: var(--md-sys-color-surface-container);
+          border: none;
+        }
+        .m3-card-outlined {
+          background-color: var(--md-sys-color-surface);
+          border: 1px solid var(--md-sys-color-outline);
+          padding: var(--spacing-md);
+          border-radius: var(--md-sys-shape-corner-medium);
+          height: 100%;
+          box-sizing: border-box;
+        }
+        .m3-card-outlined .tertiary-element {
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Banners (for Takeaway Box) */
+        .m3-banner-filled {
+          padding: var(--spacing-sm) var(--spacing-md);
+          border-radius: var(--md-sys-shape-corner-medium);
+          background-color: var(--md-sys-color-primary-container);
+          color: var(--md-sys-color-on-primary-container);
+          font-size: var(--md-sys-typescale-body-large);
+          font-weight: var(--font-weight-regular);
+          border: 1px solid var(--md-sys-color-primary-container);
+          line-height: var(--line-height-normal);
+        }
+        .m3-banner-error {
+          background-color: var(--md-sys-color-error-container);
+          color: var(--md-sys-color-on-error-container);
+          border-color: var(--md-sys-color-error-container);
+        }
+
+        /* Data Tables */
+        .m3-data-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: var(--spacing-sm);
+        }
+        .m3-data-table th,
+        .m3-data-table td {
+          padding: 12px 16px;
+          text-align: left;
+          border-bottom: 1px solid var(--md-sys-color-outline);
+        }
+        .m3-data-table th {
+          font-size: var(--md-sys-typescale-label-medium);
+          font-weight: var(--font-weight-medium);
+          color: var(--md-sys-color-on-surface-variant);
+          background-color: var(--md-sys-color-surface-container-low);
+        }
+        .m3-data-table td {
+          font-size: var(--md-sys-typescale-body-large);
+          color: var(--md-sys-color-on-surface);
+        }
+        .m3-data-table tr:hover {
+          background-color: var(--md-sys-color-surface-container-low);
+        }
+
+
+        /* --- Virtuoso Presentation System (Helpers) --- */
+        html, body {
             height: 100%;
         }
-
-        /* The prominent Takeaway Box component */
-        .md-takeaway {
-            background: var(--md-sys-color-surface-container);
-            border-left: 5px solid var(--md-sys-color-primary);
-            border-radius: var(--md-sys-shape-corner-large);
-            box-shadow: var(--md-sys-elevation-3);
-            padding: 32px;
-            font-size: var(--md-sys-typescale-headline-medium);
-            line-height: 1.4;
-        }
-        
-        /* Iconography Base */
-        .material-symbols-outlined {
-            font-variation-settings: var(--md-icon-settings);
-            vertical-align: middle;
-            font-size: var(--md-icon-size-inline); /* Default size */
-        }
-
-        /* Icon List Pattern ( [ICON] | <p> ) */
-        .icon-list {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            margin-bottom: 1rem;
-        }
-        
-        .icon-list .material-symbols-outlined {
-            color: var(--md-sys-color-primary);
-            font-size: var(--md-icon-size-inline);
-            margin-top: 0.1em; /* Align icon better with text */
-        }
-        
-        .icon-list p, .icon-list strong {
-            margin: 0;
-            flex: 1;
-            /* Use title-large for list item headers */
-            font-size: var(--md-sys-typescale-title-large);
-            font-family: var(--font-family-header);
-            font-weight: var(--font-weight-header);
-        }
-        
-        /* Specific icon sizing */
-        .icon-list .material-symbols-outlined[data-size="feature"] {
-            font-size: var(--md-icon-size-feature);
-        }
-
-        /*
-         * ===================================================================
-         * PRESENTATION LAYOUT & GRID SYSTEM
-         * ===================================================================
-         */
-
-        .presentation-container {
+        #presentation-container {
             width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            height: 100%;
             position: relative;
         }
-
         .slide {
             width: 100%;
             height: 100%;
-            padding: 4vw;
             position: absolute;
             top: 0;
             left: 0;
-            
-            /* Hidden by default */
             opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0.4s;
-
-            /* * Use Grid for slide content alignment.
-             * This centers the content block vertically and horizontally.
-             */
-            display: grid;
-            place-items: center;
+            pointer-events: none;
+            transition: opacity 0.4s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            padding: var(--spacing-lg);
         }
-
-        .slide.slide-active {
-            /* Active slide is visible */
+        .slide-active {
             opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+            pointer-events: auto;
             z-index: 1;
         }
-        
-        /* * The M3 12-Column Grid
-         * This grid contains the slide's content cards.
-         */
-        .slide-content {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 24px;
-            width: 100%;
-            max-width: 1400px;
-            margin: auto;
-        }
-        
-        .slide-title {
-             /* Title spans all 12 columns */
-            grid-column: 1 / -1;
-            /* For title slides, align text differently */
-            text-align: left;
-        }
 
-        /* Specific Layout Alignment */
-        .slide[data-purpose="Title"] .slide-content {
-             /* Center title slide content */
-            text-align: center;
+        /* Slide Layouts */
+        .slide-content {
+            width: 100%;
+            max-width: 1200px;
         }
-        .slide[data-purpose="Title"] .slide-title {
-             text-align: center;
-             margin-bottom: 0.5rem;
-        }
-         .slide[data-purpose="Title"] p {
-             font-size: var(--md-sys-typescale-headline-medium);
-             color: var(--md-sys-color-secondary);
-             max-width: none;
-             text-align: center;
-        }
-        
-        .grid-col {
-            /* Default column content alignment */
+        .slide-layout-1col {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .slide-layout-1col .tertiary-element,
+        .slide-layout-1col .secondary-element {
+            max-width: 80ch;
+        }
+        .slide-layout-full-width {
+            width: 100%;
+        }
+        .slide-layout-full-width > .focal-element {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .slide-asymmetrical {
+          display: grid;
+          grid-template-columns: repeat(12, 1fr);
+          gap: var(--spacing-md);
+          align-items: center;
+        }
+        .visual-heavy {
+          grid-column: span var(--grid-golden-major);
+        }
+        .visual-light {
+          grid-column: span var(--grid-golden-minor);
+          padding: var(--spacing-lg);
+          background-color: var(--md-sys-color-surface-container-low);
+          border-radius: var(--md-sys-shape-corner-medium);
         }
 
-        /*
-         * ===================================================================
-         * NAVIGATION & PROGRESS BAR
-         * ===================================================================
-         */
-         
-        .progress-bar {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+        .slide-layout-2col,
+        .slide-layout-3col {
+            display: grid;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+        .slide-layout-2col {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        .slide-layout-3col {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        /* Custom Semantic Mappings */
+        .icon-list {
             display: flex;
-            gap: 12px;
+            align-items: center;
+            gap: 16px;
+            margin-top: var(--spacing-sm);
+            padding: var(--spacing-xs);
+        }
+        .slide-layout-1col .icon-list {
+            justify-content: center;
+        }
+        .icon-list .material-symbols-outlined {
+            font-size: var(--icon-size-feature);
+            color: var(--md-sys-color-secondary);
+        }
+        .icon-list p, .icon-list strong {
+            margin: 0;
+            font-size: var(--md-sys-typescale-title-large);
+            font-weight: var(--font-weight-regular);
+            color: var(--md-sys-color-on-surface);
+        }
+        .icon-list strong {
+             font-weight: var(--font-weight-medium);
+        }
+        
+        .m3-card-outlined .icon-list .material-symbols-outlined {
+             font-size: var(--icon-size-inline);
+        }
+        .m3-card-outlined .icon-list p, .m3-card-outlined .icon-list strong {
+            font-size: var(--md-sys-typescale-title-large);
+            font-weight: var(--font-weight-bold);
+            color: var(--md-sys-color-primary);
+        }
+
+
+        .code-block-analogy {
+          background-color: var(--md-sys-color-surface-container-low);
+          border-radius: var(--md-sys-shape-corner-small);
+          padding: var(--spacing-sm) var(--spacing-md);
+          margin: var(--spacing-md) 0;
+          border: 1px dashed var(--md-sys-color-outline);
+          text-align: left;
+          display: inline-block;
+        }
+        .code-block-analogy p {
+            font-family: monospace;
+            margin: 8px 0;
+            font-size: var(--md-sys-typescale-body-large);
+        }
+        .code-block-analogy strong {
+            color: var(--md-sys-color-tertiary);
+        }
+
+        .dependency-visual-broken {
+          position: relative;
+          font-size: var(--md-sys-typescale-title-large);
+          margin: var(--spacing-lg) 0;
+          padding: var(--spacing-md);
+          background-color: var(--md-sys-color-surface-container-low);
+          border-radius: var(--md-sys-shape-corner-medium);
+          text-align: center;
+        }
+        .dependency-visual-broken span { margin: 0 0.25em; }
+        .dependency-visual-broken .word-key {
+            font-weight: var(--font-weight-bold);
+            color: var(--md-sys-color-primary);
+            border-bottom: 2px solid var(--md-sys-color-primary);
+        }
+        .dependency-visual-broken .word-target {
+            font-weight: var(--font-weight-bold);
+            color: var(--md-sys-color-error);
+            border-bottom: 2px solid var(--md-sys-color-error);
+        }
+        .dependency-visual-broken .arrow-broken {
+          position: absolute;
+          bottom: -20px;
+          left: 20%;
+          width: 55%;
+          height: 60px;
+          overflow: visible;
+        }
+        .dependency-visual-broken .arrow-broken path {
+          fill: none;
+          stroke: var(--md-sys-color-error);
+          stroke-width: 3px;
+          opacity: 0.6;
+          stroke-dasharray: 5, 5;
+        }
+
+        .styled-list {
+          list-style: none;
+          padding-left: 0;
+          margin-top: var(--spacing-md);
+          width: 100%;
+          max-width: 70ch;
+        }
+        .styled-list li {
+          font-size: var(--md-sys-typescale-title-large);
+          padding: var(--spacing-sm);
+          border-bottom: 1px solid var(--md-sys-color-surface-variant);
+          text-align: left;
+          display: flex;
+          justify-content: space-between;
+        }
+        .styled-list li strong { color: var(--md-sys-color-primary); }
+        .styled-list li:last-child { border-bottom: none; }
+        .styled-list li:nth-child(1) strong { color: var(--md-sys-color-primary); }
+        .styled-list li:nth-child(2) strong { color: var(--md-sys-color-primary); }
+        .styled-list li:nth-child(3) strong { color: var(--md-sys-color-error); }
+
+
+        /* Presentation UI */
+        #slide-counter {
+            position: fixed;
+            bottom: var(--spacing-sm);
+            left: var(--spacing-sm);
+            font-size: var(--md-sys-typescale-label-medium);
+            color: var(--md-sys-color-on-surface-variant);
+            background-color: var(--md-sys-color-surface-container);
+            padding: 4px 12px;
+            border-radius: var(--md-sys-shape-corner-full);
             z-index: 10;
         }
-        
-        .progress-dot {
-            width: 10px;
-            height: 10px;
-            background-color: var(--md-sys-color-outline);
-            border-radius: 50%;
+        #slide-navigation {
+            position: fixed;
+            bottom: var(--spacing-sm);
+            right: var(--spacing-sm);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--md-sys-color-surface-container-low);
+            color: var(--md-sys-color-primary);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: var(--md-sys-shape-corner-full);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease-out;
         }
-        
-        .progress-dot:hover {
-            background-color: var(--md-sys-color-secondary);
-            transform: scale(1.3);
-        }
-        
-        .progress-dot.active {
-            background-color: var(--md-sys-color-primary);
-            transform: scale(1.5);
+        .nav-button:hover {
+            background-color: var(--md-sys-color-surface-container);
+            border-color: var(--md-sys-color-primary);
         }
 
     </style>
 </head>
-<body>
+<body class="theme-trust">
 
-    <div class="presentation-container">
+    <main id="presentation-container">
 
-        <!-- The Progress Bar (will be populated by JS) -->
-        <div class="progress-bar" id="progress-bar"></div>
-
-        <!-- 
-          =====================================================================
-          SLIDE 1: Title
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Title" data-layout="1-Column">
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <h1 class="slide-title">Attention Is All You Need</h1>
-                    <p>The Breakthrough Idea That Unlocked Modern AI (like ChatGPT)</p>
-                </div>
+        <!-- Slide 1: Title -->
+        <section class="slide slide-active">
+            <div class="slide-content slide-layout-1col">
+                <h1 class="focal-element">Attention Is All You Need</h1>
+                <p class="secondary-element">The Breakthrough Idea That Unlocked Modern AI (like ChatGPT)</p>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 2: Context Setting (Audience Anchor)
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Context Setting (Audience Anchor)" data-layout="1-Column">
-            <h1 class="slide-title">AI Like ChatGPT Seems Like Magic</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>It "understands" context in a way that feels human. But it's not magic. It's a single, brilliant solution to a very old problem.</p>
-                </div>
+        <!-- Slide 2: Context Setting -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">AI Like ChatGPT Seems Like Magic</h2>
+                <p class="tertiary-element">It "understands" context in a way that feels human. But it's not magic. It's a single, brilliant solution to a very old problem.</p>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 3: Problem Definition
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Problem Definition" data-layout="Asymmetrical">
-            <h1 class="slide-title">How Does an AI <em>Actually</em> Understand This Sentence?</h1>
-            <div class="slide-content">
-                <!-- Asymmetrical layout: col 1 spans 7 -->
-                <div class="grid-col" style="grid-column: span 7;">
-                    <p>The core problem for <em>any</em> language AI is understanding relationships between words. We know "it" refers to the animal, but how can a computer learn that?</p>
+        <!-- Slide 3: Problem Definition -->
+        <section class="slide">
+            <div class="slide-content slide-asymmetrical">
+                <div class="visual-heavy">
+                    <h2 class="focal-element">How Does an AI <em>Actually</em> Understand This Sentence?</h2>
+                    <p class="tertiary-element">The core problem for <em>any</em> language AI is understanding relationships between words. We know "it" refers to the animal, but how can a computer learn that?</p>
                 </div>
-                <!-- col 2 (takeaway) spans 5 -->
-                <div class="grid-col" style="grid-column: span 5;">
-                    <div class="md-takeaway">
+                <div class="visual-light">
+                    <!-- Semantic Map: [TAKEAWAY_BOX] -> .m3-banner-filled -->
+                    <div class="m3-banner-filled">
                         "The animal didn't cross the street because <strong>it</strong> was too tired."
                         <br><br>
                         What does <strong>"it"</strong> refer to?
@@ -415,581 +739,408 @@
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 4: Explaining the Old Problem
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Explaining the Old Problem" data-layout="1-Column">
-            <h1 class="slide-title">The "Logical" Old Way Was to Read One Word at a Time</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>For decades, we built models (like RNNs) that read sequentially, just like a human.</p>
-                    <br>
-                    <div class="icon-list">
-                        <span class="material-symbols-outlined">trending_flat</span>
-                        <p><code>[The]</code> → <code>[animal]</code> → <code>[didn't]</code> → <code>[cross]</code>...</p>
-                    </div>
+        <!-- Slide 4: Explaining the Old Problem -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">The "Logical" Old Way Was to Read One Word at a Time</h2>
+                <p class="tertiary-element">For decades, we built models (like RNNs) that read sequentially, just like a human.</p>
+                <div class="icon-list">
+                    <span class="material-symbols-outlined">trending_flat</span>
+                    <p><code>[The]</code> → <code>[animal]</code> → <code>[didn't]</code> → <code>[cross]</code>...</p>
                 </div>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 5: Visualizing the Old Problem
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Visualizing the Old Problem" data-layout="1-Column">
-            <h1 class="slide-title">An AI "Memory" Tries to Hold All the Context</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>The model passes a single "memory" from word to word. This memory is the <em>only</em> thing the model knows about the past.</p>
+        <!-- Slide 5: Visualizing the Old Problem -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">An AI "Memory" Tries to Hold All the Context</h2>
+                <p class="tertiary-element">The model passes a single "memory" from word to word. This memory is the <em>only</em> thing the model knows about the past.</p>
+                <div class="code-block-analogy">
                     <p><code>[The]</code></p>
                     <p><code>[The animal]</code></p>
                     <p><code>[The animal didn't]</code></p>
-                    <p>This "memory" gets diluted with every new word.</p>
+                </div>
+                <p class="tertiary-element">This "memory" gets diluted with every new word.</p>
+            </div>
+        </section>
+
+        <!-- Slide 6: Complication #1 (Speed) -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">This Sequential Method is Extremely Slow</h2>
+                <p class="tertiary-element">You can't process word #10 until you've finished word #9. This "inherently sequential nature" means you can't parallelize the work.</p>
+                <div class="icon-list">
+                    <span class="material-symbols-outlined">hourglass_bottom</span>
+                    <p><strong>One-at-a-time processing is a massive computational bottleneck.</strong></p>
                 </div>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 6: Complication #1 (Speed)
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Complication #1 (Speed)" data-layout="1-Column">
-            <h1 class="slide-title">This Sequential Method is Extremely Slow</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>You can't process word #10 until you've finished word #9. This "inherently sequential nature" means you can't parallelize the work.<span class="citation"></span></p>
-                    <br>
-                    <div class="icon-list">
-                        <span class="material-symbols-outlined">hourglass_bottom</span>
-                        <strong>One-at-a-time processing is a massive computational bottleneck.</strong>
-                    </div>
+        <!-- Slide 7: Complication #2 (Quality) -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">The Model's "Memory" is Too Small & "Forgets"</h2>
+                <p class="tertiary-element">By the time the model gets to the word "it", the crucial word "animal" (from 7 steps ago) has been diluted or "forgotten" from its limited memory.</p>
+            </div>
+        </section>
+
+        <!-- Slide 8: Climax of the Problem -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">The "Long-Range Dependency" Problem Was a Wall for AI</h2>
+                <div class="dependency-visual-broken">
+                    <span>"The</span>
+                    <span class="word-key">animal</span>
+                    <span>didn't</span>
+                    <span>cross</span>
+                    <span>the</span>
+                    <span>street</span>
+                    <span>because</span>
+                    <span class="word-target">it</span>
+                    <span>was..."</span>
+                    <svg class="arrow-broken" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M 10,90 Q 50,10 90,90" />
+                    </svg>
+                </div>
+                <p class="tertiary-element">This was the primary barrier to AI quality for years.</p>
+            </div>
+        </section>
+
+        <!-- Slide 9: Introducing the New Idea -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">A 2017 Paper Asked: "What if we stop reading 1-by-1?"</h2>
+                <p class="tertiary-element">The "Attention Is All You Need" paper proposed a radical new approach.</p>
+                <p class="tertiary-element">What if the AI could look at the <em>entire sentence</em> at the <em>exact same time</em>?</p>
+            </div>
+        </section>
+
+        <!-- Slide 10: Visualizing the New Idea -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">The New Way: Process All Words at Once (In Parallel)</h2>
+                <div class="icon-list">
+                    <span class="material-symbols-outlined">grid_view</span>
+                    <p><code>[The] [animal] [didn't] [cross] ... [it] ... [tired]</code></p>
+                </div>
+                <p class="tertiary-element">This is "significantly more parallelizable." This solves the <strong>Speed</strong> problem.</p>
+            </div>
+        </section>
+
+        <!-- Slide 11: Posing a "Gotcha" Question -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">But... If It's Not in Order, How Does It Know Word <em>Order</em>?</h2>
+                <p class="tertiary-element">This is a critical "gotcha" question.</p>
+                <p class="tertiary-element">How does the AI know "animal" (the Subject) came before "street" (the Object)?</p>
+            </div>
+        </section>
+
+        <!-- Slide 12: Explaining "Positional Encodings" -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">It Adds a "Positional Encoding" (Like a "Zip Code") to Each Word</h2>
+                <p class="tertiary-element">The model adds a unique mathematical signature to each word that says "You are word #1," "You are word #2," etc.</p>
+                <div class="code-block-analogy">
+                    <p><code>[The]</code>+<strong>(Pos 1)</strong></p>
+                    <p><code>[animal]</code>+<strong>(Pos 2)</strong></p>
+                    <p><code>[didn't]</code>+<strong>(Pos 3)</strong></p>
+                </div>
+                <p class="tertiary-element">This way, <strong>order is preserved</strong> even when processed in parallel.</p>
+            </div>
+        </section>
+
+        <!-- Slide 13: Posing the Main Question -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">OK... So How Does It Solve Our "It" Problem?</h2>
+                <p class="tertiary-element">Now that the AI sees all words and knows their order... how does it learn context?</p>
+                <p class="tertiary-element">How does it connect "it" to "animal"?</p>
+            </div>
+        </section>
+
+        <!-- Slide 14: Building the Core Analogy -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">The AI is Taught to "Pay Attention" to the Right Words</h2>
+                <p class="tertiary-element">We need a way for the AI to learn, <em>for itself</em>, which other words are most important to understand any <em>single</em> word.</p>
+            </div>
+        </section>
+
+        <!-- Slide 15: The "Aha!" Moment (Visual) -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">It Creates a "Relationship Score" for Every Word</h2>
+                <p class="tertiary-element">When the AI processes the word <strong>"it"</strong>, it also looks at all other words and generates a "score":</p>
+                <ul class="styled-list">
+                    <li>"it" + "animal" <span>→ <strong>95%</strong> (High Score)</span></li>
+                    <li>"it" + "tired" <span>→ <strong>88%</strong> (High Score)</span></li>
+                    <li>"it" + "street" <span>→ <strong>5%</strong> (Low Score)</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 16: Naming the Concept -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">This "Scoring" Mechanism is Called "Self-Attention"</h2>
+                <p class="tertiary-element">The model teaches <em>itself</em> where to "pay attention."</p>
+                <p class="tertiary-element">This "self-attention" mechanism solved the <strong>Quality</strong> ("bad memory") problem.</p>
+            </div>
+        </section>
+
+        <!-- Slide 17: Naming the Solution -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">The Paper Built a New Model Based <em>Only</em> on This Idea: The "Transformer"</h2>
+                <p class="tertiary-element">They "dispensing with recurrence... entirely."</p>
+                <p class="secondary-element">The <strong>Transformer</strong> = Self-Attention + Positional Encodings.</p>
+            </div>
+        </section>
+
+        <!-- Slide 18: Addressing "Multi-Head" -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">It "Re-Reads" the Sentence 8+ Times at Once</h2>
+                <p class="tertiary-element">The Transformer uses "Multi-Head Attention."</p>
+                <p class="tertiary-element"><strong>Analogy:</strong> Think of it as 8 "experts" reading the sentence simultaneously.</p>
+                <div class="icon-list">
+                    <span class="material-symbols-outlined">person</span>
+                    <p>Expert 1 finds <strong>Pronouns</strong> ("it" → "animal")</p>
+                </div>
+                <div class="icon-list">
+                    <span class="material-symbols-outlined">person_search</span>
+                    <p>Expert 2 finds <strong>Descriptors</strong> ("animal" → "tired")</p>
+                </div>
+                <div class="icon-list">
+                    <span class="material-symbols-outlined">route</span>
+                    <p>Expert 3 finds <strong>Actions</strong> ("cross" → "street")</p>
                 </div>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 7: Complication #2 (Quality)
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Complication #2 (Quality)" data-layout="1-Column">
-            <h1 class="slide-title">The Model's "Memory" is Too Small & "Forgets"</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>By the time the model gets to the word "it", the crucial word "animal" (from 7 steps ago) has been diluted or "forgotten" from its limited memory.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 8: Climax of the Problem
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Climax of the Problem" data-layout="1-Column">
-            <h1 class="slide-title">The "Long-Range Dependency" Problem Was a Wall for AI</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>(This slide should be a visual showing the link from "it" to "animal" is broken or "faded" due to distance).</p>
-                    <p>This was the primary barrier to AI quality for years.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 9: Introducing the New Idea
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Introducing the New Idea" data-layout="1-Column">
-            <h1 class="slide-title">A 2017 Paper Asked: "What if we stop reading 1-by-1?"</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>The "Attention Is All You Need" paper proposed a radical new approach.<span class="citation"></span></p>
-                    <p>What if the AI could look at the <em>entire sentence</em> at the <em>exact same time</em>?</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 10: Visualizing the New Idea
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Visualizing the New Idea" data-layout="1-Column">
-            <h1 class="slide-title">The New Way: Process All Words at Once (In Parallel)</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <div class="icon-list">
-                        <span class="material-symbols-outlined">grid_view</span>
-                        <p><code>[The] [animal] [didn't] [cross] [the] [street] [because] [it] [was] [too] [tired]</code></p>
-                    </div>
-                    <br>
-                    <p>This is "significantly more parallelizable."<span class="citation"></span> This solves the <strong>Speed</strong> problem.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 11: Posing a "Gotcha" Question
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Posing a 'Gotcha' Question" data-layout="1-Column">
-            <h1 class="slide-title">But... If It's Not in Order, How Does It Know Word <em>Order</em>?</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>This is a critical "gotcha" question.</p>
-                    <p>How does the AI know "animal" (the Subject) came before "street" (the Object)?</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 12: Explaining "Positional Encodings"
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Explaining 'Positional Encodings'" data-layout="1-Column">
-            <h1 class="slide-title">It Adds a "Positional Encoding" (Like a "Zip Code") to Each Word</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>The model adds a unique mathematical signature to each word that says "You are word #1," "You are word #2," etc.<span class="citation"></span></p>
-                    <p>This way, <strong>order is preserved</strong> even when processed in parallel.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 13: Posing the Main Question
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Posing the Main Question" data-layout="1-Column">
-            <h1 class="slide-title">OK... So How Does It Solve Our "It" Problem?</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>Now that the AI sees all words and knows their order... how does it learn context?</p>
-                    <p>How does it connect "it" to "animal"?</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 14: Building the Core Analogy
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Building the Core Analogy" data-layout="1-Column">
-            <h1 class="slide-title">The AI is Taught to "Pay Attention" to the Right Words</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>We need a way for the AI to learn, <em>for itself</em>, which other words are most important to understand any <em>single</em> word.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 15: The "Aha!" Moment (Visual)
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="The 'Aha!' Moment (Visual)" data-layout="1-Column">
-            <h1 class="slide-title">It Creates a "Relationship Score" for Every Word</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>When the AI processes the word <strong>"it"</strong>, it also looks at all other words and generates a "score":</p>
-                    <ul>
-                        <li>"it" + "animal" → <strong>95%</strong> (High Score)</li>
-                        <li>"it" + "tired" → <strong>88%</strong> (High Score)</li>
-                        <li>"it" + "street" → <strong>5%</strong> (Low Score)</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 16: Naming the Concept
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Naming the Concept" data-layout="1-Column">
-            <h1 class="slide-title">This "Scoring" Mechanism is Called "Self-Attention"</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>The model teaches <em>itself</em> where to "pay attention."<span class="citation"></span></p>
-                    <p>This "self-attention" mechanism solved the <strong>Quality</strong> ("bad memory") problem.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 17: Naming the Solution
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Naming the Solution" data-layout="1-Column">
-            <h1 class="slide-title">The Paper Built a New Model Based <em>Only</em> on This Idea: The "Transformer"</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>They "dispensing with recurrence... entirely."<span class="citation"></span></p>
-                    <p>The <strong>Transformer</strong> = Self-Attention + Positional Encodings.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 18: Addressing "Multi-Head"
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Addressing 'Multi-Head'" data-layout="1-Column">
-            <h1 class="slide-title">It "Re-Reads" the Sentence 8 Times at Once</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>The Transformer uses "Multi-Head Attention."<span class="citation"></span></p>
-                    <p><strong>Analogy:</strong> Think of it as 8 "experts" reading the sentence simultaneously.</p>
-                    <div class="icon-list">
-                        <span class="material-symbols-outlined">person</span>
-                        <p>Expert 1 finds <strong>Pronouns</strong> ("it" → "animal")</p>
-                    </div>
-                    <div class="icon-list">
-                        <span class="material-symbols-outlined">person_search</span>
-                        <p>Expert 2 finds <strong>Descriptors</strong> ("animal" → "tired")</p>
-                    </div>
-                    <div class="icon-list">
-                        <span class="material-symbols-outlined">route</span>
-                        <p>Expert 3 finds <strong>Actions</strong> ("cross" → "street")</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 
-          =====================================================================
-          SLIDE 19: Explaining Figure 1
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Explaining Figure 1" data-layout="2-Column">
-            <h1 class="slide-title">The Full Architecture (Simple): "Encoder" & "Decoder"</h1>
-            <div class="slide-content">
-                <!-- Column 1 -->
-                <div class="grid-col" style="grid-column: span 6;">
-                    <div class="md-card">
+        <!-- Slide 19: Explaining Figure 1 -->
+        <section class="slide">
+            <div class="slide-content slide-layout-full-width">
+                <h2 class="focal-element">The Full Architecture (Simple): "Encoder" & "Decoder"</h2>
+                <!-- Semantic Map: [LAYOUT]: 2-Column -> .m3-card-outlined -->
+                <div class="slide-layout-2col">
+                    <article class="m3-card-outlined">
                         <div class="icon-list">
-                            <span class="material-symbols-outlined" data-size="feature">input</span>
+                            <span class="material-symbols-outlined">input</span>
                             <strong>The Encoder</strong>
                         </div>
-                        <p>Its job is to "read" and understand the input sentence (e.g., the English text).<span class="citation"></span></p>
-                    </div>
-                </div>
-                <!-- Column 2 -->
-                <div class="grid-col" style="grid-column: span 6;">
-                    <div class="md-card">
+                        <p class="tertiary-element">Its job is to "read" and understand the input sentence (e.g., the English text).</p>
+                    </article>
+                    <article class="m3-card-outlined">
                         <div class="icon-list">
-                            <span class="material-symbols-outlined" data-size="feature">output</span>
+                            <span class="material-symbols-outlined">output</span>
                             <strong>The Decoder</strong>
                         </div>
-                        <p>Its job is to take that understanding and "write" the new output sentence (e.g., the French translation).<span class="citation"></span></p>
-                    </div>
+                        <p class="tertiary-element">Its job is to take that understanding and "write" the new output sentence (e.g., the French translation).</p>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 20: Data Insight (Proof)
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Data Insight (Proof)" data-layout="1-Column">
-            <h1 class="slide-title">The Transformer Achieved "Superior Quality"</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>The new model set a state-of-the-art score for machine translation (BLEU score), beating all older, sequential models.<span class="citation"></span></p>
-                    <br>
-                    <div class="icon-list">
-                        <span class="material-symbols-outlined">military_tech</span>
-                        <strong>Better results</strong>
-                    </div>
-                     <p style="margin-top: -1rem; padding-left: 64px;">than all previous models.</p>
+        <!-- Slide 20: Data Insight (Proof) -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">The Transformer Achieved "Superior Quality"</h2>
+                <p class="tertiary-element">The new model set a state-of-the-art score for machine translation (BLEU score), beating all older, sequential models.</p>
+                <div class="icon-list">
+                    <span class="material-symbols-outlined">military_tech</span>
+                    <p><strong>Better results</strong> than all previous models.</p>
                 </div>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 21: Data Insight (Proof)
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Data Insight (Proof)" data-layout="2-Column">
-            <h1 class="slide-title">It Trained in a "Fraction of the... Costs"</h1>
-            <div class="slide-content">
-                <!-- Column 1 -->
-                <div class="grid-col" style="grid-column: span 6;">
-                    <div class="md-card">
+        <!-- Slide 21: Data Insight (Proof) -->
+        <section class="slide">
+            <div class="slide-content slide-layout-full-width">
+                <h2 class="focal-element">It Trained in a "Fraction of the... Costs"</h2>
+                <!-- Semantic Map: [LAYOUT]: 2-Column -> .m3-card-outlined -->
+                <div class="slide-layout-2col">
+                    <article class="m3-card-outlined">
                         <div class="icon-list">
-                            <span class="material-symbols-outlined" data-size="feature">speed</span>
+                            <span class="material-symbols-outlined">speed</span>
                             <strong>Faster to Train</strong>
                         </div>
-                        <p>It trained in "3.5 days on eight GPUs."<span class="citation"></span></p>
-                    </div>
-                </div>
-                <!-- Column 2 -->
-                <div class="grid-col" style="grid-column: span 6;">
-                    <div class="md-card">
+                        <p class="tertiary-element">It trained in "3.5 days on eight GPUs."</p>
+                    </article>
+                    <article class="m3-card-outlined">
                         <div class="icon-list">
-                            <span class="material-symbols-outlined" data-size="feature">savings</span>
+                            <span class="material-symbols-outlined">savings</span>
                             <strong>Cheaper to Train</strong>
                         </div>
-                        <p>This was a "small fraction of the training costs" of any previous state-of-the-art model.<span class="citation"></span></p>
-                    </div>
+                        <p class="tertiary-element">This was a "small fraction of the training costs" of any previous state-of-the-art model.</p>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 22: The Core Takeaway
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="The Core Takeaway" data-layout="1-Column">
-            <h1 class="slide-title">The "Aha!" Moment: The "T" in ChatGPT Stands for "Transformer"</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>The "magic" you see in all modern AI is the direct result of this "self-attention" mechanism.</p>
-                    <p>G<strong>P</strong>T = <strong>G</strong>enerative <strong>P</strong>re-trained <strong>T</strong>ransformer</p>
-                </div>
+        <!-- Slide 22: The Core Takeaway -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">The "Aha!" Moment: The "T" in ChatGPT Stands for "Transformer"</h2>
+                <p class="tertiary-element">The "magic" you see in all modern AI is the direct result of this "self-attention" mechanism.</p>
+                <p class="secondary-element" style="margin-top: var(--spacing-md);">G<strong>P</strong>T = <strong>G</strong>enerative <strong>P</strong>re-trained <strong>T</strong>ransformer</p>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 23: Connecting to Modern AI
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Connecting to Modern AI" data-layout="1-Column">
-            <h1 class="slide-title">The Transformer is the "Parent" of All Modern LLMs</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <br>
-                    <div class="icon-list">
-                        <span class="material-symbols-outlined">account_tree</span>
-                        <p><strong>Transformer (2017)</strong> → (GPT-2, BERT) → <strong>ChatGPT (2022)</strong></p>
-                    </div>
-                    <br>
-                    <p>All modern AI is built on the foundation of this 2017 paper.</p>
+        <!-- Slide 23: Connecting to Modern AI -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">The Transformer is the "Parent" of All Modern LLMs</h2>
+                <div class="icon-list">
+                    <span class="material-symbols-outlined">account_tree</span>
+                    <p><strong>Transformer (2017)</strong> → (GPT-2, BERT) → <strong>ChatGPT (2022)</strong></p>
                 </div>
+                <p class="tertiary-element" style="margin-top: var(--spacing-sm);">All modern AI is built on the foundation of this 2017 paper.</p>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 24: Strategic Insight
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Strategic Insight" data-layout="1-Column">
-            <h1 class="slide-title">Parallelization is Why "Scale" is Now the Core AI Strategy</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>Because Transformers are so efficient to train, the new bottleneck isn't <em>slow algorithms</em>—it's <em>data acquisition</em> and <em>computing power</em>.</p>
-                    <p>This is why "scale" (bigger models, more data) wins.</p>
-                </div>
+        <!-- Slide 24: Strategic Insight -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">Parallelization is Why "Scale" is Now the Core AI Strategy</h2>
+                <p class="tertiary-element">Because Transformers are so efficient to train, the new bottleneck isn't <em>slow algorithms</em>—it's <em>data acquisition</em> and <em>computing power</em>.</p>
+                <p class="tertiary-element">This is why "scale" (bigger models, more data) wins.</p>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 25: Summary
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Summary" data-layout="3-Column">
-            <h1 class="slide-title">What You "Get" Now</h1>
-            <div class="slide-content">
-                <!-- Column 1 -->
-                <div class="grid-col" style="grid-column: span 4;">
-                    <div class="md-card">
+        <!-- Slide 25: Summary -->
+        <section class="slide">
+            <div class="slide-content slide-layout-full-width">
+                <h2 class="focal-element">What You "Get" Now</h2>
+                <!-- Semantic Map: [LAYOUT]: 3-Column -> .m3-card-outlined -->
+                <div class="slide-layout-3col">
+                    <article class="m3-card-outlined">
                         <div class="icon-list">
-                            <span class="material-symbols-outlined">error</span> <!-- 'problem' is not a real icon, 'error' is a good sub -->
+                            <span class="material-symbols-outlined">error</span>
                             <strong>1. The Problem</strong>
                         </div>
-                        <p>Sequential reading was <strong>slow</strong> and <strong>"forgetful."</strong></p>
-                    </div>
-                </div>
-                <!-- Column 2 -->
-                <div class="grid-col" style="grid-column: span 4;">
-                    <div class="md-card">
+                        <p class="tertiary-element">Sequential reading was <strong>slow</strong> and <strong>"forgetful."</strong></p>
+                    </article>
+                    <article class="m3-card-outlined">
                         <div class="icon-list">
                             <span class="material-symbols-outlined">lightbulb</span>
                             <strong>2. The Breakthrough</strong>
                         </div>
-                        <p>"Self-Attention" (The Transformer) processes all words at once and <strong>"scores"</strong> their relationships.</p>
-                    </div>
-                </div>
-                <!-- Column 3 -->
-                <div class="grid-col" style="grid-column: span 4;">
-                    <div class="md-card">
+                        <p class="tertiary-element">"Self-Attention" (The Transformer) processes all words at once and <strong>"scores"</strong> their relationships.</p>
+                    </article>
+                    <article class="m3-card-outlined">
                         <div class="icon-list">
                             <span class="material-symbols-outlined">rocket_launch</span>
                             <strong>3. The Impact</strong>
                         </div>
-                        <p>This parallel design unlocked <strong>massive scale</strong>, enabling models like ChatGPT.</p>
-                    </div>
+                        <p class="tertiary-element">This parallel design unlocked <strong>massive scale</strong>, enabling models like ChatGPT.</p>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 26: Conclusion
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Conclusion" data-layout="1-Column">
-            <h1 class="slide-title">You Now Understand the Foundation of Modern AI</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>What felt like "magic" is a brilliant engineering solution to a specific, relatable problem.</p>
-                    <p>You are now "more confident of [your] understanding."</p>
-                </div>
+        <!-- Slide 26: Conclusion -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h2 class="focal-element">You Now Understand the Foundation of Modern AI</h2>
+                <p class="tertiary-element">What felt like "magic" is a brilliant engineering solution to a specific, relatable problem.</p>
+                <p class="tertiary-element">You are now "more confident of [your] understanding."</p>
             </div>
         </section>
 
-        <!-- 
-          =====================================================================
-          SLIDE 27: Q&A
-          =====================================================================
-        -->
-        <section class="slide" data-purpose="Q&A" data-layout="1-Column">
-            <h1 class="slide-title">Q & A</h1>
-            <div class="slide-content">
-                <div class="grid-col" style="grid-column: span 12;">
-                    <p>Thank You.</p>
-                </div>
+        <!-- Slide 27: Q&A -->
+        <section class="slide">
+            <div class="slide-content slide-layout-1col">
+                <h1 class="focal-element">Q & A</h1>
+                <p class="secondary-element">Thank You.</p>
             </div>
         </section>
 
-    </div> <!-- / .presentation-container -->
+    </main>
 
+    <!-- Presentation UI -->
+    <div id="slide-counter"></div>
+    <div id="slide-navigation">
+        <button class="nav-button" id="prev-slide" aria-label="Previous Slide">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <button class="nav-button" id="next-slide" aria-label="Next Slide">
+            <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+    </div>
 
     <script>
-        /*
-         * ===================================================================
-         * M3 INTERACTION & NAVIGATION
-         * ===================================================================
-         * * CRITICAL MANDATE CHECK: This script adheres to the "No-Parse Mandate."
-         * It does NOT manipulate the innerHTML of any slide.
-         * Its sole responsibility is state management (toggling CSS classes).
-         */
-        
+        // Virtuoso Presentation Micro-Kernel
         document.addEventListener('DOMContentLoaded', () => {
             const slides = document.querySelectorAll('.slide');
-            const progressBar = document.getElementById('progress-bar');
+            const counter = document.getElementById('slide-counter');
+            const nextButton = document.getElementById('next-slide');
+            const prevButton = document.getElementById('prev-slide');
             let currentSlide = 0;
             const totalSlides = slides.length;
 
-            if (totalSlides === 0) {
-                console.error("Virtuoso: No slides found to initialize.");
-                return;
-            }
-
-            /**
-             * Initializes the clickable progress bar at the bottom.
-             */
-            function initProgressBar() {
-                progressBar.innerHTML = ''; // Clear any existing dots
-                for (let i = 0; i < totalSlides; i++) {
-                    const dot = document.createElement('div');
-                    dot.classList.add('progress-dot');
-                    dot.setAttribute('data-index', i);
-                    dot.addEventListener('click', () => navigateTo(i));
-                    progressBar.appendChild(dot);
-                }
-                updateProgressBar();
-            }
-
-            /**
-             * Updates the visual state of the progress bar dots.
-             */
-            function updateProgressBar() {
-                const dots = document.querySelectorAll('.progress-dot');
-                dots.forEach((dot, index) => {
+            function updateSlideState() {
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('slide-active');
                     if (index === currentSlide) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
-            }
-
-            /**
-             * Navigates to a specific slide index.
-             * @param {number} index - The index of the slide to navigate to.
-             */
-            function navigateTo(index) {
-                // Bounds checking
-                if (index < 0) {
-                    index = 0;
-                }
-                if (index >= totalSlides) {
-                    index = totalSlides - 1;
-                }
-
-                // Update state
-                currentSlide = index;
-
-                // Update slide visibility (Class Toggling ONLY)
-                slides.forEach((slide, i) => {
-                    if (i === currentSlide) {
                         slide.classList.add('slide-active');
-                    } else {
-                        slide.classList.remove('slide-active');
                     }
                 });
-
-                // Update progress bar
-                updateProgressBar();
+                counter.textContent = `${currentSlide + 1} / ${totalSlides}`;
             }
 
-            /**
-             * Handles keyboard navigation events.
-             */
-            function handleKeyDown(e) {
-                switch(e.key) {
-                    case 'ArrowRight':
-                    case 'PageDown':
-                    case ' ': // Spacebar
-                        navigateTo(currentSlide + 1);
-                        e.preventDefault(); // Stop space from scrolling
-                        break;
-                    
-                    case 'ArrowLeft':
-                    case 'PageUp':
-                        navigateTo(currentSlide - 1);
-                        break;
-                    
-                    case 'Home':
-                        navigateTo(0);
-                        break;
-                    
-                    case 'End':
-                        navigateTo(totalSlides - 1);
-                        break;
+            function showNextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlideState();
+            }
+
+            function showPrevSlide() {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlideState();
+            }
+
+            // --- Event Listeners ---
+
+            // Keyboard
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    showNextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevSlide();
+                }
+            });
+
+            // Mouse Clicks
+            nextButton.addEventListener('click', showNextSlide);
+            prevButton.addEventListener('click', showPrevSlide);
+
+            // Touch Swipes
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const swipeThreshold = 50; // min pixels for a swipe
+
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+
+            function handleSwipe() {
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    showNextSlide();
+                }
+                if (touchEndX > touchStartX + swipeThreshold) {
+                    showPrevSlide();
                 }
             }
 
-            // --- INITIALIZATION ---
-            
-            // Add keyboard listener
-            document.addEventListener('keydown', handleKeyDown);
-            
-            // Create the progress bar
-            initProgressBar();
-            
-            // Show the first slide
-            navigateTo(0);
+            // Initial State
+            updateSlideState();
         });
     </script>
 
