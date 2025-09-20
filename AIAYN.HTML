@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attention Is All You Need</title>
+    
+    <!-- 
+      M3 DEPENDENCY: Load Google Material Symbols
+      This is the M3-specified icon library.
+    -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <!-- 
+      M3 DEPENDENCY: Load Selected Google Fonts (Modern Serif Style)
+      - Roboto Serif (Header, Weight 600 - SemiBold)
+      - Roboto (Body, Weight 400 - Regular)
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:opsz,wght@8..144,600&family=Roboto:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        /*
+         * ===================================================================
+         * M3 FOUNDATION: CORE TOKENS & THEME
+         * ===================================================================
+         */
+
+        :root {
+            /* * M3 SHAPE (Corner Radius) TOKENS
+             * Defines the corner rounding for components.
+             */
+            --md-sys-shape-corner-small: 4px;
+            --md-sys-shape-corner-medium: 12px;  /* Used for standard cards */
+            --md-sys-shape-corner-large: 28px;   /* Used for prominent elements */
+            
+            /* * M3 ELEVATION (Shadow) TOKENS
+             * Defines the z-axis depth for components.
+             */
+            /* Level 1: Standard Cards */
+            --md-sys-elevation-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+            /* Level 3: Emphasized elements like Takeaway Box */
+            --md-sys-elevation-3: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+
+            /* * M3 COLOR (Theme: "Ember & Slate")
+             * Defines the M3 color roles.
+             * WCAG AA Check: #ECEFF1 on #37474F has a contrast ratio of 10.7:1 (Passes > 4.5:1).
+             */
+            --md-sys-color-primary: #FF5722; /* Deep Orange */
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-secondary: #B0BEC5; /* Light Cool Gray */
+            --md-sys-color-tertiary: #FFC107; /* Amber Accent */
+            --md-sys-color-surface: #37474F; /* Cool Dark Gray (Base Background) */
+            --md-sys-color-surface-container: #455A64; /* Card Backgrounds */
+            --md-sys-color-on-surface: #ECEFF1; /* Main Text (Off-white) */
+            --md-sys-color-outline: #78909C;
+
+            /* * M3 TYPOGRAPHY (Style: "Modern Serif")
+             * Defines the font families and weights.
+             */
+            --font-family-header: 'Roboto Serif', serif;
+            --font-family-body: 'Roboto', sans-serif;
+            --font-weight-header: 600; /* Per spec: Max 600 */
+            --font-weight-body: 400;
+
+            /* * M3 TYPE SCALE (Harmonious Proportion)
+             * Defines the M3 typographic roles using a modular scale.
+             */
+            --font-size-base: clamp(1rem, 1.5vw, 1.125rem); 
+            --type-scale-ratio: 1.333; 
+            --md-sys-typescale-label-medium: calc(var(--font-size-base) / var(--type-scale-ratio)); /* Captions */
+            --md-sys-typescale-body-large: var(--font-size-base); /* Body */
+            --md-sys-typescale-title-large: calc(var(--font-size-base) * var(--type-scale-ratio)); /* Sub-headers */
+            --md-sys-typescale-headline-medium: calc(var(--md-sys-typescale-title-large) * var(--type-scale-ratio)); /* Takeaway Box */
+            --md-sys-typescale-display-medium: calc(var(--md-sys-typescale-headline-medium) * var(--type-scale-ratio)); /* Slide Titles */
+
+            /* * M3 ICONOGRAPHY (Google Material Symbols)
+             * Defines the icon settings and sizes.
+             */
+            /* Use Optical Size 48px, Weight 400 (Regular), No Fill, Default Grade */
+            --md-icon-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+            --md-icon-size-feature: clamp(3rem, 5vw, 4rem);
+            --md-icon-size-inline: 1.6em;
+        }
+
+        /*
+         * ===================================================================
+         * M3 BASE STYLES & TYPOGRAPHY
+         * ===================================================================
+         */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: var(--font-family-body);
+            font-weight: var(--font-weight-body);
+            line-height: 1.7;
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+        }
+
+        /* Base Typography Roles */
+        h1, h2, h3, .slide-title {
+            font-family: var(--font-family-header);
+            font-weight: var(--font-weight-header);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        p, li {
+            font-size: var(--md-sys-typescale-body-large);
+            max-width: 65ch; /* Optimal line length for reading */
+            margin-bottom: 1rem;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding-left: 1.5em;
+            position: relative;
+        }
+        
+        li:before {
+            content: '•';
+            color: var(--md-sys-color-primary);
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.2em;
+        }
+        
+        code {
+            font-family: monospace;
+            background-color: rgba(0,0,0,0.2);
+            padding: 0.2em 0.4em;
+            border-radius: var(--md-sys-shape-corner-small);
+        }
+
+        /* Specific M3 Type Scale Implementations */
+        .slide-title {
+            font-size: var(--md-sys-typescale-display-medium);
+            color: var(--md-sys-color-primary);
+            margin-bottom: 2rem;
+            grid-column: 1 / -1; /* Title spans all 12 columns */
+        }
+
+        .citation {
+            font-size: var(--md-sys-typescale-label-medium);
+            color: var(--md-sys-color-secondary);
+            font-style: italic;
+        }
+        
+        /* Inline content styling */
+        strong {
+            color: var(--md-sys-color-primary); /* Make 'strong' text use the primary color */
+            font-weight: 600;
+        }
+        
+        em {
+            font-style: italic;
+            color: var(--md-sys-color-secondary);
+        }
+
+        /*
+         * ===================================================================
+         * M3 COMPONENTS & ICONOGRAPHY
+         * ===================================================================
+         */
+
+        /* The Material Card component */
+        .md-card {
+            background: var(--md-sys-color-surface-container);
+            border-radius: var(--md-sys-shape-corner-medium);
+            box-shadow: var(--md-sys-elevation-1);
+            padding: 24px;
+            height: 100%;
+        }
+
+        /* The prominent Takeaway Box component */
+        .md-takeaway {
+            background: var(--md-sys-color-surface-container);
+            border-left: 5px solid var(--md-sys-color-primary);
+            border-radius: var(--md-sys-shape-corner-large);
+            box-shadow: var(--md-sys-elevation-3);
+            padding: 32px;
+            font-size: var(--md-sys-typescale-headline-medium);
+            line-height: 1.4;
+        }
+        
+        /* Iconography Base */
+        .material-symbols-outlined {
+            font-variation-settings: var(--md-icon-settings);
+            vertical-align: middle;
+            font-size: var(--md-icon-size-inline); /* Default size */
+        }
+
+        /* Icon List Pattern ( [ICON] | <p> ) */
+        .icon-list {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 1rem;
+        }
+        
+        .icon-list .material-symbols-outlined {
+            color: var(--md-sys-color-primary);
+            font-size: var(--md-icon-size-inline);
+            margin-top: 0.1em; /* Align icon better with text */
+        }
+        
+        .icon-list p, .icon-list strong {
+            margin: 0;
+            flex: 1;
+            /* Use title-large for list item headers */
+            font-size: var(--md-sys-typescale-title-large);
+            font-family: var(--font-family-header);
+            font-weight: var(--font-weight-header);
+        }
+        
+        /* Specific icon sizing */
+        .icon-list .material-symbols-outlined[data-size="feature"] {
+            font-size: var(--md-icon-size-feature);
+        }
+
+        /*
+         * ===================================================================
+         * PRESENTATION LAYOUT & GRID SYSTEM
+         * ===================================================================
+         */
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 4vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+            
+            /* Hidden by default */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0.4s;
+
+            /* * Use Grid for slide content alignment.
+             * This centers the content block vertically and horizontally.
+             */
+            display: grid;
+            place-items: center;
+        }
+
+        .slide.slide-active {
+            /* Active slide is visible */
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            z-index: 1;
+        }
+        
+        /* * The M3 12-Column Grid
+         * This grid contains the slide's content cards.
+         */
+        .slide-content {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            width: 100%;
+            max-width: 1400px;
+            margin: auto;
+        }
+        
+        .slide-title {
+             /* Title spans all 12 columns */
+            grid-column: 1 / -1;
+            /* For title slides, align text differently */
+            text-align: left;
+        }
+
+        /* Specific Layout Alignment */
+        .slide[data-purpose="Title"] .slide-content {
+             /* Center title slide content */
+            text-align: center;
+        }
+        .slide[data-purpose="Title"] .slide-title {
+             text-align: center;
+             margin-bottom: 0.5rem;
+        }
+         .slide[data-purpose="Title"] p {
+             font-size: var(--md-sys-typescale-headline-medium);
+             color: var(--md-sys-color-secondary);
+             max-width: none;
+             text-align: center;
+        }
+        
+        .grid-col {
+            /* Default column content alignment */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /*
+         * ===================================================================
+         * NAVIGATION & PROGRESS BAR
+         * ===================================================================
+         */
+         
+        .progress-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+        
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--md-sys-color-outline);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot:hover {
+            background-color: var(--md-sys-color-secondary);
+            transform: scale(1.3);
+        }
+        
+        .progress-dot.active {
+            background-color: var(--md-sys-color-primary);
+            transform: scale(1.5);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+
+        <!-- The Progress Bar (will be populated by JS) -->
+        <div class="progress-bar" id="progress-bar"></div>
+
+        <!-- 
+          =====================================================================
+          SLIDE 1: Title
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Title" data-layout="1-Column">
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <h1 class="slide-title">Attention Is All You Need</h1>
+                    <p>The Breakthrough Idea That Unlocked Modern AI (like ChatGPT)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 2: Context Setting (Audience Anchor)
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Context Setting (Audience Anchor)" data-layout="1-Column">
+            <h1 class="slide-title">AI Like ChatGPT Seems Like Magic</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>It "understands" context in a way that feels human. But it's not magic. It's a single, brilliant solution to a very old problem.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 3: Problem Definition
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Problem Definition" data-layout="Asymmetrical">
+            <h1 class="slide-title">How Does an AI <em>Actually</em> Understand This Sentence?</h1>
+            <div class="slide-content">
+                <!-- Asymmetrical layout: col 1 spans 7 -->
+                <div class="grid-col" style="grid-column: span 7;">
+                    <p>The core problem for <em>any</em> language AI is understanding relationships between words. We know "it" refers to the animal, but how can a computer learn that?</p>
+                </div>
+                <!-- col 2 (takeaway) spans 5 -->
+                <div class="grid-col" style="grid-column: span 5;">
+                    <div class="md-takeaway">
+                        "The animal didn't cross the street because <strong>it</strong> was too tired."
+                        <br><br>
+                        What does <strong>"it"</strong> refer to?
+                        <br>The <em>animal</em>? Or the <em>street</em>?
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 4: Explaining the Old Problem
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Explaining the Old Problem" data-layout="1-Column">
+            <h1 class="slide-title">The "Logical" Old Way Was to Read One Word at a Time</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>For decades, we built models (like RNNs) that read sequentially, just like a human.</p>
+                    <br>
+                    <div class="icon-list">
+                        <span class="material-symbols-outlined">trending_flat</span>
+                        <p><code>[The]</code> → <code>[animal]</code> → <code>[didn't]</code> → <code>[cross]</code>...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 5: Visualizing the Old Problem
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Visualizing the Old Problem" data-layout="1-Column">
+            <h1 class="slide-title">An AI "Memory" Tries to Hold All the Context</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>The model passes a single "memory" from word to word. This memory is the <em>only</em> thing the model knows about the past.</p>
+                    <p><code>[The]</code></p>
+                    <p><code>[The animal]</code></p>
+                    <p><code>[The animal didn't]</code></p>
+                    <p>This "memory" gets diluted with every new word.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 6: Complication #1 (Speed)
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Complication #1 (Speed)" data-layout="1-Column">
+            <h1 class="slide-title">This Sequential Method is Extremely Slow</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>You can't process word #10 until you've finished word #9. This "inherently sequential nature" means you can't parallelize the work.<span class="citation"></span></p>
+                    <br>
+                    <div class="icon-list">
+                        <span class="material-symbols-outlined">hourglass_bottom</span>
+                        <strong>One-at-a-time processing is a massive computational bottleneck.</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 7: Complication #2 (Quality)
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Complication #2 (Quality)" data-layout="1-Column">
+            <h1 class="slide-title">The Model's "Memory" is Too Small & "Forgets"</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>By the time the model gets to the word "it", the crucial word "animal" (from 7 steps ago) has been diluted or "forgotten" from its limited memory.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 8: Climax of the Problem
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Climax of the Problem" data-layout="1-Column">
+            <h1 class="slide-title">The "Long-Range Dependency" Problem Was a Wall for AI</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>(This slide should be a visual showing the link from "it" to "animal" is broken or "faded" due to distance).</p>
+                    <p>This was the primary barrier to AI quality for years.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 9: Introducing the New Idea
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Introducing the New Idea" data-layout="1-Column">
+            <h1 class="slide-title">A 2017 Paper Asked: "What if we stop reading 1-by-1?"</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>The "Attention Is All You Need" paper proposed a radical new approach.<span class="citation"></span></p>
+                    <p>What if the AI could look at the <em>entire sentence</em> at the <em>exact same time</em>?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 10: Visualizing the New Idea
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Visualizing the New Idea" data-layout="1-Column">
+            <h1 class="slide-title">The New Way: Process All Words at Once (In Parallel)</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <div class="icon-list">
+                        <span class="material-symbols-outlined">grid_view</span>
+                        <p><code>[The] [animal] [didn't] [cross] [the] [street] [because] [it] [was] [too] [tired]</code></p>
+                    </div>
+                    <br>
+                    <p>This is "significantly more parallelizable."<span class="citation"></span> This solves the <strong>Speed</strong> problem.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 11: Posing a "Gotcha" Question
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Posing a 'Gotcha' Question" data-layout="1-Column">
+            <h1 class="slide-title">But... If It's Not in Order, How Does It Know Word <em>Order</em>?</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>This is a critical "gotcha" question.</p>
+                    <p>How does the AI know "animal" (the Subject) came before "street" (the Object)?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 12: Explaining "Positional Encodings"
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Explaining 'Positional Encodings'" data-layout="1-Column">
+            <h1 class="slide-title">It Adds a "Positional Encoding" (Like a "Zip Code") to Each Word</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>The model adds a unique mathematical signature to each word that says "You are word #1," "You are word #2," etc.<span class="citation"></span></p>
+                    <p>This way, <strong>order is preserved</strong> even when processed in parallel.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 13: Posing the Main Question
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Posing the Main Question" data-layout="1-Column">
+            <h1 class="slide-title">OK... So How Does It Solve Our "It" Problem?</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>Now that the AI sees all words and knows their order... how does it learn context?</p>
+                    <p>How does it connect "it" to "animal"?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 14: Building the Core Analogy
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Building the Core Analogy" data-layout="1-Column">
+            <h1 class="slide-title">The AI is Taught to "Pay Attention" to the Right Words</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>We need a way for the AI to learn, <em>for itself</em>, which other words are most important to understand any <em>single</em> word.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 15: The "Aha!" Moment (Visual)
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="The 'Aha!' Moment (Visual)" data-layout="1-Column">
+            <h1 class="slide-title">It Creates a "Relationship Score" for Every Word</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>When the AI processes the word <strong>"it"</strong>, it also looks at all other words and generates a "score":</p>
+                    <ul>
+                        <li>"it" + "animal" → <strong>95%</strong> (High Score)</li>
+                        <li>"it" + "tired" → <strong>88%</strong> (High Score)</li>
+                        <li>"it" + "street" → <strong>5%</strong> (Low Score)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 16: Naming the Concept
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Naming the Concept" data-layout="1-Column">
+            <h1 class="slide-title">This "Scoring" Mechanism is Called "Self-Attention"</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>The model teaches <em>itself</em> where to "pay attention."<span class="citation"></span></p>
+                    <p>This "self-attention" mechanism solved the <strong>Quality</strong> ("bad memory") problem.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 17: Naming the Solution
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Naming the Solution" data-layout="1-Column">
+            <h1 class="slide-title">The Paper Built a New Model Based <em>Only</em> on This Idea: The "Transformer"</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>They "dispensing with recurrence... entirely."<span class="citation"></span></p>
+                    <p>The <strong>Transformer</strong> = Self-Attention + Positional Encodings.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 18: Addressing "Multi-Head"
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Addressing 'Multi-Head'" data-layout="1-Column">
+            <h1 class="slide-title">It "Re-Reads" the Sentence 8 Times at Once</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>The Transformer uses "Multi-Head Attention."<span class="citation"></span></p>
+                    <p><strong>Analogy:</strong> Think of it as 8 "experts" reading the sentence simultaneously.</p>
+                    <div class="icon-list">
+                        <span class="material-symbols-outlined">person</span>
+                        <p>Expert 1 finds <strong>Pronouns</strong> ("it" → "animal")</p>
+                    </div>
+                    <div class="icon-list">
+                        <span class="material-symbols-outlined">person_search</span>
+                        <p>Expert 2 finds <strong>Descriptors</strong> ("animal" → "tired")</p>
+                    </div>
+                    <div class="icon-list">
+                        <span class="material-symbols-outlined">route</span>
+                        <p>Expert 3 finds <strong>Actions</strong> ("cross" → "street")</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 19: Explaining Figure 1
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Explaining Figure 1" data-layout="2-Column">
+            <h1 class="slide-title">The Full Architecture (Simple): "Encoder" & "Decoder"</h1>
+            <div class="slide-content">
+                <!-- Column 1 -->
+                <div class="grid-col" style="grid-column: span 6;">
+                    <div class="md-card">
+                        <div class="icon-list">
+                            <span class="material-symbols-outlined" data-size="feature">input</span>
+                            <strong>The Encoder</strong>
+                        </div>
+                        <p>Its job is to "read" and understand the input sentence (e.g., the English text).<span class="citation"></span></p>
+                    </div>
+                </div>
+                <!-- Column 2 -->
+                <div class="grid-col" style="grid-column: span 6;">
+                    <div class="md-card">
+                        <div class="icon-list">
+                            <span class="material-symbols-outlined" data-size="feature">output</span>
+                            <strong>The Decoder</strong>
+                        </div>
+                        <p>Its job is to take that understanding and "write" the new output sentence (e.g., the French translation).<span class="citation"></span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 20: Data Insight (Proof)
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Data Insight (Proof)" data-layout="1-Column">
+            <h1 class="slide-title">The Transformer Achieved "Superior Quality"</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>The new model set a state-of-the-art score for machine translation (BLEU score), beating all older, sequential models.<span class="citation"></span></p>
+                    <br>
+                    <div class="icon-list">
+                        <span class="material-symbols-outlined">military_tech</span>
+                        <strong>Better results</strong>
+                    </div>
+                     <p style="margin-top: -1rem; padding-left: 64px;">than all previous models.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 21: Data Insight (Proof)
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Data Insight (Proof)" data-layout="2-Column">
+            <h1 class="slide-title">It Trained in a "Fraction of the... Costs"</h1>
+            <div class="slide-content">
+                <!-- Column 1 -->
+                <div class="grid-col" style="grid-column: span 6;">
+                    <div class="md-card">
+                        <div class="icon-list">
+                            <span class="material-symbols-outlined" data-size="feature">speed</span>
+                            <strong>Faster to Train</strong>
+                        </div>
+                        <p>It trained in "3.5 days on eight GPUs."<span class="citation"></span></p>
+                    </div>
+                </div>
+                <!-- Column 2 -->
+                <div class="grid-col" style="grid-column: span 6;">
+                    <div class="md-card">
+                        <div class="icon-list">
+                            <span class="material-symbols-outlined" data-size="feature">savings</span>
+                            <strong>Cheaper to Train</strong>
+                        </div>
+                        <p>This was a "small fraction of the training costs" of any previous state-of-the-art model.<span class="citation"></span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 22: The Core Takeaway
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="The Core Takeaway" data-layout="1-Column">
+            <h1 class="slide-title">The "Aha!" Moment: The "T" in ChatGPT Stands for "Transformer"</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>The "magic" you see in all modern AI is the direct result of this "self-attention" mechanism.</p>
+                    <p>G<strong>P</strong>T = <strong>G</strong>enerative <strong>P</strong>re-trained <strong>T</strong>ransformer</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 23: Connecting to Modern AI
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Connecting to Modern AI" data-layout="1-Column">
+            <h1 class="slide-title">The Transformer is the "Parent" of All Modern LLMs</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <br>
+                    <div class="icon-list">
+                        <span class="material-symbols-outlined">account_tree</span>
+                        <p><strong>Transformer (2017)</strong> → (GPT-2, BERT) → <strong>ChatGPT (2022)</strong></p>
+                    </div>
+                    <br>
+                    <p>All modern AI is built on the foundation of this 2017 paper.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 24: Strategic Insight
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Strategic Insight" data-layout="1-Column">
+            <h1 class="slide-title">Parallelization is Why "Scale" is Now the Core AI Strategy</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>Because Transformers are so efficient to train, the new bottleneck isn't <em>slow algorithms</em>—it's <em>data acquisition</em> and <em>computing power</em>.</p>
+                    <p>This is why "scale" (bigger models, more data) wins.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 25: Summary
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Summary" data-layout="3-Column">
+            <h1 class="slide-title">What You "Get" Now</h1>
+            <div class="slide-content">
+                <!-- Column 1 -->
+                <div class="grid-col" style="grid-column: span 4;">
+                    <div class="md-card">
+                        <div class="icon-list">
+                            <span class="material-symbols-outlined">error</span> <!-- 'problem' is not a real icon, 'error' is a good sub -->
+                            <strong>1. The Problem</strong>
+                        </div>
+                        <p>Sequential reading was <strong>slow</strong> and <strong>"forgetful."</strong></p>
+                    </div>
+                </div>
+                <!-- Column 2 -->
+                <div class="grid-col" style="grid-column: span 4;">
+                    <div class="md-card">
+                        <div class="icon-list">
+                            <span class="material-symbols-outlined">lightbulb</span>
+                            <strong>2. The Breakthrough</strong>
+                        </div>
+                        <p>"Self-Attention" (The Transformer) processes all words at once and <strong>"scores"</strong> their relationships.</p>
+                    </div>
+                </div>
+                <!-- Column 3 -->
+                <div class="grid-col" style="grid-column: span 4;">
+                    <div class="md-card">
+                        <div class="icon-list">
+                            <span class="material-symbols-outlined">rocket_launch</span>
+                            <strong>3. The Impact</strong>
+                        </div>
+                        <p>This parallel design unlocked <strong>massive scale</strong>, enabling models like ChatGPT.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 26: Conclusion
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Conclusion" data-layout="1-Column">
+            <h1 class="slide-title">You Now Understand the Foundation of Modern AI</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>What felt like "magic" is a brilliant engineering solution to a specific, relatable problem.</p>
+                    <p>You are now "more confident of [your] understanding."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =====================================================================
+          SLIDE 27: Q&A
+          =====================================================================
+        -->
+        <section class="slide" data-purpose="Q&A" data-layout="1-Column">
+            <h1 class="slide-title">Q & A</h1>
+            <div class="slide-content">
+                <div class="grid-col" style="grid-column: span 12;">
+                    <p>Thank You.</p>
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- / .presentation-container -->
+
+
+    <script>
+        /*
+         * ===================================================================
+         * M3 INTERACTION & NAVIGATION
+         * ===================================================================
+         * * CRITICAL MANDATE CHECK: This script adheres to the "No-Parse Mandate."
+         * It does NOT manipulate the innerHTML of any slide.
+         * Its sole responsibility is state management (toggling CSS classes).
+         */
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const progressBar = document.getElementById('progress-bar');
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+
+            if (totalSlides === 0) {
+                console.error("Virtuoso: No slides found to initialize.");
+                return;
+            }
+
+            /**
+             * Initializes the clickable progress bar at the bottom.
+             */
+            function initProgressBar() {
+                progressBar.innerHTML = ''; // Clear any existing dots
+                for (let i = 0; i < totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('progress-dot');
+                    dot.setAttribute('data-index', i);
+                    dot.addEventListener('click', () => navigateTo(i));
+                    progressBar.appendChild(dot);
+                }
+                updateProgressBar();
+            }
+
+            /**
+             * Updates the visual state of the progress bar dots.
+             */
+            function updateProgressBar() {
+                const dots = document.querySelectorAll('.progress-dot');
+                dots.forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+
+            /**
+             * Navigates to a specific slide index.
+             * @param {number} index - The index of the slide to navigate to.
+             */
+            function navigateTo(index) {
+                // Bounds checking
+                if (index < 0) {
+                    index = 0;
+                }
+                if (index >= totalSlides) {
+                    index = totalSlides - 1;
+                }
+
+                // Update state
+                currentSlide = index;
+
+                // Update slide visibility (Class Toggling ONLY)
+                slides.forEach((slide, i) => {
+                    if (i === currentSlide) {
+                        slide.classList.add('slide-active');
+                    } else {
+                        slide.classList.remove('slide-active');
+                    }
+                });
+
+                // Update progress bar
+                updateProgressBar();
+            }
+
+            /**
+             * Handles keyboard navigation events.
+             */
+            function handleKeyDown(e) {
+                switch(e.key) {
+                    case 'ArrowRight':
+                    case 'PageDown':
+                    case ' ': // Spacebar
+                        navigateTo(currentSlide + 1);
+                        e.preventDefault(); // Stop space from scrolling
+                        break;
+                    
+                    case 'ArrowLeft':
+                    case 'PageUp':
+                        navigateTo(currentSlide - 1);
+                        break;
+                    
+                    case 'Home':
+                        navigateTo(0);
+                        break;
+                    
+                    case 'End':
+                        navigateTo(totalSlides - 1);
+                        break;
+                }
+            }
+
+            // --- INITIALIZATION ---
+            
+            // Add keyboard listener
+            document.addEventListener('keydown', handleKeyDown);
+            
+            // Create the progress bar
+            initProgressBar();
+            
+            // Show the first slide
+            navigateTo(0);
+        });
+    </script>
+
+</body>
+</html>
