@@ -4,63 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Understanding BERT: The Engine of Modern Language AI</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <style>
-        /* 1. RESET & ROOT VARIABLES */
+        /* --- 1. Foundational Styles & Design System --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
         :root {
-            /* Primary Palette */
-            --primary: #1976d2;
-            --primary-light: #42a5f5;
-            --primary-dark: #1565c0;
+            /* Color System (Material 3 Inspired) */
+            --color-primary: #0B57D0; /* Identity */
+            --color-secondary: #5f6368; /* Emphasis */
+            --color-accent: #188038; /* Highlight (e.g., success) */
+            --color-surface: #f8f9fa; /* Background */
+            --color-surface-container: #ffffff;
+            --color-on-primary: #ffffff;
+            --color-on-surface: #1f1f1f; /* Body Text */
+            --color-on-surface-variant: #444746; /* Subtitles, muted text */
+            --color-outline: #c4c7c5;
 
-            /* Surface & Content */
-            --surface: #ffffff;
-            --surface-variant: #f8f9fa;
-            --on-surface: #1a1a1a;
-            --on-surface-variant: #666666;
+            /* Typography */
+            --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            --type-scale-h1: clamp(2.5rem, 5vw + 1rem, 4rem);
+            --type-scale-h2: clamp(1.5rem, 3vw + 0.5rem, 2.25rem);
+            --type-scale-h3: clamp(1.25rem, 2vw + 0.5rem, 1.75rem);
+            --type-scale-body: clamp(1rem, 1.5vw + 0.5rem, 1.25rem);
+            --type-scale-small: 0.875rem;
 
-            /* Semantic Colors */
-            --success: #2e7d32;
-            --warning: #f57c00;
-            --error: #d32f2f;
-            --info: #1976d2;
+            /* Spacing & Grid */
+            --grid-max-width: 1200px;
+            --spacing-base: 1rem;
+            --spacing-xs: calc(var(--spacing-base) * 0.5);
+            --spacing-s: var(--spacing-base);
+            --spacing-m: calc(var(--spacing-base) * 2);
+            --spacing-l: calc(var(--spacing-base) * 4);
+            --spacing-xl: calc(var(--spacing-base) * 6);
 
-            /* Chart Palette */
-            --chart-1: #1976d2; --chart-2: #388e3c; --chart-3: #f57c00;
-            --chart-4: #7b1fa2; --chart-5: #d32f2f; --chart-6: #00796b;
+            /* Other */
+            --border-radius: 12px;
+            --transition-duration: 300ms;
+            --elevation-1: 0 1px 2px 0 rgba(0,0,0,.1), 0 1px 3px 1px rgba(0,0,0,.1);
         }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            overscroll-behavior: none;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--surface-variant);
-            color: var(--on-surface);
-            line-height: 1.7;
-            overflow: hidden; /* Prevent scrollbars */
+            font-family: var(--font-family-sans);
+            background-color: var(--color-surface);
+            color: var(--color-on-surface);
+            font-size: var(--type-scale-body);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-
-        /* 2. PRESENTATION & SLIDE STRUCTURE */
-        .presentation-container {
+        
+        /* --- 2. Presentation Shell & Navigation --- */
+        main#presentation {
             position: relative;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
 
         .slide {
@@ -69,733 +78,558 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--surface);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out;
-            z-index: 1;
+            transition: opacity var(--transition-duration) ease-in-out, visibility var(--transition-duration) ease-in-out;
+            padding: var(--spacing-m);
         }
 
         .slide.active {
             opacity: 1;
             visibility: visible;
-            z-index: 2;
+            z-index: 1;
         }
         
         .slide-content {
             width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* 3. TYPOGRAPHY HIERARCHY */
-        h1, .headline {
-            font: 700 2.25rem/1.3 'Inter', sans-serif;
-            color: var(--on-surface);
-            margin-bottom: 2.5rem;
-            text-align: center;
-            max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        h2, .subheadline {
-            font: 600 1.5rem/1.4 'Inter', sans-serif;
-            color: #2d2d2d;
-            margin-bottom: 1.5rem;
+            max-width: var(--grid-max-width);
             text-align: center;
         }
 
-        h3 {
-            font: 600 1.25rem/1.4 'Inter', sans-serif;
-            color: #2d2d2d;
-            margin-bottom: 1.5rem;
+        #progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background-color: var(--color-primary);
+            width: 0;
+            transition: width var(--transition-duration) ease-out;
+            z-index: 10;
+        }
+        
+        #slide-counter {
+            position: fixed;
+            bottom: var(--spacing-s);
+            right: var(--spacing-s);
+            font-size: var(--type-scale-small);
+            color: var(--color-on-surface-variant);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: var(--spacing-xs) var(--spacing-s);
+            border-radius: 20px;
+            z-index: 10;
+        }
+        
+        /* --- 3. Typography & Content Elements --- */
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0 0 var(--spacing-m) 0;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--color-on-surface);
         }
 
-        p, ul, li {
-            font: 400 1.125rem/1.7 'Inter', sans-serif;
-            color: #404040;
-            margin-bottom: 1rem;
-        }
+        h1 { font-size: var(--type-scale-h1); }
+        h2 { font-size: var(--type-scale-h2); color: var(--color-on-surface-variant); }
+        h3 { font-size: var(--type-scale-h3); }
         
         ul {
-            list-style: none; /* Custom styling for lists */
-        }
-
-        ul li {
-            margin-bottom: 1.25rem;
-            padding-left: 2rem;
-            position: relative;
-        }
-
-        ul li::before {
-            content: '•';
-            color: var(--primary);
-            font-weight: bold;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
             display: inline-block;
-            position: absolute;
-            left: 0;
-            top: 0px;
-            font-size: 1.2rem;
         }
-
-        b, strong {
-            font-weight: 600;
-            color: var(--primary-dark);
+        
+        li {
+            margin-bottom: var(--spacing-s);
         }
-
+        
         blockquote {
-            font: 500 1.75rem/1.5 'Inter', sans-serif;
-            color: #2d2d2d;
-            margin: 2rem auto;
-            padding-left: 2rem;
-            border-left: 4px solid var(--primary);
-            max-width: 80%;
+            border-left: 4px solid var(--color-primary);
+            padding-left: var(--spacing-m);
+            margin: 0;
+            font-size: clamp(1.2rem, 2vw + 0.5rem, 1.75rem);
+            font-style: italic;
+            color: var(--color-on-surface-variant);
+        }
+        
+        .icon {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            margin-bottom: var(--spacing-s);
+            stroke-width: 1.5;
+            color: var(--color-primary);
         }
 
-        .caption {
-            font: 400 0.875rem/1.4 'Inter', sans-serif;
-            color: #666666;
-            text-align: center;
-            margin-top: 1rem;
-        }
+        /* --- 4. Layouts & Cognitive Load --- */
+        /* Cognitive Load */
+        .cognitive-low .slide-content { padding: var(--spacing-xl) var(--spacing-m); }
+        .cognitive-medium .slide-content { padding: var(--spacing-l) var(--spacing-m); }
 
-        /* 4. LAYOUT SYSTEM & COGNITIVE LOAD */
-        .low-load .slide-content { 
-            padding: 6rem 4rem; 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center;
-            min-height: 70vh;
-            text-align: center;
-        }
-
-        .medium-load .slide-content { 
-            padding: 4rem 4rem; 
+        /* Layouts */
+        .layout-title-only .slide-content { max-width: 900px; }
+        
+        .layout-text-heavy .slide-content { max-width: 900px; }
+        
+        .layout-icon-text .grid {
             display: grid;
-            gap: 2rem;
-            min-height: 60vh;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-l);
+            text-align: left;
+            align-items: start;
         }
-
-        .high-load .slide-content { 
-            padding: 3rem 4rem; 
-            line-height: 1.7;
-        }
-
-        /* Layout Type Specifics */
-        .layout-title-only .slide-content {
-            text-align: center; max-width: 1000px;
-        }
-        .layout-text-heavy .slide-content {
-            max-width: 900px;
-        }
-        .layout-icon-text .slide-content {
-            display: grid; grid-template-columns: 200px 1fr;
-            gap: 4rem; align-items: start;
-        }
-        .layout-comparison .slide-content {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 4rem; align-items: start;
-        }
-        .layout-dataviz-bar .slide-content,
-        .layout-dataviz-flowchart .slide-content,
-        .layout-dataviz-process .slide-content {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 4rem; align-items: center;
-        }
-
-        /* 5. COMPONENTS (ICONS, NAVIGATION, CHARTS, ETC.) */
-        .material-icons {
-            font-family: 'Material Icons'; font-weight: normal; font-style: normal;
-            line-height: 1; letter-spacing: normal; text-transform: none;
-            display: inline-block; white-space: nowrap; word-wrap: normal;
-            direction: ltr; -webkit-font-smoothing: antialiased;
-        }
-        
-        .icon-container {
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: flex-start;
-            gap: 2rem; padding-top: 1rem;
+        .layout-icon-text .grid > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
         }
-        .icon-container .material-icons {
-            font-size: 96px;
-            color: var(--primary);
+         .layout-icon-text .grid ul {
+             display: block;
+             text-align: left;
+             padding-left: var(--spacing-m);
+         }
+
+        .layout-comparison .grid {
+             display: grid;
+             grid-template-columns: 1fr 1fr;
+             gap: var(--spacing-l);
+             align-items: center;
         }
-        .icon-list .icon-item {
-            display: flex; align-items: center;
-            gap: 1.5rem; margin-bottom: 1.5rem;
+        .layout-comparison .comparison-item {
+            padding: var(--spacing-m);
+            border: 1px solid var(--color-outline);
+            border-radius: var(--border-radius);
+            background: var(--color-surface-container);
         }
-        .icon-list .material-icons {
-            font-size: 32px;
-            color: var(--primary);
+
+        /* --- 5. Data Visualizations --- */
+        .chart-container {
+            width: 100%;
+            max-width: 800px;
+            margin: var(--spacing-m) auto;
         }
         
-        /* Navigation */
-        .slide-navigation {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        .accessible-table {
+            position: absolute;
+            left: -10000px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
         }
-        .nav-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--on-surface);
+
+        .flowchart {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: var(--spacing-xs);
+            margin: var(--spacing-m) 0;
+            flex-wrap: wrap;
         }
-        .nav-button:hover { color: var(--primary); }
-        #slide-counter {
-            font-weight: 500;
-            color: var(--on-surface-variant);
-            font-size: 1rem;
-            min-width: 4ch;
+        .flowchart-node, .flowchart-process {
+            padding: var(--spacing-s) var(--spacing-m);
+            border-radius: var(--border-radius);
+            background-color: var(--color-surface-container);
+            border: 1px solid var(--color-outline);
+            box-shadow: var(--elevation-1);
             text-align: center;
         }
-
-        /* Chart & Visualization Specifics */
-        .chart-container {
-            max-width: 100%;
-            height: auto;
-            min-height: 350px;
+        .flowchart-arrow {
+            color: var(--color-secondary);
+            font-size: 2rem;
+            font-weight: bold;
         }
-        .accessibility-table {
-            position: absolute;
-            left: -10000px; top: auto;
-            width: 1px; height: 1px;
-            overflow: hidden;
+        
+        .visual-demo {
+            font-family: monospace;
+            font-size: 1.5rem;
+            padding: var(--spacing-m);
+            background: var(--color-surface-container);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--color-outline);
+            margin-top: var(--spacing-m);
         }
-        .flowchart, .process-viz {
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 1.5rem;
-            padding: 2rem; border-radius: 12px;
-            background: var(--surface-variant);
-            text-align: center;
-            width: 100%;
-        }
-        .flowchart-row {
-            display: flex; align-items: center; gap: 1rem;
-        }
-        .flowchart-item {
-            padding: 1rem 1.5rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: var(--surface);
-            min-width: 150px;
-            text-align: center;
-        }
-        .flowchart-item .material-icons { font-size: 32px; color: var(--primary); margin-bottom: 0.5rem; }
-        .flow-arrow { font-size: 2rem; color: var(--on-surface-variant); }
-        .comparison-item { padding: 2rem; border: 1px solid #e0e0e0; border-radius: 12px; }
-        .comparison-item h3 { margin-top: 0; }
-        .process-viz .highlight {
-            background-color: #e3f2fd;
-            color: var(--primary-dark);
-            padding: 0.2rem 0.5rem;
+        .visual-demo .masked {
+            background-color: var(--color-primary);
+            color: var(--color-on-primary);
+            padding: 0 0.5em;
             border-radius: 4px;
-            font-weight: 600;
         }
 
-        /* 6. RESPONSIVE DESIGN */
+        /* --- 6. Responsive Design --- */
         @media (max-width: 768px) {
-            h1, .headline { font-size: 1.75rem; }
-            h2, .subheadline { font-size: 1.25rem; }
-            p, ul, li { font-size: 1rem; }
-            blockquote { font-size: 1.25rem; }
-
-            .low-load .slide-content,
-            .medium-load .slide-content,
-            .high-load .slide-content {
-                padding: 2rem;
-                min-height: 80vh;
-            }
-
-            .layout-icon-text .slide-content,
-            .layout-comparison .slide-content,
-            .layout-dataviz-bar .slide-content,
-            .layout-dataviz-flowchart .slide-content,
-            .layout-dataviz-process .slide-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            .layout-icon-text .icon-container { padding-top: 0; }
-            .flowchart-row { flex-direction: column; }
-            .flow-arrow { transform: rotate(90deg); margin: 0.5rem 0;}
+            .slide { padding: var(--spacing-s); }
+            .cognitive-low .slide-content { padding: var(--spacing-l) var(--spacing-s); }
+            .cognitive-medium .slide-content { padding: var(--spacing-m) var(--spacing-s); }
+            .layout-icon-text .grid, .layout-comparison .grid { grid-template-columns: 1fr; }
+            blockquote { font-size: clamp(1.1rem, 4vw, 1.5rem); }
+            .flowchart { flex-direction: column; gap: var(--spacing-s); }
+            .flowchart-arrow { transform: rotate(90deg); }
         }
+
     </style>
 </head>
 <body>
 
-    <div class="presentation-container">
-        <div class="slide active low-load layout-title-only" data-slide="1">
-            <div class="slide-content">
-                <h1>Understanding BERT</h1>
-                <h2>How a breakthrough in AI is changing the way we work with language.</h2>
-            </div>
-        </div>
+    <main id="presentation" aria-roledescription="presentation">
 
-        <div class="slide medium-load layout-icon-text" data-slide="2">
-            <div class="slide-content">
-                <div class="icon-container">
-                    <span class="material-icons" style="font-size: 64px;">map</span>
-                    <span class="material-icons" style="font-size: 64px;">person_search</span>
-                    <span class="material-icons" style="font-size: 64px;">lightbulb</span>
-                </div>
-                <div>
-                    <h3>We'll explore this topic in three parts:</h3>
-                    <ul>
-                        <li><b>The Context:</b> The challenge of understanding language and the 'old way' of doing things.</li>
-                        <li><b>The Relevance:</b> How this new technology can directly impact your work in Marketing, Product, and Sales.</li>
-                        <li><b>The Implication:</b> What this means for the future and the new opportunities it creates.</li>
-                    </ul>
+        <section class="slide active" id="slide-1" role="group" aria-label="Understanding BERT: The Engine of Modern Language AI" data-title="Understanding BERT: The Engine of Modern Language AI">
+            <div class="slide-content cognitive-low layout-title-only">
+                <h1>Understanding BERT</h1><h2>How a breakthrough in AI is changing the way we work with language.</h2>
+            </div>
+        </section>
+
+        <section class="slide" id="slide-2" role="group" aria-label="Our Journey Today" data-title="Our Journey Today">
+            <div class="slide-content cognitive-medium layout-icon-text">
+                <h3>We'll explore this topic in three parts:</h3>
+                <div class="grid">
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13v-6m0 6l5.447 2.724A1 1 0 0015 20.382V9.618a1 1 0 00-1.447-.894L9 11m0-4v6m0 0l5.447-2.724A1 1 0 0115 5.618V4.618a1 1 0 00-1.447-.894L9 7m9 4l-5.447 2.724A1 1 0 0112 13.382V12.382a1 1 0 011.447-.894L18 11z"/></svg>
+                        <b>The Context:</b> The challenge of understanding language and the 'old way' of doing things.
+                    </div>
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        <b>The Relevance:</b> How this new technology can directly impact your work in Marketing, Product, and Sales.
+                    </div>
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        <b>The Implication:</b> What this means for the future and the new opportunities it creates.
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="slide low-load layout-text-heavy" data-slide="3">
-            <div class="slide-content">
+        <section class="slide" id="slide-3" role="group" aria-label="The Billion-Dollar Challenge: True Understanding" data-title="The Billion-Dollar Challenge: True Understanding">
+            <div class="slide-content cognitive-low layout-text-heavy">
                 <blockquote>'In our world, effective communication is everything... For years, the major technical challenge has been teaching computers to understand the deep context and nuance of human language, not just keywords.'</blockquote>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-dataviz-flowchart" data-slide="4">
-            <div class="slide-content">
-                <div>
-                    <ul>
-                        <li>To solve this, we build 'language models'—engines trained on text.</li>
-                        <li>Their goal is to power business tools that understand customers, improve search, and make chatbots helpful.</li>
-                    </ul>
+        <section class="slide" id="slide-4" role="group" aria-label="The 'Engines' We Build to Help" data-title="The 'Engines' We Build to Help">
+            <div class="slide-content cognitive-medium layout-data-visualization-flowchart">
+                <div class="flowchart" aria-label="Flowchart showing Vast Text input to a Language Model, which outputs Business Tools.">
+                    <div class="flowchart-node">Vast Amounts of Text</div>
+                    <div class="flowchart-arrow">&rarr;</div>
+                    <div class="flowchart-process">Language Model Engine</div>
+                    <div class="flowchart-arrow">&rarr;</div>
+                    <div class="flowchart-node">Business Tools</div>
                 </div>
-                <div class="flowchart">
-                    <h3>How Language Models Work</h3>
-                    <div class="flowchart-row">
-                        <div class="flowchart-item">
-                            <span class="material-icons">menu_book</span>
-                            <p>Vast Amounts of Text</p>
-                        </div>
-                        <span class="flow-arrow">&rarr;</span>
-                        <div class="flowchart-item">
-                            <span class="material-icons">memory</span>
-                            <p>Language Model Engine</p>
-                        </div>
-                        <span class="flow-arrow">&rarr;</span>
-                        <div class="flowchart-item">
-                            <span class="material-icons">build</span>
-                            <p>Business Tools</p>
-                        </div>
-                    </div>
-                </div>
+                <ul><li>To solve this, we build 'language models'—engines trained on text.</li><li>Their goal is to power business tools that understand customers, improve search, and make chatbots helpful.</li></ul>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-dataviz-process" data-slide="5">
-            <div class="slide-content">
-                <div>
-                     <h3>The Problem with Reading in a Straight Line</h3>
-                    <ul>
-                        <li>Older models read in a straight line, which creates a fundamental problem.</li>
-                        <li>When the model sees the word '<b>book</b>,' it has to guess the meaning without knowing what comes <em>next</em>.</li>
-                        <li>It lacks the 'future' context to understand the sentence correctly on the first pass.</li>
-                    </ul>
-                </div>
-                <div class="process-viz">
-                    <p style="font-size: 1.5rem; margin-bottom: 2rem;">Let's <span class="highlight">book</span> a flight.</p>
-                    <div class="flowchart-row">
-                        <div class="flowchart-item"><span class="material-icons" style="font-size: 48px;">book</span><p>A novel?</p></div>
-                        <div class="flowchart-item"><span class="material-icons" style="font-size: 48px;">airplane_ticket</span><p>A ticket?</p></div>
-                    </div>
-                    <p class="caption">One-way context creates ambiguity.</p>
-                </div>
+        <section class="slide" id="slide-5" role="group" aria-label="The Problem with Reading in a Straight Line" data-title="The Problem with Reading in a Straight Line">
+            <div class="slide-content cognitive-medium layout-data-visualization-process">
+                <h3>The "One-Way Street" Problem</h3>
+                <div class="visual-demo" aria-label="Example sentence: Let's book a flight.">Let's <span style="text-decoration: underline; text-decoration-color: var(--color-primary); text-decoration-thickness: 3px;">book</span>... ? </div>
+                <ul><li>Older models read in a straight line, which creates a fundamental problem.</li><li>When the model sees the word '<b>book</b>,' it has to guess the meaning without knowing what comes <em>next</em>.</li><li>It lacks the 'future' context to understand the sentence correctly on the first pass.</li></ul>
             </div>
-        </div>
-
-        <div class="slide medium-load layout-comparison" data-slide="6">
-            <div class="slide-content">
-                 <div class="process-viz">
-                     <h3>The Old Way (One-Way)</h3>
-                     <p>Let's book &rarr;</p>
-                     <p class="caption">Only past context is known.</p>
-                 </div>
-                 <div class="process-viz" style="border: 2px solid var(--primary);">
-                     <h3>The New Way (Two-Way)</h3>
-                     <p>&larr; Let's book a flight &rarr;</p>
-                     <p class="caption">Past and future context is known.</p>
-                </div>
-            </div>
-        </div>
+        </section>
         
-        <div class="slide low-load layout-text-heavy" data-slide="7">
-            <div class="slide-content">
-                <blockquote>'So what's the trick? How did the creators of BERT teach a computer to understand context by reading a sentence forwards and backwards at the same time, and why does this new method give us a much better tool for our business?'</blockquote>
+        <section class="slide" id="slide-6" role="group" aria-label="The Breakthrough: A Two-Way Street" data-title="The Breakthrough: A Two-Way Street">
+             <div class="slide-content cognitive-medium layout-data-visualization-process">
+                <h3>The Breakthrough: A "Two-Way Street"</h3>
+                <div class="visual-demo" aria-label="Example sentence with bidirectional arrows pointing to the word 'book'.">&larr; Let's <span style="background: #e0eaff; padding: 2px 6px; border-radius: 4px;">book</span> a flight &rarr;</div>
+                <ul><li>The breakthrough is a model that is 'deeply bidirectional'—it reads the whole sentence at once.</li><li>It uses both past ('Let's...') and future ('...a flight') context simultaneously to understand the meaning of a word.</li></ul>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-dataviz-process" data-slide="8">
-            <div class="slide-content">
-                 <div>
-                    <h3>The Trick: A Giant Game of 'Fill-in-the-Blanks'</h3>
-                    <ul>
-                        <li>The creators used a technique called a 'Masked Language Model' (MLM).</li>
-                        <li>They didn't ask the model to predict the <em>next</em> word. Instead, they randomly hid words and trained BERT to guess the missing piece.</li>
-                    </ul>
-                </div>
-                <div class="process-viz">
-                     <p style="font-size: 1.5rem; margin-bottom: 2rem;">The kids read a <span class="highlight">[MASK]</span> about a flight.</p>
-                     <p class="caption">BERT uses all surrounding words to predict the masked one.</p>
-                </div>
+        <section class="slide" id="slide-7" role="group" aria-label="So... What's the Trick?" data-title="So... What's the Trick?">
+            <div class="slide-content cognitive-low layout-text-heavy">
+                 <blockquote>'So what's the trick? How did the creators of BERT teach a computer to understand context by reading a sentence forwards and backwards at the same time, and why does this new method give us a much better tool for our business?'</blockquote>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-icon-text" data-slide="9">
-            <div class="slide-content">
-                <div class="icon-container">
-                    <span class="material-icons">psychology</span>
-                </div>
-                <div>
-                    <h3>The Result: An Intuitive Grasp of Language</h3>
-                    <ul>
-                        <li>By playing this 'game' billions of times, BERT develops a deep, flexible understanding of language.</li>
-                        <li>It learns grammar, nuance, and the complex relationships between words.</li>
-                        <li>This creates a single, powerful foundation that can be adapted for many uses.</li>
-                    </ul>
-                </div>
+        <section class="slide" id="slide-8" role="group" aria-label="The Trick: A Giant Game of 'Fill-in-the-Blanks'" data-title="The Trick: A Giant Game of 'Fill-in-the-Blanks'">
+            <div class="slide-content cognitive-medium layout-data-visualization-process">
+                <h3>The Trick: Fill-in-the-Blanks</h3>
+                <div class="visual-demo">The kids read a <span class="masked">[MASK]</span> about a flight.</div>
+                <ul><li>The creators used a technique called a 'Masked Language Model' (MLM).</li><li>They didn't ask the model to predict the <em>next</em> word. Instead, they randomly hid words in billions of sentences and trained BERT to guess the missing piece based on the surrounding context.</li></ul>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-dataviz-process" data-slide="10">
-            <div class="slide-content">
-                 <div>
-                    <h3>The Bridge: From Foundation to Function</h3>
-                    <ul>
-                        <li>So we have this powerful, pre-trained BERT foundation. How do we use it?</li>
-                        <li>We 'fine-tune' it by training it a little more on a small set of specific data. This quickly turns the generalist model into a specialist.</li>
-                    </ul>
-                </div>
-                <div class="flowchart">
-                    <div class="flowchart-row">
-                        <div class="flowchart-item"><p>BERT Foundation</p></div>
-                        <span class="flow-arrow">+</span>
-                        <div class="flowchart-item" style="min-width: 100px;"><p>Task Data</p></div>
-                        <span class="flow-arrow">&rarr;</span>
-                        <div class="flowchart-item" style="background-color: var(--primary); color: white;"><p>Expert Model</p></div>
+        <section class="slide" id="slide-9" role="group" aria-label="The Result: An Intuitive Grasp of Language" data-title="The Result: An Intuitive Grasp of Language">
+            <div class="slide-content cognitive-medium layout-icon-text">
+                <svg class="icon" style="width: 64px; height: 64px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.572L16.5 21.75l-.398-1.178a3.375 3.375 0 00-2.455-2.456L12.75 18l1.178-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.178a3.375 3.375 0 002.456 2.456L20.25 18l-1.178.398a3.375 3.375 0 00-2.456 2.456z" /></svg>
+                <ul><li>By playing this 'game' billions of times, BERT develops a deep, flexible understanding of language.</li><li>It learns grammar, nuance, and the complex relationships between words.</li><li>This creates a single, powerful foundation that can be adapted for many uses.</li></ul>
+            </div>
+        </section>
+
+        <section class="slide" id="slide-10" role="group" aria-label="The Bridge: From Foundation to Function" data-title="The Bridge: From Foundation to Function">
+            <div class="slide-content cognitive-medium layout-data-visualization-flowchart">
+                <div class="flowchart" aria-label="Flowchart showing a large BERT Foundation Model being fine-tuned with a small amount of task-specific data to create a specialized Expert Sentiment Analyzer.">
+                    <div class="flowchart-node" style="min-width: 200px;">BERT Foundation Model</div>
+                    <div class="flowchart-process" style="display: flex; flex-direction: column;">
+                        + Task-Specific Data
+                        <span class="flowchart-arrow">&darr;</span>
+                        "Fine-Tuning"
                     </div>
-                     <p class="caption">The process is extremely efficient and versatile.</p>
+                    <div class="flowchart-node" style="min-width: 200px;">Expert Sentiment Analyzer</div>
                 </div>
+                <ul><li>So we have this powerful, pre-trained BERT foundation. How do we use it?</li><li>We 'fine-tune' it by training it a little more on a small set of specific data. This quickly turns the generalist model into a specialist.</li><li>This process is extremely efficient and is what makes BERT so versatile.</li></ul>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-icon-text" data-slide="11">
-            <div class="slide-content">
-                <div class="icon-container">
-                    <h3>For Marketing</h3>
-                    <div class="icon-list">
-                         <div class="icon-item"><span class="material-icons">groups</span></div>
-                         <div class="icon-item"><span class="material-icons">star_rate</span></div>
-                         <div class="icon-item"><span class="material-icons">list_alt</span></div>
+        <section class="slide" id="slide-11" role="group" aria-label="For Marketing: The True Voice of the Customer" data-title="For Marketing: The True Voice of the Customer">
+            <div class="slide-content cognitive-medium layout-icon-text">
+                <h3>For Marketing: The True Voice of the Customer</h3>
+                <div class="grid">
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.006 3 11.55c0 2.252.83 4.34 2.246 5.954.4.372.478.97.23 1.453l-1.138 2.274a.75.75 0 00.294 1.004l2.646 1.04c.54.212 1.15.042 1.498-.37Z" /></svg>
+                        <b>Deeper Sentiment Analysis:</b> Go beyond 'positive/negative.' Understand nuance like sarcasm or urgency in reviews.
+                    </div>
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-2.489-2.489m0 0a3.375 3.375 0 1 0-4.773-4.773 3.375 3.375 0 0 0 4.774 4.774ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                        <b>Smarter Content Strategy:</b> Analyze what your audience is <em>really</em> discussing online to find key themes.
+                    </div>
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" /></svg>
+                        <b>Effective Brand Monitoring:</b> Get a far more accurate picture of how your brand is perceived.
                     </div>
                 </div>
-                <div>
-                    <h3>The True Voice of the Customer</h3>
-                    <ul>
-                        <li><b>Deeper Sentiment Analysis:</b> Go beyond 'positive/negative.' Understand nuance like sarcasm or urgency in reviews.</li>
-                        <li><b>Smarter Content Strategy:</b> Analyze what your audience is <em>really</em> discussing online to find key themes.</li>
-                        <li><b>Effective Brand Monitoring:</b> Get a far more accurate picture of how your brand is perceived.</li>
-                    </ul>
-                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-icon-text" data-slide="12">
-            <div class="slide-content">
-                <div class="icon-container">
-                     <h3>For Product</h3>
-                     <div class="icon-list">
-                         <div class="icon-item"><span class="material-icons">search</span></div>
-                         <div class="icon-item"><span class="material-icons">feedback</span></div>
-                         <div class="icon-item"><span class="material-icons">smart_toy</span></div>
+        <section class="slide" id="slide-12" role="group" aria-label="For Product: Building More Helpful Products" data-title="For Product: Building More Helpful Products">
+            <div class="slide-content cognitive-medium layout-icon-text">
+                <h3>For Product: Building More Helpful Products</h3>
+                <div class="grid">
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                        <b>Intuitive In-App Search:</b> Power a search bar that understands what users <em>mean</em>, not just what they type.
+                    </div>
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.019c.043-.125.052-.25.052-.372a3.34 3.34 0 0 1 3.094-2.242l.003-.001c.646-.012 1.28-.057 1.908-.134a5.904 5.904 0 0 0 1.908-1.044c1.262-1.292 2.115-3.03 2.115-4.941a4.878 4.878 0 0 0-2.316-4.228C13.203 3.102 12.637 3 12 3s-1.203.102-1.684.305a4.878 4.878 0 0 0-2.316 4.228c0 1.91.853 3.65 2.115 4.94a5.904 5.904 0 0 0 1.908 1.044 5.904 5.904 0 0 0 1.908.134l.003.001a3.34 3.34 0 0 1 3.094 2.242c0 .122.009.247.052.372a4.48 4.48 0 0 0 .978 2.019 5.969 5.969 0 0 1-.474.065 9.764 9.764 0 0 1-2.555.337c-4.97 0-9-3.694-9-8.25s4.03-8.25 9-8.25 9 3.694 9 8.25Z" /></svg>
+                        <b>Automated Feedback Triage:</b> Instantly categorize and route user feedback to the correct teams.
+                    </div>
+                    <div>
+                       <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 12.75h1.5m-1.5 3h1.5m-7.5-3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25h-13.5A2.25 2.25 0 0 1 3 18V6.75c0-.621.504-1.125 1.125-1.125H7.5m3-3h3.375c.621 0 1.125.504 1.125 1.125V6.75h-5.625V3.75Z" /></svg>
+                       <b>Intelligent Support:</b> Create chatbots that can understand and answer more complex user questions.
                     </div>
                 </div>
-                <div>
-                     <h3>Building More Helpful Products</h3>
-                    <ul>
-                        <li><b>Intuitive In-App Search:</b> Power a search bar that understands what users <em>mean</em>, not just what they type.</li>
-                        <li><b>Automated Feedback Triage:</b> Instantly categorize and route user feedback to the correct teams.</li>
-                        <li><b>Intelligent Support:</b> Create chatbots that can understand and answer more complex user questions.</li>
-                    </ul>
-                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-icon-text" data-slide="13">
-            <div class="slide-content">
-                <div class="icon-container">
-                    <h3>For Sales</h3>
-                     <div class="icon-list">
-                         <div class="icon-item"><span class="material-icons">mic</span></div>
-                         <div class="icon-item"><span class="material-icons">email</span></div>
-                         <div class="icon-item"><span class="material-icons">cloud_queue</span></div>
+        <section class="slide" id="slide-13" role="group" aria-label="For Sales: Uncovering Actionable Intelligence" data-title="For Sales: Uncovering Actionable Intelligence">
+            <div class="slide-content cognitive-medium layout-icon-text">
+                <h3>For Sales: Uncovering Actionable Intelligence</h3>
+                <div class="grid">
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" /></svg>
+                        <b>Intelligent Call Analysis:</b> Automatically pull insights and action items from call transcripts.
+                    </div>
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                        <b>Opportunity Identification:</b> Scan prospect emails and news to find buying signals.
+                    </div>
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+                        <b>Richer CRM Data:</b> Better organize and understand unstructured text notes in your CRM.
                     </div>
                 </div>
-                <div>
-                    <h3>Uncovering Actionable Intelligence</h3>
-                    <ul>
-                        <li><b>Intelligent Call Analysis:</b> Automatically pull insights and action items from call transcripts.</li>
-                        <li><b>Opportunity Identification:</b> Scan prospect emails and news to find buying signals.</li>
-                        <li><b>Richer CRM Data:</b> Better organize and understand unstructured text notes in your CRM.</li>
-                    </ul>
-                </div>
             </div>
-        </div>
+        </section>
+
+        <section class="slide" id="slide-14" role="group" aria-label="A Shared Superpower" data-title="A Shared Superpower">
+            <div class="slide-content cognitive-medium layout-data-visualization-flowchart">
+                <div class="flowchart" aria-label="Flowchart showing Marketing, Product, and Sales teams connected to a central BERT icon, which in turn feeds into Company Strategy.">
+                    <div style="display: flex; flex-direction: column; gap: var(--spacing-s);">
+                        <div class="flowchart-node">Marketing</div>
+                        <div class="flowchart-node">Product</div>
+                        <div class="flowchart-node">Sales</div>
+                    </div>
+                    <div class="flowchart-arrow">&rarr;</div>
+                    <div class="flowchart-process" style="padding: var(--spacing-m); background: var(--color-primary); color: var(--color-on-primary);">BERT</div>
+                    <div class="flowchart-arrow">&rarr;</div>
+                    <div class="flowchart-node" style="min-width: 200px;">Company Strategy</div>
+                </div>
+                <ul><li>This is more than just a better tool for individual teams.</li><li>It's a shared foundation that allows our entire business to operate with a deeper, more unified understanding of our customers and our market.</li></ul>
+            </div>
+        </section>
         
-        <div class="slide medium-load layout-dataviz-flowchart" data-slide="14">
-            <div class="slide-content">
-                <div>
-                    <h3>A Shared Superpower</h3>
-                    <ul>
-                        <li>This is more than just a better tool for individual teams.</li>
-                        <li>It's a shared foundation that allows our entire business to operate with a deeper, more unified understanding of our customers and our market.</li>
-                    </ul>
-                </div>
-                <div class="flowchart">
-                     <div class="flowchart-row">
-                        <div class="flowchart-item"><p>Marketing</p></div>
-                        <div class="flowchart-item"><p>Product</p></div>
-                        <div class="flowchart-item"><p>Sales</p></div>
-                     </div>
-                     <span class="flow-arrow">&darr;</span>
-                     <div class="flowchart-item" style="border-color: var(--primary);"><span class="material-icons">memory</span><p>Shared BERT Foundation</p></div>
-                     <span class="flow-arrow">&darr;</span>
-                     <div class="flowchart-item" style="background: var(--success); color: white;"><span class="material-icons" style="color:white;">business_center</span><p>Unified Company Strategy</p></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide low-load layout-text-heavy" data-slide="15">
-            <div class="slide-content">
+        <section class="slide" id="slide-15" role="group" aria-label="The Implication: A New Foundation for Building" data-title="The Implication: A New Foundation for Building">
+            <div class="slide-content cognitive-low layout-text-heavy">
                  <blockquote>'The real implication is this: we've moved from building many separate, brittle language tools to having a single, robust, and adaptable foundation. This means we can build smarter, more helpful products for our customers, faster than ever before.'</blockquote>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-dataviz-bar" data-slide="16">
-            <div class="slide-content">
-                <div>
-                    <h3>The Proof: Raising the Industry Benchmark</h3>
-                    <ul>
-                        <li>This new approach isn't just theory.</li>
-                        <li>BERT established new state-of-the-art results on eleven different NLP tasks, fundamentally raising the bar for what's possible.</li>
-                    </ul>
-                </div>
-                <div>
-                    <div class="chart-container">
-                        <canvas id="bertChart"></canvas>
-                    </div>
-                    <div class="accessibility-table">
-                        <h3>Performance on Language Tasks</h3>
-                        <table>
-                            <thead><tr><th>Model</th><th>Score</th></tr></thead>
-                            <tbody>
-                                <tr><td>Previous SOTA</td><td>72.8</td></tr>
-                                <tr><td>BERT</td><td>80.5</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <section class="slide" id="slide-16" role="group" aria-label="The Proof: Raising the Industry Benchmark" data-title="The Proof: Raising the Industry Benchmark">
+            <div class="slide-content cognitive-medium layout-data-visualization-bar">
+                <ul><li>This new approach isn't just theory.</li><li>BERT established new state-of-the-art results on eleven different NLP tasks, fundamentally raising the bar for what's possible.</li></ul>
+                <div class="chart-container">
+                    <canvas id="benchmarkChart"></canvas>
+                    <table class="accessible-table" aria-label="Performance on Language Tasks Bar Chart Data">
+                        <caption>Performance on Language Tasks</caption>
+                        <thead><tr><th>Model</th><th>Performance Score</th></tr></thead>
+                        <tbody>
+                            <tr><td>Previous SOTA</td><td>72.8</td></tr>
+                            <tr><td>BERT</td><td>80.5</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="slide medium-load layout-icon-text" data-slide="17">
-            <div class="slide-content">
-                 <div class="icon-container">
-                    <div class="icon-list">
-                         <div class="icon-item"><span class="material-icons">map</span> <span class="material-icons" style="color:var(--success);">check_circle</span></div>
-                         <div class="icon-item"><span class="material-icons">person_search</span> <span class="material-icons" style="color:var(--success);">check_circle</span></div>
-                         <div class="icon-item"><span class="material-icons">lightbulb</span> <span class="material-icons" style="color:var(--success);">check_circle</span></div>
+        <section class="slide" id="slide-17" role="group" aria-label="Recapping Our Journey" data-title="Recapping Our Journey">
+             <div class="slide-content cognitive-medium layout-icon-text">
+                <h3>Recapping Our Journey</h3>
+                 <div class="grid">
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13v-6m0 6l5.447 2.724A1 1 0 0015 20.382V9.618a1 1 0 00-1.447-.894L9 11m0-4v6m0 0l5.447-2.724A1 1 0 0115 5.618V4.618a1 1 0 00-1.447-.894L9 7m9 4l-5.447 2.724A1 1 0 0112 13.382V12.382a1 1 0 011.447-.894L18 11z"/></svg>
+                        <b>The Context:</b> We saw the limits of the 'one-way street' and how BERT's 'fill-in-the-blanks' trick changed the game.
+                    </div>
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        <b>The Relevance:</b> We explored how this helps Marketing, Product, and Sales do their jobs better.
+                    </div>
+                    <div>
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        <b>The Implication:</b> We realized this is a new foundation for building smarter, faster.
                     </div>
                 </div>
-                <div>
-                    <h3>Recapping Our Journey</h3>
-                    <ul>
-                        <li><b>The Context:</b> We saw the limits of the 'one-way street' and how BERT's 'fill-in-the-blanks' trick changed the game.</li>
-                        <li><b>The Relevance:</b> We explored how this helps Marketing, Product, and Sales do their jobs better.</li>
-                        <li><b>The Implication:</b> We realized this is a new foundation for building smarter, faster.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+             </div>
+        </section>
 
-        <div class="slide low-load layout-title-only" data-slide="18">
-            <div class="slide-content">
+        <section class="slide" id="slide-18" role="group" aria-label="The One Big Idea" data-title="The One Big Idea">
+            <div class="slide-content cognitive-low layout-title-only">
                 <h1>By learning to play 'fill-in-the-blanks,' BERT gained an intuitive grasp of language, giving us a single, powerful foundation to build a new generation of smarter tools.</h1>
             </div>
-        </div>
-
-        <div class="slide low-load layout-title-only" data-slide="19">
-            <div class="slide-content">
-                 <h1>Questions & Discussion</h1>
+        </section>
+        
+        <section class="slide" id="slide-19" role="group" aria-label="Q&A" data-title="Q&A">
+            <div class="slide-content cognitive-low layout-title-only">
+                <h1>Questions & Discussion</h1>
             </div>
-        </div>
+        </section>
 
-    </div>
+    </main>
 
-    <nav class="slide-navigation">
-        <button class="nav-button" id="prev-slide" aria-label="Previous Slide">
-            <span class="material-icons">arrow_back</span>
-        </button>
-        <div id="slide-counter">1 / 19</div>
-        <button class="nav-button" id="next-slide" aria-label="Next Slide">
-            <span class="material-icons">arrow_forward</span>
-        </button>
-    </nav>
+    <div id="progress-bar"></div>
+    <div id="slide-counter"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.slide');
-            const prevButton = document.getElementById('prev-slide');
-            const nextButton = document.getElementById('next-slide');
-            const slideCounter = document.getElementById('slide-counter');
-            let currentSlide = 0;
-            const totalSlides = slides.length;
+    document.addEventListener('DOMContentLoaded', () => {
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progress-bar');
+        const slideCounter = document.getElementById('slide-counter');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
 
-            function updateSlideCounter() {
-                slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
-            }
-
-            function showSlide(index) {
-                slides.forEach((slide, i) => {
-                    slide.classList.toggle('active', i === index);
-                });
-                currentSlide = index;
-                updateSlideCounter();
-            }
-
-            function nextSlide() {
-                let next = currentSlide + 1;
-                if (next >= totalSlides) {
-                    next = 0; // Loop back to start
-                }
-                showSlide(next);
-            }
-
-            function prevSlide() {
-                let prev = currentSlide - 1;
-                if (prev < 0) {
-                    prev = totalSlides - 1; // Loop to end
-                }
-                showSlide(prev);
-            }
-
-            nextButton.addEventListener('click', nextSlide);
-            prevButton.addEventListener('click', prevSlide);
-
-            // Keyboard Navigation
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-                    e.preventDefault();
-                    nextSlide();
-                } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-                    e.preventDefault();
-                    prevSlide();
-                }
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
             });
+            currentSlide = index;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = `${progress}%`;
+            slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+        
+        function nextSlide() {
+            const next = (currentSlide + 1) % totalSlides;
+            showSlide(next);
+        }
+
+        function prevSlide() {
+            const prev = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(prev);
+        }
+
+        // --- Event Listeners ---
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+        
+        document.body.addEventListener('click', (e) => {
+           // Advance slide only if a non-interactive element is clicked
+           if (e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON') {
+               nextSlide();
+           }
+        });
+
+        // --- Chart Rendering ---
+        function renderCharts() {
+            const chartCanvas = document.getElementById('benchmarkChart');
+            if (!chartCanvas) return;
             
-            // Touch/Mouse Navigation
-            let pressTimer;
-            document.querySelector('.presentation-container').addEventListener('mousedown', (e) => {
-                pressTimer = window.setTimeout(() => prevSlide(), 800); // Long press for previous
-                return false;
-            });
-             document.querySelector('.presentation-container').addEventListener('mouseup', (e) => {
-                clearTimeout(pressTimer);
-                return false;
-            });
-            document.querySelector('.presentation-container').addEventListener('click', (e) => {
-                // Prevents click from firing after long press logic
-                if (e.detail) { // Only fire on actual clicks
-                     nextSlide();
-                }
-            });
-
-
-            // Chart.js Implementation
-            const chartCtx = document.getElementById('bertChart');
-            if (chartCtx) {
-                // Set Chart.js defaults per guidelines
-                Chart.defaults.font.family = "'Inter', sans-serif";
-                Chart.defaults.font.size = 14;
-                Chart.defaults.color = '#666666';
-                Chart.defaults.plugins.legend.display = false;
-                Chart.defaults.maintainAspectRatio = false;
-                Chart.defaults.responsive = true;
-
-                new Chart(chartCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Previous SOTA', 'BERT'],
-                        datasets: [{
-                            label: 'Performance Score',
-                            data: [72.8, 80.5],
-                            backgroundColor: [
-                                'rgba(102, 102, 102, 0.7)',
-                                'rgba(25, 118, 210, 0.7)'
-                            ],
-                            borderColor: [
-                                'rgb(102, 102, 102)',
-                                'rgb(25, 118, 210)'
-                            ],
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Performance on Language Tasks',
-                                font: { size: 16, weight: '600' },
-                                color: '#2d2d2d',
-                                padding: { bottom: 20 }
-                            },
-                             tooltip: {
-                                enabled: true
-                            }
+            const ctx = chartCanvas.getContext('2d');
+            
+            // Tufte-inspired minimal design
+            const options = {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true },
+                    title: {
+                        display: true,
+                        text: 'Performance on Language Tasks',
+                        font: { size: 16, family: 'Inter' },
+                        color: '#444746'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawOnChartArea: false,
+                            drawBorder: false,
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: { display: false, drawBorder: false },
-                                ticks: {
-                                    font: { family: "'Inter', sans-serif", size: 14 },
-                                    color: '#666666'
-                                }
-                            },
-                            x: {
-                                grid: { display: false, drawBorder: false },
-                                ticks: {
-                                    font: { family: "'Inter', sans-serif", size: 14, weight: 500 },
-                                    color: '#404040'
-                                }
-                            }
+                        ticks: {
+                           color: '#5f6368'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                           color: '#5f6368'
                         }
                     }
-                });
-            }
+                }
+            };
             
-            showSlide(0); // Initialize first slide
-        });
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Previous SOTA', 'BERT'],
+                    datasets: [{
+                        label: 'Performance Score',
+                        data: [72.8, 80.5],
+                        backgroundColor: [
+                            '#c4c7c5',
+                            '#0B57D0' 
+                        ],
+                        borderColor: [
+                            '#c4c7c5',
+                            '#0B57D0'
+                        ],
+                        borderWidth: 1,
+                        barPercentage: 0.6
+                    }]
+                },
+                options: options
+            });
+        }
+        
+        // --- Initialization ---
+        showSlide(0);
+        renderCharts();
+    });
     </script>
 </body>
 </html>
