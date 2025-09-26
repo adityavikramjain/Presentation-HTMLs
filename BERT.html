@@ -202,14 +202,21 @@
             position: absolute;
             top: 0;
             left: 0;
-            display: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease-in-out;
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 4vw;
             text-align: center;
         }
-        .slide.active { display: flex; }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 1;
+        }
         .slide-header {
             width: 100%;
             max-width: 1200px;
@@ -387,6 +394,7 @@
             height: 28px;
             border-radius: 4px;
             color: var(--md-sys-color-on-primary);
+            background-color: var(--md-sys-color-primary);
             display: flex;
             align-items: center;
             justify-content: flex-end;
@@ -394,8 +402,6 @@
             font-size: 0.9em;
             font-weight: 500;
         }
-        .bar-fallback .bar-value:nth-child(1) { background-color: var(--md-sys-color-primary); }
-        .bar-fallback .bar-value:nth-child(2) { background-color: var(--md-sys-color-secondary); }
 
         .flowchart-fallback { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
         .process-step {
@@ -750,40 +756,19 @@
 
         class BulletproofMermaidRenderer {
             constructor() {
-                this.mermaidLoaded = false;
-                this.mermaidLoadingPromise = null;
-                this.loadMermaidScript();
-            }
-
-            loadMermaidScript() {
-                if (window.mermaid) {
-                    this.mermaidLoaded = true;
-                    this.mermaidLoadingPromise = Promise.resolve();
-                    return;
+                this.mermaidLoaded = !!window.mermaid;
+                if (!this.mermaidLoaded) {
+                    console.error("Mermaid.js script not found. It may have failed to load from the CDN. Using fallbacks.");
                 }
-                this.mermaidLoadingPromise = new Promise(resolve => {
-                    window.addEventListener('load', () => {
-                         if (window.mermaid) {
-                            this.mermaidLoaded = true;
-                            resolve();
-                        } else {
-                            console.error("Mermaid.js failed to load from CDN.");
-                            resolve(); // Resolve anyway to allow fallbacks
-                        }
-                    });
-                });
             }
 
             getThemeColors() {
                 const style = getComputedStyle(document.body);
                 return {
                     primary: style.getPropertyValue('--md-sys-color-primary').trim(),
-                    secondary: style.getPropertyValue('--md-sys-color-secondary').trim(),
-                    tertiary: style.getPropertyValue('--md-sys-color-tertiary').trim(),
                     background: style.getPropertyValue('--md-sys-color-surface').trim(),
                     text: style.getPropertyValue('--md-sys-color-on-surface').trim(),
                     primaryContainer: style.getPropertyValue('--md-sys-color-primary-container').trim(),
-                    onPrimaryContainer: style.getPropertyValue('--md-sys-color-on-primary-container').trim(),
                     outline: style.getPropertyValue('--md-sys-color-outline').trim()
                 };
             }
@@ -791,51 +776,51 @@
             updateMermaidTheme() {
                 if (!this.mermaidLoaded) return;
                 const colors = this.getThemeColors();
-                mermaid.initialize({
-                    startOnLoad: false,
-                    theme: 'base',
-                    themeVariables: {
-                        primaryColor: colors.primary,
-                        primaryTextColor: colors.text,
-                        lineColor: colors.outline,
-                        textColor: colors.text,
-                        mainBkg: colors.background,
-                        clusterBkg: colors.primaryContainer,
-                        clusterBorder: colors.outline
-                    }
-                });
+                try {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        themeVariables: {
+                            primaryColor: colors.primaryContainer,
+                            primaryTextColor: colors.text,
+                            lineColor: colors.outline,
+                            textColor: colors.text,
+                            mainBkg: colors.background
+                        }
+                    });
+                } catch (e) {
+                    console.error("Failed to initialize Mermaid:", e);
+                    this.mermaidLoaded = false;
+                }
             }
 
             async render(container) {
-                await this.mermaidLoadingPromise;
                 const specString = container.dataset.chartSpec;
-                if (!specString) return this.renderError(container, "No chart spec found.");
-
+                let spec;
                 try {
-                    const spec = JSON.parse(specString);
-                    if (!ChartDataValidator.validate(spec)) {
-                         return this.renderFallback(container, spec, "Invalid chart data.");
-                    }
-                    
-                    if (!this.mermaidLoaded) {
-                        return this.renderFallback(container, spec);
-                    }
-                    
+                    spec = JSON.parse(specString);
+                } catch(e) {
+                    return this.renderError(container, "Could not parse chart spec.");
+                }
+
+                if (!ChartDataValidator.validate(spec)) {
+                    return this.renderFallback(container, spec, "Invalid chart data.");
+                }
+                
+                if (!this.mermaidLoaded) {
+                    return this.renderFallback(container, spec);
+                }
+                
+                try {
                     this.updateMermaidTheme();
                     const graphDefinition = this.buildGraphDefinition(spec);
                     if(!graphDefinition) return this.renderFallback(container, spec, "Unsupported chart type.");
                     
                     const { svg } = await mermaid.render(`mermaid-${Date.now()}-${Math.random()}`, graphDefinition);
                     container.innerHTML = svg;
-
                 } catch (e) {
                     console.error("Chart rendering error:", e);
-                    try {
-                        const spec = JSON.parse(specString);
-                        this.renderFallback(container, spec, "Rendering failed.");
-                    } catch {
-                        this.renderError(container, "Could not parse chart spec.");
-                    }
+                    this.renderFallback(container, spec, "Rendering failed.");
                 }
             }
             
@@ -843,19 +828,18 @@
                 const { chart_type, chart_title, chart_data } = spec;
                 switch (chart_type) {
                     case 'bar':
-                        let barDef = `
+                        return `
                             xychart-beta
                             title "${chart_title || 'Bar Chart'}"
                             x-axis [${chart_data.map(d => `"${d.label}"`).join(', ')}]
                             y-axis "Value"
                             bar [${chart_data.map(d => d.value).join(', ')}]`;
-                        return barDef;
                     case 'flowchart':
                          let flowDef = `flowchart TD\n`;
                          chart_data.forEach((item, index) => {
                             flowDef += `    step${index}["${item.description}"]\n`;
                          });
-                         for(let i=0; i < chart_data.length -1; i++){
+                         for(let i=0; i < chart_data.length - 1; i++){
                             flowDef += `    step${i} --> step${i+1}\n`;
                          }
                         return flowDef;
@@ -925,7 +909,6 @@
                 this.initThemeSwitcher();
                 this.initCharts();
                 this.goToSlide(0);
-                document.body.style.opacity = 1; 
             }
 
             initNavigation() {
@@ -942,22 +925,21 @@
                 const themeMenu = document.getElementById('theme-menu');
                 const themeItems = document.querySelectorAll('.theme-menu-item');
 
-                toggleButton.addEventListener('click', () => {
+                toggleButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     themeMenu.style.display = themeMenu.style.display === 'block' ? 'none' : 'block';
                 });
                 
-                document.addEventListener('click', (e) => {
-                    if (!toggleButton.contains(e.target) && !themeMenu.contains(e.target)) {
-                        themeMenu.style.display = 'none';
-                    }
+                document.addEventListener('click', () => {
+                    themeMenu.style.display = 'none';
                 });
                 
                 themeItems.forEach(item => {
-                    item.addEventListener('click', () => {
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation();
                         const theme = item.dataset.theme;
                         document.body.className = theme;
                         themeMenu.style.display = 'none';
-                        // Re-render all charts with the new theme
                         this.initCharts();
                     });
                 });
@@ -970,6 +952,7 @@
             }
 
             goToSlide(index) {
+                if(index < 0 || index >= this.slides.length) return;
                 this.slides[this.currentSlideIndex].classList.remove('active');
                 this.currentSlideIndex = index;
                 this.slides[this.currentSlideIndex].classList.add('active');
