@@ -6,974 +6,820 @@
     <title>Understanding BERT: The Engine of Modern Language AI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
     <style>
         :root {
-            --md-sys-font-family: 'Roboto Flex', sans-serif;
-            --md-sys-border-radius-large: 16px;
-            --md-sys-border-radius-medium: 12px;
-            --md-sys-border-radius-small: 8px;
-            --md-sys-elevation-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
-            --md-sys-elevation-2: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+            --md-sys-shape-corner-extra-small: 4px;
+            --md-sys-shape-corner-small: 8px;
+            --md-sys-shape-corner-medium: 12px;
+            --md-sys-shape-corner-large: 16px;
+            --md-sys-shape-corner-extra-large: 28px;
+            --md-sys-elevation-level-0: 0px 0px 0px 0px rgba(0,0,0,0);
+            --md-sys-elevation-level-1: 0px 1px 3px 1px rgba(0,0,0,0.15), 0px 1px 2px 0px rgba(0,0,0,0.3);
+            --md-sys-elevation-level-2: 0px 2px 6px 2px rgba(0,0,0,0.15), 0px 1px 2px 0px rgba(0,0,0,0.3);
+            --md-sys-elevation-level-3: 0px 4px 8px 3px rgba(0,0,0,0.15), 0px 1px 3px 0px rgba(0,0,0,0.3);
+            --md-sys-elevation-level-4: 0px 6px 10px 4px rgba(0,0,0,0.15), 0px 2px 3px 0px rgba(0,0,0,0.3);
+            --md-sys-elevation-level-5: 0px 8px 12px 6px rgba(0,0,0,0.15), 0px 4px 4px 0px rgba(0,0,0,0.3);
+            --font-family-sans-serif: 'Roboto', sans-serif;
         }
 
-        /* ----- THEME GENERATION: CUSTOM (#C45508) ----- */
-        .theme-custom {
-            --md-sys-color-primary: #86530d;
-            --md-sys-color-on-primary: #ffffff;
-            --md-sys-color-primary-container: #ffddb6;
-            --md-sys-color-on-primary-container: #2b1700;
-            --md-sys-color-secondary: #715b41;
-            --md-sys-color-on-secondary: #ffffff;
-            --md-sys-color-secondary-container: #fcdfa8;
-            --md-sys-color-on-secondary-container: #291805;
-            --md-sys-color-tertiary: #54643d;
-            --md-sys-color-on-tertiary: #ffffff;
-            --md-sys-color-tertiary-container: #d8eabb;
-            --md-sys-color-on-tertiary-container: #131f02;
-            --md-sys-color-error: #ba1a1a;
-            --md-sys-color-on-error: #ffffff;
-            --md-sys-color-error-container: #ffdad6;
-            --md-sys-color-on-error-container: #410002;
-            --md-sys-color-background: #fff8f4;
-            --md-sys-color-on-background: #1f1b16;
-            --md-sys-color-surface: #fff8f4;
-            --md-sys-color-on-surface: #1f1b16;
-            --md-sys-color-surface-variant: #f0e0d0;
-            --md-sys-color-on-surface-variant: #4f4539;
-            --md-sys-color-outline: #817567;
-            --md-sys-color-inverse-on-surface: #f9efe7;
-            --md-sys-color-inverse-surface: #34302a;
-            --md-sys-color-inverse-primary: #fdb962;
-            --md-sys-color-shadow: #000000;
-            --md-sys-color-surface-tint: #86530d;
-            --md-sys-color-outline-variant: #d3c4b4;
-            --md-sys-color-scrim: #000000;
-        }
-
-        /* ----- THEME GENERATION: GREEN ----- */
+        /* Green Theme (Innovation & Growth) */
         .theme-green {
-            --md-sys-color-primary: #006e23;
-            --md-sys-color-on-primary: #ffffff;
-            --md-sys-color-primary-container: #8ef798;
-            --md-sys-color-on-primary-container: #002106;
-            --md-sys-color-secondary: #516350;
-            --md-sys-color-on-secondary: #ffffff;
-            --md-sys-color-secondary-container: #d4e8d0;
-            --md-sys-color-on-secondary-container: #0f1f11;
-            --md-sys-color-tertiary: #3a656e;
-            --md-sys-color-on-tertiary: #ffffff;
-            --md-sys-color-tertiary-container: #beebee;
-            --md-sys-color-on-tertiary-container: #002024;
-            --md-sys-color-error: #ba1a1a;
-            --md-sys-color-error-container: #ffdad6;
-            --md-sys-color-on-error: #ffffff;
+            --md-sys-color-primary: #386A1F;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #B7F397;
+            --md-sys-color-on-primary-container: #082100;
+            --md-sys-color-secondary: #55624C;
+            --md-sys-color-on-secondary: #FFFFFF;
+            --md-sys-color-secondary-container: #D9E7CB;
+            --md-sys-color-on-secondary-container: #131F0D;
+            --md-sys-color-tertiary: #386666;
+            --md-sys-color-on-tertiary: #FFFFFF;
+            --md-sys-color-tertiary-container: #BBEBEB;
+            --md-sys-color-on-tertiary-container: #002020;
+            --md-sys-color-error: #BA1A1A;
+            --md-sys-color-on-error: #FFFFFF;
+            --md-sys-color-error-container: #FFDAD6;
             --md-sys-color-on-error-container: #410002;
-            --md-sys-color-background: #fcfdf7;
-            --md-sys-color-on-background: #1a1c19;
-            --md-sys-color-surface: #fcfdf7;
-            --md-sys-color-on-surface: #1a1c19;
-            --md-sys-color-surface-variant: #dee5d8;
-            --md-sys-color-on-surface-variant: #424940;
-            --md-sys-color-outline: #72796f;
-            --md-sys-color-inverse-on-surface: #f0f1eb;
-            --md-sys-color-inverse-surface: #2f312d;
-            --md-sys-color-inverse-primary: #73da7e;
+            --md-sys-color-background: #FCFDF7;
+            --md-sys-color-on-background: #1A1C18;
+            --md-sys-color-surface: #FCFDF7;
+            --md-sys-color-on-surface: #1A1C18;
+            --md-sys-color-surface-variant: #E0E4D7;
+            --md-sys-color-on-surface-variant: #43483E;
+            --md-sys-color-outline: #74796D;
+            --md-sys-color-shadow: #000000;
+            --md-sys-color-inverse-surface: #2F312D;
+            --md-sys-color-inverse-on-surface: #F1F1EA;
+            --md-sys-color-inverse-primary: #9CD67E;
         }
 
-        /* ----- THEME GENERATION: BLUE ----- */
+        /* Blue Theme (Trust & Authority) */
         .theme-blue {
-            --md-sys-color-primary: #0b5fa5;
-            --md-sys-color-on-primary: #ffffff;
-            --md-sys-color-primary-container: #d6e3ff;
-            --md-sys-color-on-primary-container: #001c38;
-            --md-sys-color-secondary: #555f71;
-            --md-sys-color-on-secondary: #ffffff;
-            --md-sys-color-secondary-container: #d9e3f8;
-            --md-sys-color-on-secondary-container: #121c2b;
-            --md-sys-color-tertiary: #6e5676;
-            --md-sys-color-on-tertiary: #ffffff;
-            --md-sys-color-tertiary-container: #f8d8fe;
-            --md-sys-color-on-tertiary-container: #27142f;
-            --md-sys-color-error: #ba1a1a;
-            --md-sys-color-error-container: #ffdad6;
-            --md-sys-color-on-error: #ffffff;
+            --md-sys-color-primary: #005AC1;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #D8E2FF;
+            --md-sys-color-on-primary-container: #001A41;
+            --md-sys-color-secondary: #575E71;
+            --md-sys-color-on-secondary: #FFFFFF;
+            --md-sys-color-secondary-container: #DCE2F9;
+            --md-sys-color-on-secondary-container: #141B2C;
+            --md-sys-color-tertiary: #715573;
+            --md-sys-color-on-tertiary: #FFFFFF;
+            --md-sys-color-tertiary-container: #FBD7FB;
+            --md-sys-color-on-tertiary-container: #29132D;
+            --md-sys-color-error: #BA1A1A;
+            --md-sys-color-on-error: #FFFFFF;
+            --md-sys-color-error-container: #FFDAD6;
             --md-sys-color-on-error-container: #410002;
-            --md-sys-color-background: #fdfcff;
-            --md-sys-color-on-background: #1a1c1e;
-            --md-sys-color-surface: #fdfcff;
-            --md-sys-color-on-surface: #1a1c1e;
-            --md-sys-color-surface-variant: #e0e2ec;
-            --md-sys-color-on-surface-variant: #43474e;
-            --md-sys-color-outline: #74777f;
-            --md-sys-color-inverse-on-surface: #f1f0f4;
-            --md-sys-color-inverse-surface: #2f3033;
-            --md-sys-color-inverse-primary: #a9c7ff;
-        }
-
-        /* ----- THEME GENERATION: RED/ORANGE ----- */
-        .theme-red {
-            --md-sys-color-primary: #bc3600;
-            --md-sys-color-on-primary: #ffffff;
-            --md-sys-color-primary-container: #ffdbcf;
-            --md-sys-color-on-primary-container: #3f0c00;
-            --md-sys-color-secondary: #77574c;
-            --md-sys-color-on-secondary: #ffffff;
-            --md-sys-color-secondary-container: #ffdacf;
-            --md-sys-color-on-secondary-container: #2c160d;
-            --md-sys-color-tertiary: #6a5f2e;
-            --md-sys-color-on-tertiary: #ffffff;
-            --md-sys-color-tertiary-container: #f2e3a6;
-            --md-sys-color-on-tertiary-container: #221c00;
-            --md-sys-color-error: #ba1a1a;
-            --md-sys-color-error-container: #ffdad6;
-            --md-sys-color-on-error: #ffffff;
-            --md-sys-color-on-error-container: #410002;
-            --md-sys-color-background: #fff8f6;
-            --md-sys-color-on-background: #231917;
-            --md-sys-color-surface: #fff8f6;
-            --md-sys-color-on-surface: #231917;
-            --md-sys-color-surface-variant: #f5ded7;
-            --md-sys-color-on-surface-variant: #53433e;
-            --md-sys-color-outline: #85736d;
-            --md-sys-color-inverse-on-surface: #ffefe9;
-            --md-sys-color-inverse-surface: #392e2b;
-            --md-sys-color-inverse-primary: #ffb69b;
+            --md-sys-color-background: #FEFBFF;
+            --md-sys-color-on-background: #1B1B1F;
+            --md-sys-color-surface: #FEFBFF;
+            --md-sys-color-on-surface: #1B1B1F;
+            --md-sys-color-surface-variant: #E1E2EC;
+            --md-sys-color-on-surface-variant: #44474F;
+            --md-sys-color-outline: #75777F;
+            --md-sys-color-shadow: #000000;
+            --md-sys-color-inverse-surface: #303033;
+            --md-sys-color-inverse-on-surface: #F2F0F4;
+            --md-sys-color-inverse-primary: #ADC6FF;
         }
         
-        /* ----- THEME GENERATION: PURPLE ----- */
-        .theme-purple {
-            --md-sys-color-primary: #6750a4;
-            --md-sys-color-on-primary: #ffffff;
-            --md-sys-color-primary-container: #eaddff;
-            --md-sys-color-on-primary-container: #21005e;
-            --md-sys-color-secondary: #625b71;
-            --md-sys-color-on-secondary: #ffffff;
-            --md-sys-color-secondary-container: #e8def8;
-            --md-sys-color-on-secondary-container: #1e192b;
-            --md-sys-color-tertiary: #7d5260;
-            --md-sys-color-on-tertiary: #ffffff;
-            --md-sys-color-tertiary-container: #ffd8e4;
-            --md-sys-color-on-tertiary-container: #31111d;
-            --md-sys-color-error: #b3261e;
-            --md-sys-color-on-error: #ffffff;
-            --md-sys-color-error-container: #f9dedc;
-            --md-sys-color-on-error-container: #410e0b;
-            --md-sys-color-background: #fffbfe;
-            --md-sys-color-on-background: #1c1b1f;
-            --md-sys-color-surface: #fffbfe;
-            --md-sys-color-on-surface: #1c1b1f;
-            --md-sys-color-surface-variant: #e7e0ec;
-            --md-sys-color-on-surface-variant: #49454f;
-            --md-sys-color-outline: #79747e;
-            --md-sys-color-inverse-on-surface: #f4eff4;
-            --md-sys-color-inverse-surface: #313033;
-            --md-sys-color-inverse-primary: #d0bcff;
+        /* Red/Orange Theme (Urgency & Action) */
+        .theme-red {
+            --md-sys-color-primary: #BC1D00;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #FFDAD4;
+            --md-sys-color-on-primary-container: #3F0500;
+            --md-sys-color-secondary: #77574F;
+            --md-sys-color-on-secondary: #FFFFFF;
+            --md-sys-color-secondary-container: #FFDAD4;
+            --md-sys-color-on-secondary-container: #2C1510;
+            --md-sys-color-tertiary: #6B5D2F;
+            --md-sys-color-on-tertiary: #FFFFFF;
+            --md-sys-color-tertiary-container: #F5E1A7;
+            --md-sys-color-on-tertiary-container: #231B00;
+            --md-sys-color-error: #BA1A1A;
+            --md-sys-color-on-error: #FFFFFF;
+            --md-sys-color-error-container: #FFDAD6;
+            --md-sys-color-on-error-container: #410002;
+            --md-sys-color-background: #FFFBFF;
+            --md-sys-color-on-background: #201A19;
+            --md-sys-color-surface: #FFFBFF;
+            --md-sys-color-on-surface: #201A19;
+            --md-sys-color-surface-variant: #F5DED9;
+            --md-sys-color-on-surface-variant: #534341;
+            --md-sys-color-outline: #857370;
+            --md-sys-color-shadow: #000000;
+            --md-sys-color-inverse-surface: #362F2E;
+            --md-sys-color-inverse-on-surface: #FBEEEB;
+            --md-sys-color-inverse-primary: #FFB4A6;
         }
 
-        /* ----- BASE & LAYOUT ----- */
-        *, *::before, *::after { box-sizing: border-box; }
-        html, body {
-            height: 100%;
+        /* Purple Theme (Sophistication & Elegance) */
+        .theme-purple {
+            --md-sys-color-primary: #6750A4;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #EADDFF;
+            --md-sys-color-on-primary-container: #21005D;
+            --md-sys-color-secondary: #625B71;
+            --md-sys-color-on-secondary: #FFFFFF;
+            --md-sys-color-secondary-container: #E8DEF8;
+            --md-sys-color-on-secondary-container: #1D192B;
+            --md-sys-color-tertiary: #7D5260;
+            --md-sys-color-on-tertiary: #FFFFFF;
+            --md-sys-color-tertiary-container: #FFD8E4;
+            --md-sys-color-on-tertiary-container: #31111D;
+            --md-sys-color-error: #B3261E;
+            --md-sys-color-on-error: #FFFFFF;
+            --md-sys-color-error-container: #F9DEDC;
+            --md-sys-color-on-error-container: #410E0B;
+            --md-sys-color-background: #FFFBFE;
+            --md-sys-color-on-background: #1C1B1F;
+            --md-sys-color-surface: #FFFBFE;
+            --md-sys-color-on-surface: #1C1B1F;
+            --md-sys-color-surface-variant: #E7E0EC;
+            --md-sys-color-on-surface-variant: #49454F;
+            --md-sys-color-outline: #79747E;
+            --md-sys-color-shadow: #000000;
+            --md-sys-color-inverse-surface: #313033;
+            --md-sys-color-inverse-on-surface: #F4EFF4;
+            --md-sys-color-inverse-primary: #D0BCFF;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: var(--md-sys-font-family);
-            overscroll-behavior: none;
         }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--font-family-sans-serif);
+        }
+
         body {
-            display: flex;
-            flex-direction: column;
             background-color: var(--md-sys-color-background);
             color: var(--md-sys-color-on-background);
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-        main {
-            flex-grow: 1;
-            position: relative;
-            overflow: hidden;
+
+        main#presentation {
             width: 100%;
+            height: 100%;
+            display: flex;
+            overflow: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
         }
 
-        /* ----- PRESENTATION & SLIDE STRUCTURE ----- */
         .slide {
             width: 100%;
             height: 100%;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5vw;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
             position: absolute;
             top: 0;
             left: 0;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 4vw;
-            text-align: center;
         }
+
         .slide.active {
             opacity: 1;
-            visibility: visible;
+            transform: scale(1);
+            position: relative;
             z-index: 1;
         }
-        .slide-header {
+        
+        /* Cognitive Load Spacing System */
+        .load-1 { gap: 16px; }
+        .load-2 { gap: 24px; }
+        .load-3 { gap: 32px; }
+        .load-4 { gap: 48px; }
+        .load-5 { gap: 64px; }
+
+        .slide-content {
             width: 100%;
-            max-width: 1200px;
-            padding: 0 2rem;
-            color: var(--md-sys-color-primary);
-            text-align: left;
+            max-width: 1100px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        .slide-body {
-            flex-grow: 1;
+        
+        .card {
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            border-radius: var(--md-sys-shape-corner-large);
+            padding: 32px;
+            box-shadow: var(--md-sys-elevation-level-1);
+            width: 100%;
+            max-width: 900px;
+            border: 1px solid var(--md-sys-color-outline);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Fanatical Alignment: Titles */
+        h1, h2, h3, h4, .h1, .h2, .h3, .h4 { text-align: center; }
+
+        /* Fanatical Alignment: Body Copy */
+        p, ul, ol, blockquote, .p, .ul, .ol, .blockquote { text-align: left; }
+        
+        h1, .h1 { font-size: 3.5rem; font-weight: 500; color: var(--md-sys-color-primary); line-height: 1.1; }
+        h2, .h2 { font-size: 2rem; font-weight: 400; color: var(--md-sys-color-secondary); }
+        h3, .h3 { font-size: 1.75rem; font-weight: 500; color: var(--md-sys-color-on-surface); margin-bottom: 12px;}
+        blockquote {
+            font-size: 1.5rem;
+            font-style: italic;
+            border-left: 4px solid var(--md-sys-color-primary);
+            padding-left: 24px;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+        
+        ul, ol {
+            padding-left: 30px;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        ul li::marker { color: var(--md-sys-color-primary); }
+
+        li { margin-bottom: 12px; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+            vertical-align: bottom;
+            margin-right: 8px;
+            color: var(--md-sys-color-secondary);
+        }
+        
+        .icon-hero {
+            font-size: 100px;
+            color: var(--md-sys-color-tertiary);
+            margin-bottom: 16px;
+        }
+
+        .visual-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 20px;
+            text-align: center;
             width: 100%;
-            max-width: 1200px;
-            gap: 24px;
-        }
-        .slide-body-content, .chart-container {
-            width: 100%;
-            max-width: 900px;
         }
 
-        /* Cognitive Load Spacing */
-        .slide.load-low .slide-body { justify-content: center; }
-        .slide.load-medium .slide-body { justify-content: space-evenly; }
-        .slide.load-high .slide-body { justify-content: flex-start; gap: 40px; padding-top: 2rem; }
-
-        /* Slide Layout Variations */
-        .slide-header-fixed .slide-body { justify-content: flex-start; padding-top: 2rem; }
-        
-        /* ----- TYPOGRAPHY & ALIGNMENT ----- */
-        h1, h2, h3, h4, blockquote { text-align: center; color: var(--md-sys-color-primary); font-weight: 500; margin: 0; }
-        h1 { font-size: clamp(2rem, 6vw, 3.5rem); }
-        h2 { font-size: clamp(1.5rem, 4vw, 2.5rem); color: var(--md-sys-color-secondary); }
-        h3 { font-size: clamp(1.25rem, 3.5vw, 2rem); color: var(--md-sys-color-on-surface); }
-        h4 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); color: var(--md-sys-color-secondary); }
-        p, ul, ol {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            line-height: 1.6;
-            max-width: 75ch;
-            margin: 0 auto;
-            text-align: left;
-        }
-        blockquote { font-size: clamp(1.2rem, 2.5vw, 1.75rem); font-style: italic; color: var(--md-sys-color-on-surface-variant); max-width: 60ch; }
-        ul { list-style: none; padding-left: 0; }
-        li { display: flex; align-items: flex-start; margin-bottom: 1rem; }
-        b, strong { color: var(--md-sys-color-primary); font-weight: 700; }
-
-        /* ----- COMPONENTS ----- */
-        .m3-card {
-            background-color: var(--md-sys-color-surface-variant);
-            color: var(--md-sys-color-on-surface-variant);
-            border-radius: var(--md-sys-border-radius-large);
-            padding: 24px;
-            width: 100%;
-            box-shadow: var(--md-sys-elevation-1);
-        }
-        .m3-card.card-dense { padding: 16px; }
-        .m3-card.card-sparse { padding: 32px; }
-
-        .icon-hero {
-            font-size: clamp(4rem, 10vw, 6rem);
-            color: var(--md-sys-color-tertiary);
-        }
-        
-        .icon-list-item-icon {
-            flex-shrink: 0;
-            display: inline-flex;
+        .visual-flow {
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            font-size: 24px;
-            margin-right: 16px;
-            margin-top: 2px;
-            background-color: var(--md-sys-color-primary-container);
-            color: var(--md-sys-color-on-primary-container);
-            border-radius: 50%;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
-        /* ----- UI CONTROLS ----- */
-        #navigation-controls, #theme-switcher {
-            position: fixed;
-            bottom: 20px;
-            z-index: 100;
+        .visual-flow .material-symbols-outlined {
+            font-size: 3rem;
         }
-        #navigation-controls {
+
+        .flow-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px;
+            background: var(--md-sys-color-surface-variant);
+            border-radius: var(--md-sys-shape-corner-medium);
+            color: var(--md-sys-color-on-surface-variant);
+            min-width: 150px;
+        }
+
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 8px;
-            background-color: var(--md-sys-color-surface);
-            padding: 8px;
-            border-radius: var(--md-sys-border-radius-large);
-            box-shadow: var(--md-sys-elevation-2);
+            gap: 20px;
+            z-index: 100;
         }
-        #theme-switcher {
-            right: 20px;
-        }
-        .nav-button, .theme-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            border: none;
+
+        .nav-btn {
             background-color: var(--md-sys-color-primary-container);
             color: var(--md-sys-color-on-primary-container);
+            border: none;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        .nav-button:hover, .theme-button:hover {
-            background-color: var(--md-sys-color-primary);
-            color: var(--md-sys-color-on-primary);
-        }
-        #theme-menu {
-            display: none;
-            position: absolute;
-            bottom: 60px;
-            right: 0;
-            background-color: var(--md-sys-color-surface);
-            border-radius: var(--md-sys-border-radius-medium);
-            box-shadow: var(--md-sys-elevation-2);
-            overflow: hidden;
-        }
-        .theme-menu-item {
-            padding: 12px 24px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .theme-menu-item:hover {
-            background-color: var(--md-sys-color-surface-variant);
-        }
-
-        /* ----- CHART FALLBACKS ----- */
-        .chart-container {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 400px;
-            width: 100%;
+            cursor: pointer;
+            box-shadow: var(--md-sys-elevation-level-2);
+            transition: box-shadow 0.2s ease;
         }
-        .chart-loading { text-align: center; }
-        .loading-spinner {
-            border: 4px solid var(--md-sys-color-surface-variant);
-            border-top: 4px solid var(--md-sys-color-primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 16px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .chart-fallback {
-            padding: 24px;
-            background: var(--md-sys-color-surface);
-            border: 1px solid var(--md-sys-color-outline-variant);
-            border-radius: var(--md-sys-border-radius-large);
-            width: 100%;
-            max-width: 600px;
+        .nav-btn:hover {
+            box-shadow: var(--md-sys-elevation-level-4);
         }
-        .chart-fallback h4 {
-             margin-bottom: 24px;
-             text-align: center;
-             color: var(--md-sys-color-on-surface-variant);
+
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
         }
         
-        .bar-fallback .bar-container { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
-        .bar-fallback .bar-label { flex-basis: 120px; text-align: right; font-size: 0.9em; color: var(--md-sys-color-on-surface-variant); }
-        .bar-fallback .bar-wrapper { flex-grow: 1; background: var(--md-sys-color-surface-variant); border-radius: 4px; }
-        .bar-fallback .bar-value {
-            height: 28px;
-            border-radius: 4px;
-            color: var(--md-sys-color-on-primary);
-            background-color: var(--md-sys-color-primary);
+        .theme-switcher-toggle {
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            padding-right: 8px;
-            font-size: 0.9em;
-            font-weight: 500;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--md-sys-elevation-level-2);
         }
 
-        .flowchart-fallback { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
-        .process-step {
-            padding: 12px 20px;
-            background: var(--md-sys-color-primary-container);
-            color: var(--md-sys-color-on-primary-container);
-            border-radius: var(--md-sys-border-radius-small);
-            text-align: center;
+        .theme-options {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 56px;
+            background-color: var(--md-sys-color-surface);
+            border-radius: var(--md-sys-shape-corner-medium);
+            box-shadow: var(--md-sys-elevation-level-3);
+            overflow: hidden;
         }
-        .process-arrow {
-            font-family: 'Material Symbols Outlined';
-            font-size: 2.5rem;
-            color: var(--md-sys-color-outline);
-            font-weight: normal;
-        }
-        .process-arrow::after { content: 'arrow_right_alt'; }
 
+        .theme-options.active {
+            display: block;
+        }
+
+        .theme-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            white-space: nowrap;
+            color: var(--md-sys-color-on-surface);
+        }
+        
+        .theme-option:hover {
+            background-color: var(--md-sys-color-surface-variant);
+        }
     </style>
 </head>
-<body class="theme-custom">
+<body class="theme-purple">
 
-    <div id="presentation-container">
-        <main>
-            <section class="slide load-low" data-slide-id="1">
-                <div class="slide-body">
-                    <span class="material-symbols-outlined icon-hero">hub</span>
-                    <div class="slide-body-content">
-                        <h1>Understanding BERT</h1>
-                        <h2>How a breakthrough in AI is changing the way we work with language.</h2>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="slide slide-header-fixed load-medium" data-slide-id="2">
-                <header class="slide-header">
-                    <h2>Our Journey Today</h2>
-                </header>
-                <div class="slide-body">
-                    <div class="slide-body-content">
-                        <div class="m3-card card-sparse">
-                            <h3>We'll explore this topic in three parts:</h3>
-                            <ul>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">map</span><span><b>The Context:</b> The challenge of understanding language and the 'old way' of doing things.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">person_search</span><span><b>The Relevance:</b> How this new technology can directly impact your work in Marketing, Product, and Sales.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">lightbulb</span><span><b>The Implication:</b> What this means for the future and the new opportunities it creates.</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="slide load-low" data-slide-id="3">
-                 <div class="slide-body">
-                     <span class="material-symbols-outlined icon-hero">format_quote</span>
-                    <div class="slide-body-content">
-                         <blockquote>'In our world, effective communication is everything... For years, the major technical challenge has been teaching computers to understand the deep context and nuance of human language, not just keywords.'</blockquote>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="slide slide-header-fixed load-medium" data-slide-id="4">
-                <header class="slide-header">
-                    <h2>The 'Engines' We Build to Help</h2>
-                </header>
-                <div class="slide-body">
-                    <div class="m3-card card-sparse">
-                        <ul>
-                            <li>To solve this, we build 'language models'—engines trained on text.</li>
-                            <li>Their goal is to power business tools that understand customers, improve search, and make chatbots helpful.</li>
-                        </ul>
-                    </div>
-                    <div class="chart-container" data-chart-spec='{
-                            "chart_type": "flowchart",
-                            "chart_title": "How Language Models Work",
-                            "chart_data": [
-                                {"step": "Input", "description": "Vast Amounts of Text"},
-                                {"step": "Process", "description": "Language Model Engine"},
-                                {"step": "Output", "description": "Business Tools"}
-                            ]
-                        }'>
-                        <div class="chart-loading">
-                            <div class="loading-spinner"></div>
-                            <p>Loading Chart...</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="slide slide-header-fixed load-medium" data-slide-id="5">
-                <header class="slide-header">
-                    <h2>The Problem with Reading in a Straight Line</h2>
-                </header>
-                <div class="slide-body">
-                     <span class="material-symbols-outlined icon-hero">arrow_right_alt</span>
-                    <div class="slide-body-content">
-                        <div class="m3-card card-sparse">
-                            <ul>
-                                <li>Older models read in a straight line, which creates a fundamental problem.</li>
-                                <li>When the model sees the word '<b>book</b>,' it has to guess the meaning without knowing what comes <em>next</em>.</li>
-                                <li>It lacks the 'future' context to understand the sentence correctly on the first pass.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="slide slide-header-fixed load-medium" data-slide-id="6">
-                <header class="slide-header">
-                    <h2>The Breakthrough: A Two-Way Street</h2>
-                </header>
-                <div class="slide-body">
-                    <span class="material-symbols-outlined icon-hero">sync_alt</span>
-                    <div class="slide-body-content">
-                        <div class="m3-card card-sparse">
-                            <ul>
-                                <li>The breakthrough is a model that is 'deeply bidirectional'—it reads the whole sentence at once.</li>
-                                <li>It uses both past ('Let's...') and future ('...a flight') context simultaneously to understand the meaning of a word.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="slide load-low" data-slide-id="7">
-                <div class="slide-body">
-                    <span class="material-symbols-outlined icon-hero">help_center</span>
-                    <div class="slide-body-content">
-                        <blockquote>'So what's the trick? How did the creators of BERT teach a computer to understand context by reading a sentence forwards and backwards at the same time, and why does this new method give us a much better tool for our business?'</blockquote>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="slide slide-header-fixed load-medium" data-slide-id="8">
-                <header class="slide-header">
-                    <h2>The Trick: A Giant Game of 'Fill-in-the-Blanks'</h2>
-                </header>
-                <div class="slide-body">
-                    <span class="material-symbols-outlined icon-hero">find_replace</span>
-                    <div class="slide-body-content">
-                        <div class="m3-card card-sparse">
-                             <ul>
-                                <li>The creators used a technique called a 'Masked Language Model' (MLM).</li>
-                                <li>They didn't ask the model to predict the <em>next</em> word. Instead, they randomly hid words in billions of sentences and trained BERT to guess the missing piece based on the surrounding context.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="slide slide-header-fixed load-medium" data-slide-id="9">
-                <header class="slide-header">
-                    <h2>The Result: An Intuitive Grasp of Language</h2>
-                </header>
-                <div class="slide-body">
-                    <span class="material-symbols-outlined icon-hero">psychology</span>
-                    <div class="slide-body-content">
-                         <div class="m3-card card-sparse">
-                            <ul>
-                                <li>By playing this 'game' billions of times, BERT develops a deep, flexible understanding of language.</li>
-                                <li>It learns grammar, nuance, and the complex relationships between words.</li>
-                                <li>This creates a single, powerful foundation that can be adapted for many uses.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="slide slide-header-fixed load-medium" data-slide-id="10">
-                <header class="slide-header">
-                    <h2>The Bridge: From Foundation to Function</h2>
-                </header>
-                <div class="slide-body">
-                    <span class="material-symbols-outlined icon-hero">account_tree</span>
-                    <div class="slide-body-content">
-                        <div class="m3-card card-sparse">
-                             <ul>
-                                <li>So we have this powerful, pre-trained BERT foundation. How do we use it?</li>
-                                <li>We 'fine-tune' it by training it a little more on a small set of specific data. This quickly turns the generalist model into a specialist.</li>
-                                <li>This process is extremely efficient and is what makes BERT so versatile.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="slide slide-header-fixed load-medium" data-slide-id="11">
-                <header class="slide-header">
-                    <h2>For Marketing: The True Voice of the Customer</h2>
-                </header>
-                <div class="slide-body">
-                     <div class="slide-body-content">
-                         <div class="m3-card card-sparse">
-                            <ul>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">campaign</span><span><b>Deeper Sentiment Analysis:</b> Go beyond 'positive/negative.' Understand nuance like sarcasm or urgency in reviews.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">manage_search</span><span><b>Smarter Content Strategy:</b> Analyze what your audience is <em>really</em> discussing online to find key themes.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">visibility</span><span><b>Effective Brand Monitoring:</b> Get a far more accurate picture of how your brand is perceived.</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="slide slide-header-fixed load-medium" data-slide-id="12">
-                 <header class="slide-header">
-                    <h2>For Product: Building More Helpful Products</h2>
-                </header>
-                <div class="slide-body">
-                    <div class="slide-body-content">
-                         <div class="m3-card card-sparse">
-                             <ul>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">search</span><span><b>Intuitive In-App Search:</b> Power a search bar that understands what users <em>mean</em>, not just what they type.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">sort</span><span><b>Automated Feedback Triage:</b> Instantly categorize and route user feedback to the correct teams.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">support_agent</span><span><b>Intelligent Support:</b> Create chatbots that can understand and answer more complex user questions.</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="slide slide-header-fixed load-medium" data-slide-id="13">
-                 <header class="slide-header">
-                    <h2>For Sales: Uncovering Actionable Intelligence</h2>
-                </header>
-                <div class="slide-body">
-                     <div class="slide-body-content">
-                         <div class="m3-card card-sparse">
-                            <ul>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">summarize</span><span><b>Intelligent Call Analysis:</b> Automatically pull insights and action items from call transcripts.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">track_changes</span><span><b>Opportunity Identification:</b> Scan prospect emails and news to find buying signals.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">database</span><span><b>Richer CRM Data:</b> Better organize and understand unstructured text notes in your CRM.</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="slide slide-header-fixed load-medium" data-slide-id="14">
-                 <header class="slide-header">
-                    <h2>A Shared Superpower</h2>
-                </header>
-                <div class="slide-body">
-                    <span class="material-symbols-outlined icon-hero">groups</span>
-                     <div class="slide-body-content">
-                         <div class="m3-card card-sparse">
-                            <ul>
-                                <li>This is more than just a better tool for individual teams.</li>
-                                <li>It's a shared foundation that allows our entire business to operate with a deeper, more unified understanding of our customers and our market.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="slide load-low" data-slide-id="15">
-                <div class="slide-body">
-                    <span class="material-symbols-outlined icon-hero">foundation</span>
-                     <div class="slide-body-content">
-                        <blockquote>'The real implication is this: we've moved from building many separate, brittle language tools to having a single, robust, and adaptable foundation. This means we can build smarter, more helpful products for our customers, faster than ever before.'</blockquote>
-                    </div>
-                </div>
-            </section>
-
-            <section class="slide slide-header-fixed load-medium" data-slide-id="16">
-                <header class="slide-header">
-                    <h2>The Proof: Raising the Industry Benchmark</h2>
-                </header>
-                <div class="slide-body">
-                    <div class="m3-card card-sparse">
-                        <ul>
-                            <li>This new approach isn't just theory.</li>
-                            <li>BERT established new state-of-the-art results on eleven different NLP tasks, fundamentally raising the bar for what's possible.</li>
-                        </ul>
-                    </div>
-                    <div class="chart-container" data-chart-spec='{
-                            "chart_type": "bar",
-                            "chart_title": "Performance on Language Tasks",
-                            "chart_data": [
-                                {"label": "Previous SOTA", "value": 72.8},
-                                {"label": "BERT", "value": 80.5}
-                            ]
-                        }'>
-                        <div class="chart-loading">
-                            <div class="loading-spinner"></div>
-                            <p>Loading Chart...</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="slide slide-header-fixed load-medium" data-slide-id="17">
-                <header class="slide-header">
-                    <h2>Recapping Our Journey</h2>
-                </header>
-                <div class="slide-body">
-                    <div class="slide-body-content">
-                        <div class="m3-card card-sparse">
-                             <ul>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">map</span><span><b>The Context:</b> We saw the limits of the 'one-way street' and how BERT's 'fill-in-the-blanks' trick changed the game.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">person_search</span><span><b>The Relevance:</b> We explored how this helps Marketing, Product, and Sales do their jobs better.</span></li>
-                                <li><span class="material-symbols-outlined icon-list-item-icon">lightbulb</span><span><b>The Implication:</b> We realized this is a new foundation for building smarter, faster.</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="slide load-low" data-slide-id="18">
-                <div class="slide-body">
-                    <span class="material-symbols-outlined icon-hero">emoji_objects</span>
-                    <div class="slide-body-content">
-                        <h1>By learning to play 'fill-in-the-blanks,' BERT gained an intuitive grasp of language, giving us a single, powerful foundation to build a new generation of smarter tools.</h1>
-                    </div>
-                </div>
-            </section>
-
-            <section class="slide load-low" data-slide-id="19">
-                <div class="slide-body">
-                     <span class="material-symbols-outlined icon-hero">question_answer</span>
-                    <div class="slide-body-content">
-                        <h1>Questions & Discussion</h1>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <div id="navigation-controls">
-            <button id="prev-slide" class="nav-button"><span class="material-symbols-outlined">arrow_back</span></button>
-            <button id="next-slide" class="nav-button"><span class="material-symbols-outlined">arrow_forward</span></button>
-        </div>
-
-        <div id="theme-switcher">
-            <button id="theme-toggle-button" class="theme-button"><span class="material-symbols-outlined">palette</span></button>
-            <div id="theme-menu">
-                 <div class="theme-menu-item" data-theme="theme-custom">Custom Theme</div>
-                 <div class="theme-menu-item" data-theme="theme-green">Innovation (Green)</div>
-                 <div class="theme-menu-item" data-theme="theme-blue">Authority (Blue)</div>
-                 <div class="theme-menu-item" data-theme="theme-red">Urgency (Red)</div>
-                 <div class="theme-menu-item" data-theme="theme-purple">Elegance (Purple)</div>
+    <main id="presentation">
+        <section class="slide load-1" data-slide-id="1">
+            <div class="slide-content">
+                <span class="material-symbols-outlined icon-hero">psychology</span>
+                <h1>Understanding BERT</h1><h2>How a breakthrough in AI is changing the way we work with language.</h2>
             </div>
+        </section>
+
+        <section class="slide load-3" data-slide-id="2">
+            <div class="card">
+                <h3>Our Journey Today</h3>
+                <ul>
+                    <li><span class="material-symbols-outlined">map</span><b>The Context:</b> The challenge of understanding language and the 'old way' of doing things.</li>
+                    <li><span class="material-symbols-outlined">person_search</span><b>The Relevance:</b> How this new technology can directly impact your work in Marketing, Product, and Sales.</li>
+                    <li><span class="material-symbols-outlined">lightbulb</span><b>The Implication:</b> What this means for the future and the new opportunities it creates.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="slide load-2" data-slide-id="3">
+            <div class="card">
+                <span class="material-symbols-outlined icon-hero">format_quote</span>
+                <blockquote>'In our world, effective communication is everything... For years, the major technical challenge has been teaching computers to understand the deep context and nuance of human language, not just keywords.'</blockquote>
+            </div>
+        </section>
+
+        <section class="slide load-3" data-slide-id="4">
+            <div class="card">
+                 <h3>The 'Engines' We Build to Help</h3>
+                <div class="visual-container">
+                    <div class="visual-flow">
+                       <div class="flow-item"><span class="material-symbols-outlined">library_books</span>Vast Text</div>
+                       <span class="material-symbols-outlined">arrow_right_alt</span>
+                       <div class="flow-item"><span class="material-symbols-outlined">model_training</span>Language Model</div>
+                       <span class="material-symbols-outlined">arrow_right_alt</span>
+                       <div class="flow-item"><span class="material-symbols-outlined">business_center</span>Business Tools</div>
+                    </div>
+                </div>
+                 <ul><li>To solve this, we build 'language models'—engines trained on text.</li><li>Their goal is to power business tools that understand customers, improve search, and make chatbots helpful.</li></ul>
+            </div>
+        </section>
+
+        <section class="slide load-3" data-slide-id="5">
+            <div class="card">
+                 <h3>The Problem with Reading in a Straight Line</h3>
+                 <div class="visual-container">
+                    <span class="material-symbols-outlined icon-hero">arrow_forward</span>
+                 </div>
+                 <ul><li>Older models read in a straight line, which creates a fundamental problem.</li><li>When the model sees the word '<b>book</b>,' it has to guess the meaning without knowing what comes <em>next</em>.</li><li>It lacks the 'future' context to understand the sentence correctly on the first pass.</li></ul>
+            </div>
+        </section>
+        
+        <section class="slide load-3" data-slide-id="6">
+            <div class="card">
+                <h3>The Breakthrough: A Two-Way Street</h3>
+                <div class="visual-container">
+                    <span class="material-symbols-outlined icon-hero">sync_alt</span>
+                </div>
+                <ul><li>The breakthrough is a model that is 'deeply bidirectional'—it reads the whole sentence at once.</li><li>It uses both past ('Let's...') and future ('...a flight') context simultaneously to understand the meaning of a word.</li></ul>
+            </div>
+        </section>
+
+        <section class="slide load-2" data-slide-id="7">
+            <div class="card">
+                 <span class="material-symbols-outlined icon-hero">help_center</span>
+                 <blockquote>'So what's the trick? How did the creators of BERT teach a computer to understand context by reading a sentence forwards and backwards at the same time, and why does this new method give us a much better tool for our business?'</blockquote>
+            </div>
+        </section>
+
+        <section class="slide load-3" data-slide-id="8">
+            <div class="card">
+                <h3>The Trick: A Giant Game of 'Fill-in-the-Blanks'</h3>
+                 <div class="visual-container">
+                    <span class="material-symbols-outlined icon-hero">edit_note</span>
+                 </div>
+                <ul><li>The creators used a technique called a 'Masked Language Model' (MLM).</li><li>They didn't ask the model to predict the <em>next</em> word. Instead, they randomly hid words in billions of sentences and trained BERT to guess the missing piece based on the surrounding context.</li></ul>
+            </div>
+        </section>
+        
+        <section class="slide load-3" data-slide-id="9">
+            <div class="card">
+                 <h3>The Result: An Intuitive Grasp of Language</h3>
+                 <div class="visual-container">
+                    <span class="material-symbols-outlined icon-hero">hub</span>
+                 </div>
+                 <ul><li>By playing this 'game' billions of times, BERT develops a deep, flexible understanding of language.</li><li>It learns grammar, nuance, and the complex relationships between words.</li><li>This creates a single, powerful foundation that can be adapted for many uses.</li></ul>
+            </div>
+        </section>
+
+        <section class="slide load-3" data-slide-id="10">
+            <div class="card">
+                <h3>The Bridge: From Foundation to Function</h3>
+                <div class="visual-container">
+                     <div class="visual-flow">
+                       <div class="flow-item"><span class="material-symbols-outlined">layers</span>BERT Foundation</div>
+                       <span class="material-symbols-outlined">add</span>
+                       <div class="flow-item"><span class="material-symbols-outlined">tune</span>Fine-Tuning Data</div>
+                       <span class="material-symbols-outlined">arrow_right_alt</span>
+                       <div class="flow-item"><span class="material-symbols-outlined">workspace_premium</span>Expert Tool</div>
+                    </div>
+                </div>
+                <ul><li>So we have this powerful, pre-trained BERT foundation. How do we use it?</li><li>We 'fine-tune' it by training it a little more on a small set of specific data. This quickly turns the generalist model into a specialist.</li><li>This process is extremely efficient and is what makes BERT so versatile.</li></ul>
+            </div>
+        </section>
+
+        <section class="slide load-3" data-slide-id="11">
+            <div class="card">
+                 <h3>For Marketing: The True Voice of the Customer</h3>
+                 <ul>
+                     <li><span class="material-symbols-outlined">reviews</span><b>Deeper Sentiment Analysis:</b> Go beyond 'positive/negative.' Understand nuance like sarcasm or urgency in reviews.</li>
+                     <li><span class="material-symbols-outlined">lightbulb</span><b>Smarter Content Strategy:</b> Analyze what your audience is <em>really</em> discussing online to find key themes.</li>
+                     <li><span class="material-symbols-outlined">monitoring</span><b>Effective Brand Monitoring:</b> Get a far more accurate picture of how your brand is perceived.</li>
+                 </ul>
+            </div>
+        </section>
+        
+        <section class="slide load-3" data-slide-id="12">
+            <div class="card">
+                 <h3>For Product: Building More Helpful Products</h3>
+                 <ul>
+                     <li><span class="material-symbols-outlined">search</span><b>Intuitive In-App Search:</b> Power a search bar that understands what users <em>mean</em>, not just what they type.</li>
+                     <li><span class="material-symbols-outlined">rate_review</span><b>Automated Feedback Triage:</b> Instantly categorize and route user feedback to the correct teams.</li>
+                     <li><span class="material-symbols-outlined">support_agent</span><b>Intelligent Support:</b> Create chatbots that can understand and answer more complex user questions.</li>
+                 </ul>
+            </div>
+        </section>
+        
+        <section class="slide load-3" data-slide-id="13">
+            <div class="card">
+                 <h3>For Sales: Uncovering Actionable Intelligence</h3>
+                 <ul>
+                     <li><span class="material-symbols-outlined">mic_external_on</span><b>Intelligent Call Analysis:</b> Automatically pull insights and action items from call transcripts.</li>
+                     <li><span class="material-symbols-outlined">track_changes</span><b>Opportunity Identification:</b> Scan prospect emails and news to find buying signals.</li>
+                     <li><span class="material-symbols-outlined">database</span><b>Richer CRM Data:</b> Better organize and understand unstructured text notes in your CRM.</li>
+                 </ul>
+            </div>
+        </section>
+
+        <section class="slide load-3" data-slide-id="14">
+            <div class="card">
+                <h3>A Shared Superpower</h3>
+                <div class="visual-container">
+                     <div class="visual-flow">
+                       <div class="flow-item"><span class="material-symbols-outlined">campaign</span>Marketing</div>
+                       <div class="flow-item"><span class="material-symbols-outlined">deployed_code</span>Product</div>
+                       <div class="flow-item"><span class="material-symbols-outlined">point_of_sale</span>Sales</div>
+                       <span class="material-symbols-outlined">arrow_right_alt</span>
+                       <div class="flow-item"><span class="material-symbols-outlined">hub</span>BERT</div>
+                       <span class="material-symbols-outlined">arrow_right_alt</span>
+                       <div class="flow-item"><span class="material-symbols-outlined">domain</span>Company Strategy</div>
+                    </div>
+                </div>
+                <ul><li>This is more than just a better tool for individual teams.</li><li>It's a shared foundation that allows our entire business to operate with a deeper, more unified understanding of our customers and our market.</li></ul>
+            </div>
+        </section>
+
+        <section class="slide load-2" data-slide-id="15">
+            <div class="card">
+                 <span class="material-symbols-outlined icon-hero">foundation</span>
+                 <blockquote>'The real implication is this: we've moved from building many separate, brittle language tools to having a single, robust, and adaptable foundation. This means we can build smarter, more helpful products for our customers, faster than ever before.'</blockquote>
+            </div>
+        </section>
+
+        <section class="slide load-3" data-slide-id="16">
+            <div class="card">
+                <h3>The Proof: Raising the Industry Benchmark</h3>
+                 <div class="visual-container">
+                    <span class="material-symbols-outlined icon-hero">bar_chart</span>
+                 </div>
+                 <ul><li>This new approach isn't just theory.</li><li>BERT established new state-of-the-art results on eleven different NLP tasks, fundamentally raising the bar for what's possible.</li></ul>
+            </div>
+        </section>
+
+        <section class="slide load-3" data-slide-id="17">
+            <div class="card">
+                <h3>Recapping Our Journey</h3>
+                 <ul>
+                     <li><span class="material-symbols-outlined">map</span><b>The Context:</b> We saw the limits of the 'one-way street' and how BERT's 'fill-in-the-blanks' trick changed the game. <span class="material-symbols-outlined" style="color:var(--md-sys-color-primary)">check_circle</span></li>
+                     <li><span class="material-symbols-outlined">person_search</span><b>The Relevance:</b> We explored how this helps Marketing, Product, and Sales do their jobs better. <span class="material-symbols-outlined" style="color:var(--md-sys-color-primary)">check_circle</span></li>
+                     <li><span class="material-symbols-outlined">lightbulb</span><b>The Implication:</b> We realized this is a new foundation for building smarter, faster. <span class="material-symbols-outlined" style="color:var(--md-sys-color-primary)">check_circle</span></li>
+                 </ul>
+            </div>
+        </section>
+
+        <section class="slide load-1" data-slide-id="18">
+            <div class="slide-content">
+                <span class="material-symbols-outlined icon-hero">target</span>
+                <h1>By learning to play 'fill-in-the-blanks,' BERT gained an intuitive grasp of language, giving us a single, powerful foundation to build a new generation of smarter tools.</h1>
+            </div>
+        </section>
+
+        <section class="slide load-1" data-slide-id="19">
+            <div class="slide-content">
+                <span class="material-symbols-outlined icon-hero">quiz</span>
+                <h1>Questions & Discussion</h1>
+            </div>
+        </section>
+    </main>
+
+    <div class="nav-controls">
+        <button id="prev-btn" class="nav-btn"><span class="material-symbols-outlined">arrow_back</span></button>
+        <button id="next-btn" class="nav-btn"><span class="material-symbols-outlined">arrow_forward</span></button>
+    </div>
+
+    <div class="theme-switcher">
+        <button id="theme-toggle-btn" class="theme-switcher-toggle">
+            <span class="material-symbols-outlined">palette</span>
+        </button>
+        <div id="theme-options-menu" class="theme-options">
+            <div class="theme-option" data-theme="theme-green">Innovation (Green)</div>
+            <div class="theme-option" data-theme="theme-blue">Authority (Blue)</div>
+            <div class="theme-option" data-theme="theme-red">Action (Red)</div>
+            <div class="theme-option" data-theme="theme-purple">Elegance (Purple)</div>
+            <div class="theme-option" data-theme="theme-custom">Custom...</div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
     <script>
-        class ChartDataValidator {
-            static validate(spec) {
-                if (!spec || typeof spec !== 'object') return false;
-                if (!spec.chart_type || !spec.chart_data || !Array.isArray(spec.chart_data)) return false;
-                return true;
+        /**
+         * Converts a hex color string to an HSL array.
+         * @param {string} H - The hex color string (e.g., "#RRGGBB").
+         * @returns {number[]} - An array containing [hue, saturation, lightness].
+         */
+        function hexToHSL(H) {
+            let r = 0, g = 0, b = 0;
+            if (H.length == 4) {
+                r = "0x" + H[1] + H[1];
+                g = "0x" + H[2] + H[2];
+                b = "0x" + H[3] + H[3];
+            } else if (H.length == 7) {
+                r = "0x" + H[1] + H[2];
+                g = "0x" + H[3] + H[4];
+                b = "0x" + H[5] + H[6];
             }
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            let cmin = Math.min(r, g, b),
+                cmax = Math.max(r, g, b),
+                delta = cmax - cmin,
+                h = 0, s = 0, l = 0;
+
+            if (delta == 0) h = 0;
+            else if (cmax == r) h = ((g - b) / delta) % 6;
+            else if (cmax == g) h = (b - r) / delta + 2;
+            else h = (r - g) / delta + 4;
+
+            h = Math.round(h * 60);
+            if (h < 0) h += 360;
+
+            l = (cmax + cmin) / 2;
+            s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+            s = +(s * 100).toFixed(1);
+            l = +(l * 100).toFixed(1);
+
+            return [h, s, l];
         }
 
-        class BulletproofMermaidRenderer {
-            constructor() {
-                this.mermaidLoaded = !!window.mermaid;
-                if (!this.mermaidLoaded) {
-                    console.error("Mermaid.js script not found. It may have failed to load from the CDN. Using fallbacks.");
-                }
-            }
+        /**
+         * Converts an HSL color value to a hex string.
+         * @param {number} h - Hue.
+         * @param {number} s - Saturation.
+         * @param {number} l - Lightness.
+         * @returns {string} The hex color string.
+         */
+        function hslToHex(h, s, l) {
+            s /= 100;
+            l /= 100;
+            let c = (1 - Math.abs(2 * l - 1)) * s,
+                x = c * (1 - Math.abs((h / 60) % 2 - 1)),
+                m = l - c / 2,
+                r = 0, g = 0, b = 0;
+            if (0 <= h && h < 60) { [r, g, b] = [c, x, 0]; }
+            else if (60 <= h && h < 120) { [r, g, b] = [x, c, 0]; }
+            else if (120 <= h && h < 180) { [r, g, b] = [0, c, x]; }
+            else if (180 <= h && h < 240) { [r, g, b] = [0, x, c]; }
+            else if (240 <= h && h < 300) { [r, g, b] = [x, 0, c]; }
+            else if (300 <= h && h < 360) { [r, g, b] = [c, 0, x]; }
+            r = Math.round((r + m) * 255).toString(16);
+            g = Math.round((g + m) * 255).toString(16);
+            b = Math.round((b + m) * 255).toString(16);
+            if (r.length == 1) r = "0" + r;
+            if (g.length == 1) g = "0" + g;
+            if (b.length == 1) b = "0" + b;
+            return "#" + r + g + b;
+        }
 
-            getThemeColors() {
-                const style = getComputedStyle(document.body);
-                return {
-                    primary: style.getPropertyValue('--md-sys-color-primary').trim(),
-                    background: style.getPropertyValue('--md-sys-color-surface').trim(),
-                    text: style.getPropertyValue('--md-sys-color-on-surface').trim(),
-                    primaryContainer: style.getPropertyValue('--md-sys-color-primary-container').trim(),
-                    outline: style.getPropertyValue('--md-sys-color-outline').trim()
-                };
-            }
+        /**
+         * Generates a Material Design 3 theme from a primary hex color.
+         * @param {string} hex - The primary hex color.
+         */
+        function generateThemeFromHex(hex) {
+            const [h, s, l] = hexToHSL(hex);
 
-            updateMermaidTheme() {
-                if (!this.mermaidLoaded) return;
-                const colors = this.getThemeColors();
-                try {
-                    mermaid.initialize({
-                        startOnLoad: false,
-                        theme: 'base',
-                        themeVariables: {
-                            primaryColor: colors.primaryContainer,
-                            primaryTextColor: colors.text,
-                            lineColor: colors.outline,
-                            textColor: colors.text,
-                            mainBkg: colors.background
-                        }
-                    });
-                } catch (e) {
-                    console.error("Failed to initialize Mermaid:", e);
-                    this.mermaidLoaded = false;
-                }
-            }
+            const theme = {
+                '--md-sys-color-primary': hslToHex(h, s, 40),
+                '--md-sys-color-on-primary': hslToHex(h, s, 100),
+                '--md-sys-color-primary-container': hslToHex(h, s, 90),
+                '--md-sys-color-on-primary-container': hslToHex(h, s, 10),
+                '--md-sys-color-secondary': hslToHex(h, s-5, 40),
+                '--md-sys-color-on-secondary': hslToHex(h, s, 100),
+                '--md-sys-color-secondary-container': hslToHex(h, s-5, 90),
+                '--md-sys-color-on-secondary-container': hslToHex(h, s-5, 10),
+                '--md-sys-color-tertiary': hslToHex(h + 60, s, 40),
+                '--md-sys-color-on-tertiary': hslToHex(h + 60, s, 100),
+                '--md-sys-color-tertiary-container': hslToHex(h + 60, s, 90),
+                '--md-sys-color-on-tertiary-container': hslToHex(h + 60, s, 10),
+                '--md-sys-color-error': '#B3261E',
+                '--md-sys-color-on-error': '#FFFFFF',
+                '--md-sys-color-error-container': '#F9DEDC',
+                '--md-sys-color-on-error-container': '#410E0B',
+                '--md-sys-color-background': '#FFFBFE',
+                '--md-sys-color-on-background': '#1C1B1F',
+                '--md-sys-color-surface': '#FFFBFE',
+                '--md-sys-color-on-surface': '#1C1B1F',
+                '--md-sys-color-surface-variant': '#E7E0EC',
+                '--md-sys-color-on-surface-variant': '#49454F',
+                '--md-sys-color-outline': '#79747E',
+            };
 
-            async render(container) {
-                const specString = container.dataset.chartSpec;
-                let spec;
-                try {
-                    spec = JSON.parse(specString);
-                } catch(e) {
-                    return this.renderError(container, "Could not parse chart spec.");
-                }
-
-                if (!ChartDataValidator.validate(spec)) {
-                    return this.renderFallback(container, spec, "Invalid chart data.");
-                }
-                
-                if (!this.mermaidLoaded) {
-                    return this.renderFallback(container, spec);
-                }
-                
-                try {
-                    this.updateMermaidTheme();
-                    const graphDefinition = this.buildGraphDefinition(spec);
-                    if(!graphDefinition) return this.renderFallback(container, spec, "Unsupported chart type.");
-                    
-                    const { svg } = await mermaid.render(`mermaid-${Date.now()}-${Math.random()}`, graphDefinition);
-                    container.innerHTML = svg;
-                } catch (e) {
-                    console.error("Chart rendering error:", e);
-                    this.renderFallback(container, spec, "Rendering failed.");
-                }
+            let style = document.getElementById('custom-theme-style');
+            if (!style) {
+                style = document.createElement('style');
+                style.id = 'custom-theme-style';
+                document.head.appendChild(style);
             }
             
-            buildGraphDefinition(spec) {
-                const { chart_type, chart_title, chart_data } = spec;
-                switch (chart_type) {
-                    case 'bar':
-                        return `
-                            xychart-beta
-                            title "${chart_title || 'Bar Chart'}"
-                            x-axis [${chart_data.map(d => `"${d.label}"`).join(', ')}]
-                            y-axis "Value"
-                            bar [${chart_data.map(d => d.value).join(', ')}]`;
-                    case 'flowchart':
-                         let flowDef = `flowchart TD\n`;
-                         chart_data.forEach((item, index) => {
-                            flowDef += `    step${index}["${item.description}"]\n`;
-                         });
-                         for(let i=0; i < chart_data.length - 1; i++){
-                            flowDef += `    step${i} --> step${i+1}\n`;
-                         }
-                        return flowDef;
-                    default:
-                        return null;
-                }
-            }
-
-            renderFallback(container, spec, reason = "") {
-                 if (reason) console.warn(`Rendering fallback: ${reason}`);
-                 if (!spec || !ChartDataValidator.validate(spec)) {
-                    return this.renderError(container, "Invalid chart spec for fallback.");
-                 }
-
-                const { chart_type, chart_title, chart_data } = spec;
-                let fallbackHTML = `<div class="chart-fallback"><h4>${chart_title || ''} (Fallback)</h4>`;
-                
-                switch (chart_type) {
-                    case 'bar':
-                        fallbackHTML += `<div class="bar-fallback">`;
-                        const maxValue = Math.max(...chart_data.map(d => d.value));
-                        chart_data.forEach(item => {
-                            const percentage = (item.value / maxValue) * 100;
-                            fallbackHTML += `
-                                <div class="bar-container">
-                                    <div class="bar-label">${item.label}</div>
-                                    <div class="bar-wrapper">
-                                        <div class="bar-value" style="width: ${percentage}%;">${item.value}</div>
-                                    </div>
-                                </div>`;
-                        });
-                        fallbackHTML += `</div>`;
-                        break;
-                    case 'flowchart':
-                        fallbackHTML += `<div class="flowchart-fallback">`;
-                        chart_data.forEach((item, index) => {
-                             fallbackHTML += `<div class="process-step">${item.description}</div>`;
-                             if (index < chart_data.length - 1) {
-                                fallbackHTML += `<div class="process-arrow"></div>`;
-                             }
-                        });
-                        fallbackHTML += `</div>`;
-                        break;
-                    default:
-                        fallbackHTML += `<p>Unsupported chart type for fallback.</p>`;
-                }
-
-                fallbackHTML += '</div>';
-                container.innerHTML = fallbackHTML;
-            }
-
-            renderError(container, message) {
-                container.innerHTML = `<div class="chart-fallback"><p style="color:var(--md-sys-color-error);">${message}</p></div>`;
-            }
+            const cssVars = Object.entries(theme).map(([key, value]) => `${key}: ${value};`).join('\n');
+            style.innerHTML = `.theme-custom { ${cssVars} }`;
         }
+
 
         class EnhancedPresentationController {
             constructor() {
+                this.presentation = document.getElementById('presentation');
                 this.slides = document.querySelectorAll('.slide');
-                this.currentSlideIndex = 0;
-                this.mermaidRenderer = new BulletproofMermaidRenderer();
+                this.prevBtn = document.getElementById('prev-btn');
+                this.nextBtn = document.getElementById('next-btn');
+                this.themeToggleBtn = document.getElementById('theme-toggle-btn');
+                this.themeOptionsMenu = document.getElementById('theme-options-menu');
+                this.themeOptions = document.querySelectorAll('.theme-option');
+
+                this.totalSlides = this.slides.length;
+                this.currentSlide = 0;
+
+                this.init();
             }
-            
+
             init() {
-                if (this.slides.length === 0) return;
                 this.initNavigation();
                 this.initThemeSwitcher();
-                this.initCharts();
-                this.goToSlide(0);
+                document.addEventListener('keydown', this.handleKeyPress.bind(this));
             }
 
             initNavigation() {
-                document.getElementById('prev-slide').addEventListener('click', () => this.prevSlide());
-                document.getElementById('next-slide').addEventListener('click', () => this.nextSlide());
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowRight' || e.key === ' ') this.nextSlide();
-                    if (e.key === 'ArrowLeft') this.prevSlide();
-                });
+                this.updateSlide(0); // Show first slide by default
+                this.prevBtn.addEventListener('click', () => this.showPrevSlide());
+                this.nextBtn.addEventListener('click', () => this.showNextSlide());
             }
 
             initThemeSwitcher() {
-                const toggleButton = document.getElementById('theme-toggle-button');
-                const themeMenu = document.getElementById('theme-menu');
-                const themeItems = document.querySelectorAll('.theme-menu-item');
+                 this.themeToggleBtn.addEventListener('click', () => {
+                    this.themeOptionsMenu.classList.toggle('active');
+                });
+                
+                document.body.addEventListener('click', (e) => {
+                    if (!this.themeToggleBtn.contains(e.target) && !this.themeOptionsMenu.contains(e.target)) {
+                       this.themeOptionsMenu.classList.remove('active');
+                    }
+                });
 
-                toggleButton.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    themeMenu.style.display = themeMenu.style.display === 'block' ? 'none' : 'block';
-                });
-                
-                document.addEventListener('click', () => {
-                    themeMenu.style.display = 'none';
-                });
-                
-                themeItems.forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const theme = item.dataset.theme;
-                        document.body.className = theme;
-                        themeMenu.style.display = 'none';
-                        this.initCharts();
+                this.themeOptions.forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        const theme = e.target.dataset.theme;
+                        if (theme === 'theme-custom') {
+                            const hex = prompt('Enter a primary hex color (e.g., #6750A4):');
+                            if (hex && /^#[0-9A-F]{6}$/i.test(hex)) {
+                                generateThemeFromHex(hex);
+                                this.applyTheme(theme);
+                            } else if (hex) {
+                                alert('Invalid hex code format.');
+                            }
+                        } else {
+                            this.applyTheme(theme);
+                        }
+                        this.themeOptionsMenu.classList.remove('active');
                     });
                 });
             }
 
-            initCharts() {
-                document.querySelectorAll('.chart-container').forEach(container => {
-                    this.mermaidRenderer.render(container);
-                });
+            applyTheme(themeClass) {
+                document.body.className = ''; // Clear all classes
+                document.body.classList.add(themeClass);
             }
 
-            goToSlide(index) {
-                if(index < 0 || index >= this.slides.length) return;
-                this.slides[this.currentSlideIndex].classList.remove('active');
-                this.currentSlideIndex = index;
-                this.slides[this.currentSlideIndex].classList.add('active');
+            updateSlide(index) {
+                if (index < 0 || index >= this.totalSlides) return;
+                
+                this.currentSlide = index;
+
+                this.slides.forEach((slide, i) => {
+                    if (i === index) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+                
+                // Use scrollIntoView for smooth transition
+                this.slides[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+
+                this.prevBtn.style.display = index === 0 ? 'none' : 'flex';
+                this.nextBtn.style.display = index === this.totalSlides - 1 ? 'none' : 'flex';
+            }
+
+            showPrevSlide() {
+                this.updateSlide(this.currentSlide - 1);
+            }
+
+            showNextSlide() {
+                this.updateSlide(this.currentSlide + 1);
             }
             
-            nextSlide() {
-                if (this.currentSlideIndex < this.slides.length - 1) {
-                    this.goToSlide(this.currentSlideIndex + 1);
-                }
-            }
-            
-            prevSlide() {
-                if (this.currentSlideIndex > 0) {
-                    this.goToSlide(this.currentSlideIndex - 1);
+            handleKeyPress(e) {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    this.showNextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    this.showPrevSlide();
                 }
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const controller = new EnhancedPresentationController();
-            controller.init();
+            new EnhancedPresentationController();
         });
     </script>
 </body>
