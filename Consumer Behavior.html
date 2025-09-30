@@ -4,133 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Comprehensive Introduction to Consumer Behavior</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
     <style>
-        /* 0. CSS Reset & Base */
+        /* --- 🏛️ Material Design 3 Color & Theme System --- */
         :root {
-            font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-            font-synthesis: none;
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            -webkit-text-size-adjust: 100%;
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            background-color: var(--md-sys-color-background);
-            color: var(--md-sys-color-on-background);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* 1. M3 Color Themes */
-        
-        /* 1a. Trust & Authority (Blue) - Light Theme */
-        [data-theme="blue"] {
-            --md-sys-color-primary: #0061A4;
-            --md-sys-color-on-primary: #FFFFFF;
-            --md-sys-color-primary-container: #D1E4FF;
-            --md-sys-color-on-primary-container: #001D36;
-            --md-sys-color-secondary: #535F70;
-            --md-sys-color-on-secondary: #FFFFFF;
-            --md-sys-color-secondary-container: #D7E3F7;
-            --md-sys-color-on-secondary-container: #101C2B;
-            --md-sys-color-tertiary: #6B5778;
-            --md-sys-color-on-tertiary: #FFFFFF;
-            --md-sys-color-tertiary-container: #F2DAFF;
-            --md-sys-color-on-tertiary-container: #251431;
-            --md-sys-color-error: #BA1A1A;
-            --md-sys-color-on-error: #FFFFFF;
-            --md-sys-color-error-container: #FFDAD6;
-            --md-sys-color-on-error-container: #410002;
-            --md-sys-color-background: #FDFCFF;
-            --md-sys-color-on-background: #1A1C1E;
-            --md-sys-color-surface: #FDFCFF;
-            --md-sys-color-on-surface: #1A1C1E;
-            --md-sys-color-surface-variant: #DFE3EB;
-            --md-sys-color-on-surface-variant: #43474E;
-            --md-sys-color-outline: #73777F;
-            --md-sys-color-shadow: #000000;
-            --md-sys-color-inverse-surface: #2F3033;
-            --md-sys-color-inverse-on-surface: #F1F0F4;
-            --md-sys-color-inverse-primary: #9ECAFF;
-            --md-sys-color-surface-tint: #0061A4;
-        }
-
-        /* 1b. Innovation & Growth (Green) - Light Theme */
-        [data-theme="green"] {
-            --md-sys-color-primary: #006D39;
-            --md-sys-color-on-primary: #FFFFFF;
-            --md-sys-color-primary-container: #9AF6B4;
-            --md-sys-color-on-primary-container: #00210D;
-            --md-sys-color-secondary: #4F6353;
-            --md-sys-color-on-secondary: #FFFFFF;
-            --md-sys-color-secondary-container: #D2E8D4;
-            --md-sys-color-on-secondary-container: #0D1F13;
-            --md-sys-color-tertiary: #3C6471;
-            --md-sys-color-on-tertiary: #FFFFFF;
-            --md-sys-color-tertiary-container: #C0E9F8;
-            --md-sys-color-on-tertiary-container: #001F27;
-            --md-sys-color-error: #BA1A1A;
-            --md-sys-color-on-error: #FFFFFF;
-            --md-sys-color-error-container: #FFDAD6;
-            --md-sys-color-on-error-container: #410002;
-            --md-sys-color-background: #FBFDF7;
-            --md-sys-color-on-background: #191C1A;
-            --md-sys-color-surface: #FBFDF7;
-            --md-sys-color-on-surface: #191C1A;
-            --md-sys-color-surface-variant: #DDE5DB;
-            --md-sys-color-on-surface-variant: #414942;
-            --md-sys-color-outline: #717971;
-            --md-sys-color-shadow: #000000;
-            --md-sys-color-inverse-surface: #2E312E;
-            --md-sys-color-inverse-on-surface: #F0F1EC;
-            --md-sys-color-inverse-primary: #7FDA9A;
-            --md-sys-color-surface-tint: #006D39;
-        }
-
-        /* 1c. Urgency & Action (Red/Orange) - Light Theme */
-        [data-theme="red"] {
-            --md-sys-color-primary: #BD1B1B;
-            --md-sys-color-on-primary: #FFFFFF;
-            --md-sys-color-primary-container: #FFDAD5;
-            --md-sys-color-on-primary-container: #410002;
-            --md-sys-color-secondary: #775651;
-            --md-sys-color-on-secondary: #FFFFFF;
-            --md-sys-color-secondary-container: #FFDAD5;
-            --md-sys-color-on-secondary-container: #2C1512;
-            --md-sys-color-tertiary: #715B2E;
-            --md-sys-color-on-tertiary: #FFFFFF;
-            --md-sys-color-tertiary-container: #FCDFA6;
-            --md-sys-color-on-tertiary-container: #261A00;
-            --md-sys-color-error: #BA1A1A;
-            --md-sys-color-on-error: #FFFFFF;
-            --md-sys-color-error-container: #FFDAD6;
-            --md-sys-color-on-error-container: #410002;
-            --md-sys-color-background: #FFFBFF;
-            --md-sys-color-on-background: #201A19;
-            --md-sys-color-surface: #FFFBFF;
-            --md-sys-color-on-surface: #201A19;
-            --md-sys-color-surface-variant: #F5DDDA;
-            --md-sys-color-on-surface-variant: #534341;
-            --md-sys-color-outline: #857370;
-            --md-sys-color-shadow: #000000;
-            --md-sys-color-inverse-surface: #362F2E;
-            --md-sys-color-inverse-on-surface: #FBEEEC;
-            --md-sys-color-inverse-primary: #FFB4A9;
-            --md-sys-color-surface-tint: #BD1B1B;
-        }
-
-        /* 1d. Sophistication & Elegance (Deep Purple) - Light Theme */
-        [data-theme="purple"] {
+            /* M3 Light Theme Color Tokens */
             --md-sys-color-primary: #6750A4;
             --md-sys-color-on-primary: #FFFFFF;
             --md-sys-color-primary-container: #EADDFF;
@@ -145,8 +29,6 @@
             --md-sys-color-on-tertiary-container: #31111D;
             --md-sys-color-error: #B3261E;
             --md-sys-color-on-error: #FFFFFF;
-            --md-sys-color-error-container: #F9DEDC;
-            --md-sys-color-on-error-container: #410E0B;
             --md-sys-color-background: #FFFBFE;
             --md-sys-color-on-background: #1C1B1F;
             --md-sys-color-surface: #FFFBFE;
@@ -155,758 +37,923 @@
             --md-sys-color-on-surface-variant: #49454F;
             --md-sys-color-outline: #79747E;
             --md-sys-color-shadow: #000000;
-            --md-sys-color-inverse-surface: #313033;
-            --md-sys-color-inverse-on-surface: #F4EFF4;
-            --md-sys-color-inverse-primary: #D0BCFF;
-            --md-sys-color-surface-tint: #6750A4;
+            
+            /* Spacing (8pt Grid System) */
+            --space-2: 0.125rem; /* 2px */
+            --space-4: 0.25rem;  /* 4px */
+            --space-8: 0.5rem;   /* 8px */
+            --space-16: 1rem;    /* 16px */
+            --space-24: 1.5rem;  /* 24px */
+            --space-32: 2rem;    /* 32px */
+            --space-48: 3rem;    /* 48px */
+            --space-56: 3.5rem;  /* 56px */
+            
+            /* Transitions */
+            --transition-speed: 0.3s;
         }
-        
-        /* 1e. Custom Theme Placeholder */
-        [data-theme="custom"] {}
 
-        /* 2. Layout & Structure */
-        main {
+        /* --- 📜 Core Visual & Reset Styles --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden; /* Prevent scrollbars on the body */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- 🖥️ Presentation Container & Slide Styles --- */
+        #presentation-container {
             width: 100%;
             height: 100%;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .slide {
             width: 100%;
             height: 100%;
-            padding: 3rem 4rem;
-            display: none; /* Hidden by default */
-            flex-direction: column;
+            position: absolute;
+            top: 0;
+            left: 0;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .slide.active {
+            visibility: hidden;
+            transition: opacity var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
+            transform: scale(0.98);
             display: flex;
-            opacity: 1;
-        }
-        
-        /* Layout variations */
-        .slide-centered {
             justify-content: center;
             align-items: center;
-            text-align: center;
         }
         
-        .slide-fixed-header {
-            justify-content: flex-start;
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            z-index: 1;
         }
 
-        .slide-header {
+        .slide-content {
             width: 100%;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--md-sys-color-outline);
-            margin-bottom: 1rem;
-        }
-
-        .slide-body {
-            flex-grow: 1;
-            width: 100%;
+            max-width: 1200px;
+            height: auto;
+            padding: var(--space-48) var(--space-56);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            overflow-y: auto;
-        }
-        
-        .slide-body-content {
-             width: 100%;
-             max-width: 1100px;
+            justify-content: center;
         }
 
-        .two-column-container {
-            display: flex;
-            gap: 2rem;
-            width: 100%;
-        }
-        .two-column-container > div {
-            flex: 1;
-        }
-
-        /* 3. Typography & Fanatical Alignment */
-        h1 {
-            font-size: 3rem;
-            font-weight: 500;
-            line-height: 1.2;
+        /* --- 🖋️ Responsive Typography System --- */
+        h1 { /* Slide Titles */
+            font-size: clamp(2rem, 5vw + 1rem, 3.25rem); /* 32px to 52px */
+            font-weight: 700;
             color: var(--md-sys-color-primary);
-            margin-bottom: 1rem;
-            text-align: center; /* Fanatical Alignment */
-        }
-        
-        .slide-centered h1 {
-             margin-bottom: 2rem;
+            margin-bottom: var(--space-24);
+            line-height: 1.15;
+            text-wrap: balance;
         }
 
-        h2 {
-            font-size: 1.5rem;
+        h2 { /* Sub-headings */
+            font-size: clamp(1.5rem, 3vw + 0.75rem, 2rem); /* 24px to 32px */
             font-weight: 500;
             color: var(--md-sys-color-secondary);
-            margin-bottom: 1rem;
-        }
-
-        p {
-            font-size: 1.25rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            color: var(--md-sys-color-on-surface);
+            margin-bottom: var(--space-16);
+            line-height: 1.2;
+            text-wrap: balance;
         }
         
-        .slide-centered p {
-            font-size: 1.5rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+        h3 { /* Conclusion headings */
+             font-size: clamp(1.25rem, 2vw + 0.75rem, 1.75rem); /* 20px to 28px */
+             font-weight: 500;
+             color: var(--md-sys-color-on-surface-variant);
+             margin-bottom: var(--space-16);
+        }
+
+        p, li {
+            font-size: clamp(1.125rem, 1.5vw + 0.75rem, 1.5rem); /* 18px to 24px */
+            font-weight: 400;
+            color: var(--md-sys-color-on-surface);
+            max-width: 80ch; /* Optimal line length for readability */
         }
 
         ul {
             list-style: none;
-            width: 100%;
+            padding-left: 0;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: var(--space-16);
         }
-        
-        li.icon-list-item {
+
+        li {
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
-            font-size: 1.15rem;
-            line-height: 1.5;
-            color: var(--md-sys-color-on-surface-variant);
-        }
-        li.icon-list-item > div:last-child {
-            flex: 1;
-            padding-top: 5px; /* Alignment adjustment */
+            gap: var(--space-16);
         }
 
-
-        /* 4. Icon System */
-        .icon-hero {
-            font-size: 8rem !important;
-            margin-bottom: 1.5rem;
+        /* --- 🧩 Icon & Component Styles --- */
+        .material-symbols-outlined {
+            font-size: 1.2em;
+            vertical-align: middle;
             color: var(--md-sys-color-tertiary);
         }
-
-        .icon-list-item-icon {
-            font-size: 24px !important;
-            width: 40px;
-            height: 40px;
+        
+        .main-icon {
+            font-size: clamp(4rem, 8vw + 2rem, 6rem); /* 64px to 96px */
+            color: var(--md-sys-color-primary-container);
+            background: var(--md-sys-color-primary);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--md-sys-color-primary-container);
-            color: var(--md-sys-color-on-primary-container);
-        }
-
-        /* 5. Cognitive Load & Spacing */
-        .load-1 .slide-body { gap: 1rem; padding-top: 1rem; }
-        .load-2 .slide-body { gap: 2rem; padding-top: 2rem; }
-        .load-3 .slide-body { gap: 3rem; padding-top: 3rem; }
-        
-        /* 6. M3 Components: Card */
-        .m3-card {
-            background-color: var(--md-sys-color-surface);
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: 12px;
-            width: 100%;
-            text-align: left; /* Fanatical Alignment */
-        }
-        
-        .card-sparse { padding: 2rem; }
-        .card-dense { padding: 1.5rem; }
-
-        /* 7. UI Controls */
-        .presentation-ui {
-            position: fixed;
-            z-index: 1000;
-        }
-        .nav-button {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--md-sys-color-surface-variant);
-            color: var(--md-sys-color-on-surface-variant);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: background-color 0.2s;
-        }
-        .nav-button:hover { background: var(--md-sys-color-primary-container); }
-        #prev-slide { left: 20px; }
-        #next-slide { right: 20px; }
-        #slide-counter {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--md-sys-color-inverse-surface);
-            color: var(--md-sys-color-inverse-on-surface);
-            padding: 8px 16px;
-            border-radius: 16px;
-            font-size: 0.9rem;
-        }
-        
-        #theme-switcher-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-        }
-
-        .m3-button {
+            padding: var(--space-24);
+            margin-bottom: var(--space-32);
+            line-height: 1; /* Fix icon centering */
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 10px 24px;
-            border-radius: 20px;
-            border: 1px solid var(--md-sys-color-outline);
-            background-color: transparent;
-            color: var(--md-sys-color-primary);
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            gap: 8px;
-        }
-        .m3-button:hover {
-            background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
         }
 
-        #theme-options {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: var(--md-sys-color-surface);
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            padding: 0.5rem;
-            display: none;
+        li .material-symbols-outlined {
+            margin-top: var(--space-4);
+        }
+
+        /* --- 📐 Layout-Specific Styles --- */
+
+        /* Title & Centered Layouts */
+        .layout-title_icon, .layout-image_caption, .layout-section_header, .layout-conclusion {
+            text-align: center;
+            align-items: center;
+        }
+
+        .layout-section_header h1 {
+            font-size: clamp(3rem, 7vw + 1rem, 5rem); /* 48px to 80px */
+            color: var(--md-sys-color-on-surface-variant);
+        }
+        
+        .layout-conclusion ul {
+            text-align: left;
+            display: inline-flex;
             flex-direction: column;
-            gap: 0.5rem;
         }
+        
+        .layout-conclusion h1 { margin-bottom: var(--space-48); }
+        .layout-conclusion p { margin-top: var(--space-32); }
 
-        #theme-options.active { display: flex; }
-        .theme-option {
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 8px;
+        /* Bullet Points Layout */
+        .layout-bullet_points {
+            align-items: flex-start;
         }
-        .theme-option:hover {
-             background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
-        }
-        #custom-theme-input {
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: 4px;
-            padding: 4px;
-            margin-top: 4px;
-        }
-
-        /* 8. Bulletproof Charting System Styles */
-        .chart-container {
+        
+        /* Two Column Layout */
+        .two-column-grid {
             width: 100%;
-            min-height: 400px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-48);
+            align-items: start;
+            margin-top: var(--space-24);
+        }
+        
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-16);
+        }
+
+        /* --- 📱 Responsive Design --- */
+        @media (max-width: 768px) {
+            .slide-content {
+                padding: var(--space-32) var(--space-24);
+                justify-content: flex-start;
+                overflow-y: auto;
+            }
+            
+            h1, h2, h3, p, li, .layout-title_icon, .layout-image_caption {
+                text-align: left;
+            }
+            
+            .layout-title_icon, .layout-image_caption, .layout-section_header, .layout-conclusion {
+                align-items: flex-start;
+            }
+
+            .main-icon {
+                font-size: 4rem;
+                padding: var(--space-16);
+            }
+        }
+
+        /* --- 🕹️ Navigation UI --- */
+        .navigation {
+            position: absolute;
+            bottom: var(--space-24);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: var(--space-16);
+            background: var(--md-sys-color-surface-variant);
+            padding: var(--space-8);
+            border-radius: 100px;
+            box-shadow: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .nav-button {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 1rem 0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
         }
-        .chart-loading { text-align: center; }
-        .loading-spinner {
-            width: 48px;
-            height: 48px;
-            border: 5px solid var(--md-sys-color-surface-variant);
-            border-bottom-color: var(--md-sys-color-primary);
-            border-radius: 50%;
-            display: inline-block;
-            animation: rotation 1s linear infinite;
+
+        .nav-button:hover:not(:disabled) {
+            background-color: var(--md-sys-color-on-primary-container);
         }
-        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .chart-fallback {
-            width: 100%;
-            padding: 1rem;
-            border: 1px dashed var(--md-sys-color-outline);
-            border-radius: 8px;
+        .nav-button:disabled {
+            background-color: var(--md-sys-color-surface-variant);
+            color: var(--md-sys-color-outline);
+            cursor: not-allowed;
         }
-        .chart-fallback h3 { color: var(--md-sys-color-on-surface-variant); text-align: center; margin-bottom: 1rem; }
-        .chart-fallback .fallback-message { font-style: italic; text-align: center; font-size: 0.9em; }
 
-        .pie-fallback { display: flex; flex-direction: column; gap: 0.5rem; }
-        .fallback-row { display: flex; align-items: center; gap: 8px; font-size: 0.9em; }
-        .fallback-row .color-swatch { width: 16px; height: 16px; border-radius: 4px; }
-        .fallback-row .label { flex-grow: 1; }
-
-        .bar-fallback .bar-container { display: flex; flex-direction: column; gap: 8px; }
-        .bar-row { display: flex; align-items: center; gap: 12px; }
-        .bar-label { width: 100px; text-align: right; font-size: 0.85em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .bar { height: 24px; border-radius: 4px; transition: width 0.5s ease-out; }
-        
-        .process-fallback { display: flex; justify-content: space-around; align-items: center; gap: 1rem; }
-        .process-step { display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .process-step .icon { font-size: 2rem; color: var(--md-sys-color-primary); }
-        .process-step .text { font-size: 0.8rem; max-width: 100px; }
-        .process-arrow { font-size: 2.5rem; color: var(--md-sys-color-outline); }
+        #slide-counter {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--md-sys-color-on-surface-variant);
+            min-width: 50px;
+            text-align: center;
+        }
     </style>
 </head>
-<body data-theme="red">
+<body>
 
     <main id="presentation-container">
-        <section class="slide slide-centered load-1" data-slide-id="1">
-            <div class="slide-body">
-                <span class="material-symbols-outlined icon-hero">psychology</span>
+        <section class="slide" id="slide-1" data-slide-number="1">
+            <div class="slide-content layout-title_icon">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">psychology</span>
                 <h1>Welcome to Consumer Behavior</h1>
                 <p>An introduction to our journey into the complex world of the modern consumer.</p>
             </div>
         </section>
-        
-        <section class="slide slide-fixed-header load-2" data-slide-id="2">
-            <div class="slide-header"><h1>What is Consumer Behavior?</h1></div>
-            <div class="slide-body">
-                <div class="slide-body-content">
-                    <div class="m3-card card-sparse">
+        <section class="slide" id="slide-2" data-slide-number="2">
+            <div class="slide-content layout-bullet_points">
+                <h1>What is Consumer Behavior?</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">science</span>The study of processes when individuals/groups select, purchase, use, or dispose of products, services, ideas, or experiences.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">history</span>It has broadened from 'Buyer Behavior' to the entire consumption process.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">update</span>Encompasses what happens before, during, and after the point of purchase.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-3" data-slide-number="3">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">monetization_on</span>
+                <h1>Why Study Consumer Behavior?</h1>
+                <p>Understanding consumer needs is the foundation of the marketing concept. It is vital for business strategy, public policy, and personal insight.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-4" data-slide-number="4">
+            <div class="slide-content layout-two_column_icons">
+                <h1>The Consumption Process</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Consumer's Perspective</h2>
                         <ul>
-                            <li class="icon-list-item">
-                                <div><span class="material-symbols-outlined icon-list-item-icon">science</span></div>
-                                <div>The study of processes when individuals/groups select, purchase, use, or dispose of products, services, ideas, or experiences.</div>
-                            </li>
-                            <li class="icon-list-item">
-                                <div><span class="material-symbols-outlined icon-list-item-icon">history</span></div>
-                                <div>It has broadened from 'Buyer Behavior' to the entire consumption process.</div>
-                            </li>
-                            <li class="icon-list-item">
-                                <div><span class="material-symbols-outlined icon-list-item-icon">update</span></div>
-                                <div>Encompasses what happens before, during, and after the point of purchase.</div>
-                            </li>
+                            <li><span class="material-symbols-outlined" aria-hidden="true">help_outline</span>Pre-purchase: How do I decide I need something?</li>
+                            <li><span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>Purchase: Is acquiring this stressful or pleasant?</li>
+                            <li><span class="material-symbols-outlined" aria-hidden="true">satisfaction</span>Post-purchase: Does the product provide pleasure?</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h2>Marketer's Perspective</h2>
+                        <ul>
+                            <li><span class="material-symbols-outlined" aria-hidden="true">tips_and_updates</span>Pre-purchase: How are attitudes formed/changed?</li>
+                            <li><span class="material-symbols-outlined" aria-hidden="true">store</span>Purchase: How do situational factors influence choice?</li>
+                            <li><span class="material-symbols-outlined" aria-hidden="true">loyalty</span>Post-purchase: What determines satisfaction and loyalty?</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <section class="slide slide-fixed-header load-1" data-slide-id="3">
-            <div class="slide-header"><h1>Why Study Consumer Behavior?</h1></div>
-            <div class="slide-body">
-                <span class="material-symbols-outlined icon-hero">monetization_on</span>
-                <div class="slide-body-content">
-                    <div class="m3-card card-sparse">
-                        <p>Understanding consumer needs is the foundation of the marketing concept. It is vital for business strategy, public policy, and personal insight.</p>
+        <section class="slide" id="slide-5" data-slide-number="5">
+            <div class="slide-content layout-bullet_points">
+                <h1>Actors in the Process</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">person</span>Purchaser: The individual who buys the product.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">person</span>User: The individual who consumes the product.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">campaign</span>Influencer: The individual whose recommendations affect the decision.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-6" data-slide-number="6">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">smartphone</span>
+                <h1>The Modern Consumer</h1>
+                <p>Introducing the 'Digital Native'—a consumer who has grown up 'wired' in a highly networked, always-on world where digital technology has always existed.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-7" data-slide-number="7">
+            <div class="slide-content layout-two_column_icons">
+                <h1>The Rise of Big Data & IoT</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Big Data</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">analytics</span>The collection and analysis of extremely large datasets to predict consumer behavior.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Internet of Things (IoT)</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">lan</span>The growing network of interconnected devices that speak to one another, from smart homes to self-driving cars.</p>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <section class="slide slide-fixed-header load-2" data-slide-id="4">
-            <div class="slide-header"><h1>The Consumption Process</h1></div>
-            <div class="slide-body">
-                <div class="slide-body-content">
-                    <div class="m3-card card-dense">
-                        <div class="two-column-container">
-                            <div>
-                                <h2>Consumer's Perspective</h2>
-                                <ul>
-                                    <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">help_outline</span></div><div>Pre-purchase: How do I decide I need something?</div></li>
-                                    <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">shopping_cart</span></div><div>Purchase: Is acquiring this stressful or pleasant?</div></li>
-                                    <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">satisfaction</span></div><div>Post-purchase: Does the product provide pleasure?</div></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h2>Marketer's Perspective</h2>
-                                <ul>
-                                    <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">tips_and_updates</span></div><div>Pre-purchase: How are attitudes formed/changed?</div></li>
-                                    <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">store</span></div><div>Purchase: How do situational factors influence choice?</div></li>
-                                    <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">loyalty</span></div><div>Post-purchase: What determines satisfaction and loyalty?</div></li>
-                                </ul>
-                            </div>
-                        </div>
+        <section class="slide" id="slide-8" data-slide-number="8">
+            <div class="slide-content layout-bullet_points">
+                <h1>Market Segmentation</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">person</span>Demographics: Observable aspects of a population (age, gender, income).</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">psychology</span>Psychographics: Psychological and lifestyle characteristics.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">percent</span>80/20 Rule: A rule of thumb where 20% of users account for 80% of sales (heavy users).</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-9" data-slide-number="9">
+            <div class="slide-content layout-title_icon">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">help_center</span>
+                <h1>Our Central Question</h1>
+                <p>Given this new complexity, how can we build a model to understand the internal and external forces driving modern consumer choices?</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-10" data-slide-number="10">
+            <div class="slide-content layout-conclusion">
+                <h1>Session 1 Summary & Next Steps</h1>
+                <h3>Key Takeaways:</h3>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">check</span>CB is a complex, multi-stage process.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">check</span>The modern consumer is digital, connected, and complex.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>Coming up: The Micro Perspective - The Consumer's Inner World.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-11" data-slide-number="11">
+            <div class="slide-content layout-section_header">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">brain</span>
+                <h1>The Micro Perspective Pt. 1</h1>
+            </div>
+        </section>
+        <section class="slide" id="slide-12" data-slide-number="12">
+            <div class="slide-content layout-two_column_icons">
+                <h1>Sensation vs. Perception</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Sensation</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">sensors</span>The immediate response of our sensory receptors (eyes, ears, nose, mouth) to basic stimuli.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Perception</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">psychology</span>The process by which we select, organize, and interpret these sensations to give them meaning.</p>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <section class="slide slide-fixed-header load-2" data-slide-id="5">
-            <div class="slide-header"><h1>Actors in the Process</h1></div>
-            <div class="slide-body">
-                <div class="slide-body-content">
-                    <div class="m3-card card-sparse">
-                        <ul>
-                            <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">person</span></div><div>Purchaser: The individual who buys the product.</div></li>
-                            <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">person</span></div><div>User: The individual who consumes the product.</div></li>
-                            <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">campaign</span></div><div>Influencer: The individual whose recommendations affect the decision.</div></li>
-                        </ul>
+        <section class="slide" id="slide-13" data-slide-number="13">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">color_lens</span>
+                <h1>Sensory Marketing: Vision & Color</h1>
+                <p>Color psychology is a key marketing tool. Colors evoke emotions, attract attention, and can become part of a brand's 'trade dress'.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-14" data-slide-number="14">
+            <div class="slide-content layout-bullet_points">
+                <h1>Sensory Marketing: Other Senses</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">air</span>Scent: Connects to memory and emotion via the limbic system.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">volume_up</span>Sound: Influences assumptions through sound symbolism.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">waving_hand</span>Touch: Haptic senses create attachment (the endowment effect).</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">restaurant</span>Taste: A multisensory experience influenced by physics and chemistry.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-15" data-slide-number="15">
+            <div class="slide-content layout-bullet_points">
+                <h1>Stage 1: Exposure</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">hearing</span>Absolute Threshold: The minimum stimulation that can be detected.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">compare</span>Differential Threshold: The ability to detect changes between two stimuli.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">pinch</span>Just Noticeable Difference (JND): The minimum detectable difference.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-16" data-slide-number="16">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">filter_center_focus</span>
+                <h1>Stage 2: Attention</h1>
+                <p>Attention is the extent to which processing activity is devoted to a particular stimulus. We are selective about what we attend to, influenced by both personal and stimulus factors.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-17" data-slide-number="17">
+            <div class="slide-content layout-title_icon">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">translate</span>
+                <h1>Stage 3: Interpretation & Semiotics</h1>
+                <p>Interpretation is the meaning we assign to sensory stimuli. Semiotics is the field that studies how signs and symbols create meaning in marketing.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-18" data-slide-number="18">
+            <div class="slide-content layout-two_column_icons">
+                <h1>How We Learn: Behavioral Theories</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Classical Conditioning</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">notifications_active</span>A stimulus that elicits a response is paired with another stimulus that initially does not. Over time, the second stimulus causes a similar response.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Instrumental Conditioning</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">emoji_events</span>The individual learns to perform behaviors that produce positive outcomes and to avoid those that yield negative outcomes.</p>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section class="slide slide-fixed-header load-2" data-slide-id="6">
-            <div class="slide-header"><h1>The Modern Consumer</h1></div>
-            <div class="slide-body">
-                <span class="material-symbols-outlined icon-hero">smartphone</span>
-                <div class="slide-body-content">
-                    <div class="m3-card card-sparse">
-                        <p>Introducing the 'Digital Native'—a consumer who has grown up 'wired' in a highly networked, always-on world where digital technology has always existed.</p>
+        <section class="slide" id="slide-19" data-slide-number="19">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">school</span>
+                <h1>How We Learn: Cognitive & Observational Theories</h1>
+                <p>Cognitive learning theory views people as problem-solvers who actively use information. Observational learning occurs when we watch the actions of others.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-20" data-slide-number="20">
+            <div class="slide-content layout-bullet_points">
+                <h1>The Role of Memory</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">input</span>Encoding: Information is placed in memory.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">inventory_2</span>Storage: Information is retained over time.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">output</span>Retrieval: Stored information is found as needed.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">sentiment_very_satisfied</span>Nostalgia: The marketing power of 'bittersweet' memories.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-21" data-slide-number="21">
+            <div class="slide-content layout-section_header">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">rocket_launch</span>
+                <h1>The Micro Perspective Pt. 2</h1>
+            </div>
+        </section>
+        <section class="slide" id="slide-22" data-slide-number="22">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">local_fire_department</span>
+                <h1>The Motivation Process</h1>
+                <p>A Need is a basic biological motive; a Want is one way that society has taught us to satisfy it. Motivation is the process of trying to satisfy that need.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-23" data-slide-number="23">
+            <div class="slide-content layout-bullet_points">
+                <h1>Motivational Conflicts</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">looks_two</span>Approach-Approach: A choice between two desirable alternatives.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">exposure_plus_minus_1</span>Approach-Avoidance: A choice with both positive and negative consequences.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">block</span>Avoidance-Avoidance: A choice between two undesirable alternatives.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-24" data-slide-number="24">
+            <div class="slide-content layout-bullet_points">
+                <h1>Classifying Consumer Needs</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">groups</span>Need for Affiliation: To be in the company of other people.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">bolt</span>Need for Power: To control one's environment.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">star</span>Need for Uniqueness: To assert one's individual identity.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-25" data-slide-number="25">
+            <div class="slide-content layout-two_column_icons">
+                <h1>Affect: The Power of Emotion</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Positive Affect</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">sentiment_very_satisfied</span>Emotions like happiness and love that marketers use to create positive associations.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Negative Affect</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">sentiment_very_dissatisfied</span>Emotions like guilt, envy, and disgust that can also be used to motivate behavior.</p>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <section class="slide slide-fixed-header load-3" data-slide-id="7">
-            <div class="slide-header"><h1>The Rise of Big Data & IoT</h1></div>
-            <div class="slide-body">
-                 <div class="slide-body-content">
-                    <div class="m3-card card-sparse">
-                        <div class="two-column-container">
-                            <div>
-                                <h2>Big Data</h2>
-                                <p>The collection and analysis of extremely large datasets to predict consumer behavior.</p>
-                            </div>
-                            <div>
-                                <h2>Internet of Things (IoT)</h2>
-                                <p>The growing network of interconnected devices that speak to one another, from smart homes to self-driving cars.</p>
-                            </div>
-                        </div>
+        <section class="slide" id="slide-26" data-slide-number="26">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">person</span>
+                <h1>The Self-Concept</h1>
+                <p>The self-concept summarizes the beliefs a person holds about their own attributes and how they evaluate the self on these qualities. Consumption choices are a primary way we express this identity.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-27" data-slide-number="27">
+            <div class="slide-content layout-title_icon">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">add_circle</span>
+                <h1>The Extended Self</h1>
+                <p>External objects that we consider a part of us comprise the extended self. This can include possessions, places, and even other people.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-28" data-slide-number="28">
+            <div class="slide-content layout-two_column_icons">
+                <h1>Gender Identity & Sex Roles</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Sex Role Socialization</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">child_care</span>Cultures have expectations about how each gender should act, dress, or speak.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Marketing Impact</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>Many products are 'sex-typed' and targeted to either men or women, reflecting these societal roles.</p>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section class="slide slide-fixed-header load-2" data-slide-id="59">
-            <div class="slide-header"><h1>Key Consumer Trends</h1></div>
-            <div class="slide-body">
-                <div class="slide-body-content">
-                    <div class="m3-card card-sparse">
-                        <ul>
-                            <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">swap_horiz</span></div><div><b>Sharing Economy:</b> A de-emphasis on owning products.</div></li>
-                            <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">verified</span></div><div><b>Authenticity & Personalization:</b> An aversion to corporate 'hype'.</div></li>
-                            <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">group</span></div><div><b>Social Shopping:</b> Buying becomes a committee decision.</div></li>
-                            <li class="icon-list-item"><div><span class="material-symbols-outlined icon-list-item-icon">layers_clear</span></div><div><b>Simplification:</b> A movement away from hyperchoice.</div></li>
-                        </ul>
+        <section class="slide" id="slide-29" data-slide-number="29">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">face</span>
+                <h1>Body Image</h1>
+                <p>A person's physical self-concept. Marketing and popular culture often present 'ideals of beauty' that can create body anxiety and influence consumption of cosmetic and fashion products.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-30" data-slide-number="30">
+            <div class="slide-content layout-bullet_points">
+                <h1>Personality, Lifestyles & Values</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">psychology</span>Personality: A person's unique psychological makeup.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">store</span>Brand Personality: The set of traits people attribute to a product as if it were a person.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">analytics</span>Psychographics: The use of psychological, sociological, and anthropological factors to segment a market.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">favorite</span>Values: Beliefs that some condition is preferable to its opposite.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-31" data-slide-number="31">
+            <div class="slide-content layout-section_header">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">groups</span>
+                <h1>The Macro Perspective Pt. 1</h1>
+            </div>
+        </section>
+        <section class="slide" id="slide-32" data-slide-number="32">
+            <div class="slide-content layout-bullet_points">
+                <h1>Social Power & Reference Groups</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">bolt</span>Social Power: The capacity to alter the actions of others.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">group</span>Reference Group: An actual or imaginary individual or group that significantly influences an individual's evaluations or aspirations.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-33" data-slide-number="33">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">trending_flat</span>
+                <h1>Conformity</h1>
+                <p>A change in beliefs or actions as a reaction to real or imagined group pressure. Factors like cultural pressure and fear of deviance contribute to this.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-34" data-slide-number="34">
+            <div class="slide-content layout-two_column_icons">
+                <h1>Word-of-Mouth (WOM) Communication</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Why it's Powerful</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">thumb_up</span>Product information that individuals transmit to other individuals. It's often more trustworthy and influential than traditional marketing.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Buzz Building</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">local_fire_department</span>Marketing efforts designed to generate excitement and WOM, often by targeting influential consumers.</p>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section class="slide slide-centered load-1" data-slide-id="60">
-            <div class="slide-body">
-                <span class="material-symbols-outlined icon-hero">check_circle</span>
+        <section class="slide" id="slide-35" data-slide-number="35">
+            <div class="slide-content layout-bullet_points">
+                <h1>Opinion Leadership</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">person</span>People who are knowledgeable about products and whose advice others take seriously.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">rocket_launch</span>They are often socially active and among the first to buy new products.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">ads_click</span>Marketers try to identify and target these key influencers.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-36" data-slide-number="36">
+            <div class="slide-content layout-title_icon">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">share</span>
+                <h1>The Horizontal Revolution: Social Media</h1>
+                <p>A fundamental change in how we communicate. Information flows across people, not just from big companies to people. This is the era of User-Generated Content.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-37" data-slide-number="37">
+            <div class="slide-content layout-two_column_icons">
+                <h1>Collective Decision Making</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>B2B Decision Making</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">business</span>Involves many people, including buyers, influencers, and deciders, in a complex process.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Family Decision Making</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">family_restroom</span>Different family members play roles in decisions, with spousal and child influence varying by product category.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="slide" id="slide-38" data-slide-number="38">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">savings</span>
+                <h1>Income and Consumer Identity</h1>
+                <p>Income determines buying power, but the meaning of money and spending patterns also shapes a consumer's identity. Consumer confidence is a key indicator of economic health.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-39" data-slide-number="39">
+            <div class="slide-content layout-bullet_points">
+                <h1>Social Class & Taste Cultures</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">stairs</span>Social Class: A person's overall rank or standing in a society.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">theater_comedy</span>Taste Culture: Differentiates people in terms of their aesthetic and intellectual preferences.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">diamond</span>Social class is a better predictor of purchases with symbolic aspects (e.g., liquor, cars).</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-40" data-slide-number="40">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">diamond</span>
+                <h1>Status Symbols & Signaling</h1>
+                <p>We use products and brands as status symbols to signal our social standing to others. This can range from conspicuous consumption of luxury goods to subtle, coded signals.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-41" data-slide-number="41">
+            <div class="slide-content layout-section_header">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">public</span>
+                <h1>The Macro Perspective Pt. 2</h1>
+            </div>
+        </section>
+        <section class="slide" id="slide-42" data-slide-number="42">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">menu_book</span>
+                <h1>What is Culture?</h1>
+                <p>Culture is the accumulation of shared meanings, rituals, norms, and traditions among the members of an organization or society. It's the 'lens' through which people view products.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-43" data-slide-number="43">
+            <div class="slide-content layout-title_icon">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">auto_stories</span>
+                <h1>Cultural Stories: Myths</h1>
+                <p>Myths are stories with symbolic elements that represent a culture's ideals. Marketers often use mythic structures (e.g., the hero's journey) in their advertising.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-44" data-slide-number="44">
+            <div class="slide-content layout-bullet_points">
+                <h1>Cultural Ceremonies: Rituals</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">checklist</span>A set of multiple, symbolic behaviors that occurs in a fixed sequence.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-45" data-slide-number="45">
+            <div class="slide-content layout-two_column_icons">
+                <h1>Sacred & Profane Consumption</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Sacred Consumption</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">star</span>Involves objects and events that are set apart from normal activities and treated with respect or awe.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Profane Consumption</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span>Involves consumer objects and events that are ordinary and everyday.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="slide" id="slide-46" data-slide-number="46">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">diversity_3</span>
+                <h1>Subcultures: An Overview</h1>
+                <p>A group whose members share beliefs and common experiences that set them apart from others. These can be based on ethnicity, race, religion, and more.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-47" data-slide-number="47">
+            <div class="slide-content layout-bullet_points">
+                <h1>Age Cohorts</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">smartphone</span>Gen Z (Born late 1990s to early 2010s): Digital natives, value authenticity.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">flight</span>Millennials (Born early 1980s to mid-1990s): Value experiences over things.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">home</span>Gen X (Born mid-1960s to early 1980s): Independent, value-oriented.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">savings</span>Baby Boomers (Born mid-1940s to mid-1960s): Active, affluent.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-48" data-slide-number="48">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">wave</span>
+                <h1>The Diffusion of Innovations</h1>
+                <p>The process whereby a new product, service, or idea spreads through a population, from innovators and early adopters to the late majority and laggards.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-49" data-slide-number="49">
+            <div class="slide-content layout-bullet_points">
+                <h1>The Fashion System</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">groups</span>Includes all the people and organizations that create symbolic meanings and transfer them to cultural goods.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">cycle</span>Fashion follows cycles, moving from prestige to mass adoption and back.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-50" data-slide-number="50">
+            <div class="slide-content layout-title_icon">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">language</span>
+                <h1>Global Consumer Culture</h1>
+                <p>The emergence of a global culture where people are united by their common devotion to brand-name consumer goods, movie stars, and celebrities.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-51" data-slide-number="51">
+            <div class="slide-content layout-section_header">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">mediation</span>
+                <h1>A Unified Framework</h1>
+            </div>
+        </section>
+        <section class="slide" id="slide-52" data-slide-number="52">
+            <div class="slide-content layout-two_column_icons">
+                <h1>Synthesizing the Two Views</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Micro View (Internal)</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">brain</span>Focuses on the individual's mind: perception, learning, motivation, and self.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Macro View (External)</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">public</span>Focuses on the consumer as part of society: groups, class, and culture.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="slide" id="slide-53" data-slide-number="53">
+            <div class="slide-content layout-title_icon">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">lightbulb</span>
+                <h1>Our Governed Thought</h1>
+                <p>A true understanding of consumer behavior is built by adopting a dual perspective: a micro view (the consumer's mind) and a macro view (the consumer in society), with both essential to navigate the modern digital marketplace.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-54" data-slide-number="54">
+            <div class="slide-content layout-two_column_icons">
+                <h1>Research Paradigms</h1>
+                <div class="two-column-grid">
+                    <div class="column">
+                        <h2>Positivism</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">functions</span>Emphasizes a single, objective truth that science can discover. The consumer is a rational decision maker.</p>
+                    </div>
+                    <div class="column">
+                        <h2>Interpretivism (CCT)</h2>
+                        <p><span class="material-symbols-outlined" aria-hidden="true">theater_comedy</span>Stresses the subjective, symbolic experience. We each construct our own meanings.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="slide" id="slide-55" data-slide-number="55">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">volunteer_activism</span>
+                <h1>The 'Bright Side' of Consumer Behavior</h1>
+                <p>Marketing can improve well-being. Corporate Social Responsibility (CSR) and Social Marketing use marketing techniques to encourage positive behaviors.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-56" data-slide-number="56">
+            <div class="slide-content layout-bullet_points">
+                <h1>The 'Dark Side' of Consumer Behavior</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">smartphone</span>Consumer Addiction: A physiological or psychological dependency on products.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">credit_card</span>Compulsive Consumption: Repetitive and excessive shopping.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">block</span>Anticonsumption: Deliberately defacing or mutilating products.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-57" data-slide-number="57">
+            <div class="slide-content layout-bullet_points">
+                <h1>Public Policy & Consumer Rights</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">privacy_tip</span>Data Privacy & Identity Theft: The ethics of consumer tracking.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">accessibility_new</span>Market Access: Barriers for consumers with disabilities, low literacy, or in 'food deserts'.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">security</span>Consumerism: The movement to protect consumer rights.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-58" data-slide-number="58">
+            <div class="slide-content layout-image_caption">
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">eco</span>
+                <h1>Sustainability & Ethical Living</h1>
+                <p>The rise of conscientious consumerism and the triple bottom-line (financial, social, environmental). Beware of 'greenwashing'—false environmental claims.</p>
+            </div>
+        </section>
+        <section class="slide" id="slide-59" data-slide-number="59">
+            <div class="slide-content layout-bullet_points">
+                <h1>Key Consumer Trends</h1>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">swap_horiz</span>Sharing Economy: A de-emphasis on owning products.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">verified</span>Authenticity & Personalization: An aversion to corporate 'hype'.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">group</span>Social Shopping: Buying becomes a committee decision.</li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">layers_clear</span>Simplification: A movement away from hyperchoice.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="slide" id="slide-60" data-slide-number="60">
+            <div class="slide-content layout-conclusion">
                 <h1>Conclusion & Final Application</h1>
-                <div class="m3-card card-sparse">
-                     <h2>Your Next Step:</h2>
-                     <ul>
-                        <li class="icon-list-item">
-                            <div><span class="material-symbols-outlined icon-list-item-icon">analytics</span></div>
-                            <div>Use the dual micro/macro framework to analyze the world around you.</div>
-                        </li>
-                    </ul>
-                    <p style="margin-top: 1.5rem; text-align: center;">Thank you. Questions?</p>
-                </div>
+                <h3>Your Next Step:</h3>
+                <ul>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">analytics</span>Use the dual micro/macro framework to analyze the world around you.</li>
+                </ul>
+                <p>Thank you. Questions?</p>
             </div>
         </section>
 
+        <div class="navigation">
+            <button id="prev-btn" class="nav-button" aria-label="Previous Slide">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div id="slide-counter">1 / 60</div>
+            <button id="next-btn" class="nav-button" aria-label="Next Slide">
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+        </div>
     </main>
 
-    <div class="presentation-ui">
-        <button id="prev-slide" class="nav-button"><span class="material-symbols-outlined">arrow_back</span></button>
-        <button id="next-slide" class="nav-button"><span class="material-symbols-outlined">arrow_forward</span></button>
-        <div id="slide-counter">1 / 60</div>
-        
-        <button id="theme-switcher-btn" class="m3-button">
-            <span class="material-symbols-outlined">palette</span>
-            Theme
-        </button>
-        <div id="theme-options">
-            <div class="theme-option" data-theme="green">Innovation (Green)</div>
-            <div class="theme-option" data-theme="blue">Authority (Blue)</div>
-            <div class="theme-option" data-theme="red">Urgency (Red)</div>
-            <div class="theme-option" data-theme="purple">Elegance (Purple)</div>
-            <div>
-                <input type="text" id="custom-theme-input" placeholder="#6750A4">
-                <button id="custom-theme-btn" class="m3-button" style="width:100%; margin-top: 4px;">Apply</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
     <script>
-    
-    /**
-     * Tonal Palettes and Theme Generation
-     * Based on Material Design 3.0 algorithms.
-     * This is a simplified version for generating a theme from a single hex color.
-     */
-    function generateThemeFromHex(hex) {
-        // Simple algorithm for theme generation (not a full HCT implementation)
-        const C = parseInt(hex.substring(1), 16);
-        const R = (C >> 16) & 255;
-        const G = (C >> 8) & 255;
-        const B = C & 255;
-
-        const lighten = (r,g,b,p) => [r+(255-r)*p, g+(255-g)*p, b+(255-b)*p].map(Math.round);
-        const darken = (r,g,b,p) => [r*(1-p), g*(1-p), b*(1-p)].map(Math.round);
-        const toHex = (rgb) => '#' + rgb.map(c => c.toString(16).padStart(2, '0')).join('');
-
-        const primary = hex;
-        const onPrimary = (R * 0.299 + G * 0.587 + B * 0.114) > 186 ? '#000000' : '#FFFFFF';
-        
-        return {
-            '--md-sys-color-primary': primary,
-            '--md-sys-color-on-primary': onPrimary,
-            '--md-sys-color-primary-container': toHex(lighten(R,G,B,0.8)),
-            '--md-sys-color-on-primary-container': toHex(darken(R,G,B,0.7)),
-            '--md-sys-color-secondary': toHex(darken(R,G,B,0.2)),
-            '--md-sys-color-on-secondary': '#FFFFFF',
-            '--md-sys-color-secondary-container': toHex(lighten(R,G,B,0.85)),
-            '--md-sys-color-on-secondary-container': toHex(darken(R,G,B,0.6)),
-            '--md-sys-color-tertiary': toHex(lighten(R,G,B,0.2)),
-            '--md-sys-color-on-tertiary': '#FFFFFF',
-            '--md-sys-color-tertiary-container': toHex(lighten(R,G,B,0.75)),
-            '--md-sys-color-on-tertiary-container': toHex(darken(R,G,B,0.5)),
-            // Use static colors for the rest for simplicity
-            '--md-sys-color-error': '#B3261E', '--md-sys-color-on-error': '#FFFFFF',
-            '--md-sys-color-error-container': '#F9DEDC', '--md-sys-color-on-error-container': '#410E0B',
-            '--md-sys-color-background': '#FFFBFE', '--md-sys-color-on-background': '#1C1B1F',
-            '--md-sys-color-surface': '#FFFBFE', '--md-sys-color-on-surface': '#1C1B1F',
-            '--md-sys-color-surface-variant': '#E7E0EC', '--md-sys-color-on-surface-variant': '#49454F',
-            '--md-sys-color-outline': '#79747E', '--md-sys-color-shadow': '#000000',
-            '--md-sys-color-inverse-surface': '#313033', '--md-sys-color-inverse-on-surface': '#F4EFF4',
-            '--md-sys-color-inverse-primary': toHex(lighten(R,G,B,0.5)),
-            '--md-sys-color-surface-tint': primary,
-        };
-    }
-
-    /**
-     * ChartDataValidator Class
-     * Ensures chart data is in a usable format.
-     */
-    class ChartDataValidator {
-        static validate(data, type) {
-            if (!data || !Array.isArray(data) || data.length === 0) return false;
-            if (type.includes('pie') || type.includes('bar')) {
-                return data.every(item => typeof item.label === 'string' && typeof item.value === 'number');
-            }
-            // Add other validations as needed
-            return true;
-        }
-    }
-
-    /**
-     * BulletproofMermaidRenderer Class
-     * Renders Mermaid charts and provides robust CSS fallbacks.
-     */
-    class BulletproofMermaidRenderer {
-        constructor() {
-            mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
-            this.themeConfig = this.getThemeColors();
-            this.updateMermaidTheme();
-        }
-        
-        getThemeColors() {
-             const styles = getComputedStyle(document.body);
-             return {
-                primaryColor: styles.getPropertyValue('--md-sys-color-surface').trim(),
-                primaryTextColor: styles.getPropertyValue('--md-sys-color-on-surface').trim(),
-                primaryBorderColor: styles.getPropertyValue('--md-sys-color-outline').trim(),
-                lineColor: styles.getPropertyValue('--md-sys-color-on-surface-variant').trim(),
-                secondaryColor: styles.getPropertyValue('--md-sys-color-primary-container').trim(),
-                tertiaryColor: styles.getPropertyValue('--md-sys-color-secondary-container').trim(),
-                // For fallbacks
-                colors: [
-                    styles.getPropertyValue('--md-sys-color-primary').trim(),
-                    styles.getPropertyValue('--md-sys-color-secondary').trim(),
-                    styles.getPropertyValue('--md-sys-color-tertiary').trim(),
-                    styles.getPropertyValue('--md-sys-color-error').trim(),
-                    styles.getPropertyValue('--md-sys-color-primary-container').trim(),
-                ]
-            };
-        }
-
-        updateMermaidTheme() {
-            this.themeConfig = this.getThemeColors();
-            mermaid.updateThemeVariables(this.themeConfig);
-        }
-
-        async render(container) {
-            const specString = container.dataset.chartSpec;
-            if (!specString) return;
-
-            try {
-                const spec = JSON.parse(specString);
-                const { chart_type, chart_title, chart_data } = spec;
-
-                if (!ChartDataValidator.validate(chart_data, chart_type)) {
-                    throw new Error("Invalid chart data");
-                }
-
-                const mermaidCode = this.generateMermaidCode(spec);
-                
-                // Clear loading state
-                const loadingDiv = container.querySelector('.chart-loading');
-                if (loadingDiv) loadingDiv.remove();
-                
-                const { svg } = await mermaid.render(this.generateUniqueId(), mermaidCode);
-                container.innerHTML = svg;
-
-            } catch (error) {
-                console.error("Chart rendering failed:", error);
-                const spec = JSON.parse(specString);
-                this.renderFallback(container, spec);
-            }
-        }
-
-        renderFallback(container, spec) {
-            const { chart_type, chart_title, chart_data } = spec;
-            let fallbackHtml = `<div class="chart-fallback"><h3>${chart_title}</h3>`;
-
-            switch(chart_type) {
-                case 'professional-pie':
-                    fallbackHtml += '<div class="pie-fallback">';
-                    const total = chart_data.reduce((sum, item) => sum + item.value, 0);
-                    chart_data.forEach((item, index) => {
-                        const percent = ((item.value / total) * 100).toFixed(1);
-                        fallbackHtml += `
-                            <div class="fallback-row">
-                                <div class="color-swatch" style="background-color: ${this.themeConfig.colors[index % this.themeConfig.colors.length]}"></div>
-                                <div class="label">${item.label}</div>
-                                <div class="value">${percent}%</div>
-                            </div>`;
-                    });
-                    fallbackHtml += '</div>';
-                    break;
-                // Add more fallback types here
-                default:
-                    fallbackHtml += `<p class="fallback-message">Chart preview unavailable (${chart_type}).</p>`;
-            }
-            fallbackHtml += `</div>`;
-            container.innerHTML = fallbackHtml;
-        }
-
-        generateMermaidCode({ chart_type, chart_title, chart_data }) {
-            let code = '';
-            switch(chart_type) {
-                case 'professional-pie':
-                    code = `pie title ${chart_title}\n`;
-                    chart_data.forEach(d => { code += `    "${d.label}" : ${d.value}\n`; });
-                    break;
-                // Add more chart types here
-            }
-            return code;
-        }
-        
-        generateUniqueId() {
-            return 'mermaid-' + Math.random().toString(36).substr(2, 9);
-        }
-    }
-
-
-    /**
-     * EnhancedPresentationController Class
-     * Manages slide navigation, theme switching, and chart rendering.
-     */
-    class EnhancedPresentationController {
-        constructor() {
-            this.slides = document.querySelectorAll('.slide');
-            this.currentIndex = 0;
-            this.chartRenderer = new BulletproofMermaidRenderer();
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const slideCounter = document.getElementById('slide-counter');
             
-            this.initNavigation();
-            this.initThemeSwitcher();
-            this.initCharts();
-            
-            // Show the first slide
-            this.showSlide(this.currentIndex);
-        }
+            let currentSlideIndex = 0;
+            const totalSlides = slides.length;
 
-        initNavigation() {
-            document.getElementById('prev-slide').addEventListener('click', () => this.showSlide(this.currentIndex - 1));
-            document.getElementById('next-slide').addEventListener('click', () => this.showSlide(this.currentIndex + 1));
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight' || e.key === ' ') this.showSlide(this.currentIndex + 1);
-                if (e.key === 'ArrowLeft') this.showSlide(this.currentIndex - 1);
-            });
-        }
-        
-        initThemeSwitcher() {
-            const themeBtn = document.getElementById('theme-switcher-btn');
-            const themeOptions = document.getElementById('theme-options');
-            
-            themeBtn.addEventListener('click', () => themeOptions.classList.toggle('active'));
-
-            themeOptions.querySelectorAll('.theme-option').forEach(option => {
-                option.addEventListener('click', (e) => {
-                    document.body.dataset.theme = e.target.dataset.theme;
-                    this.onThemeChange();
-                    themeOptions.classList.remove('active');
+            function showSlide(index) {
+                // Remove active class from all slides
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                    slide.setAttribute('aria-hidden', 'true');
                 });
-            });
 
-            document.getElementById('custom-theme-btn').addEventListener('click', () => {
-                const hex = document.getElementById('custom-theme-input').value;
-                if (/^#([0-9A-F]{3}){1,2}$/i.test(hex)) {
-                    const customTheme = generateThemeFromHex(hex);
-                    const style = document.createElement('style');
-                    let css = '[data-theme="custom"] {';
-                    for (const [key, value] of Object.entries(customTheme)) {
-                        css += `${key}: ${value};`;
-                    }
-                    css += '}';
-                    style.textContent = css;
-                    document.head.appendChild(style);
-                    
-                    document.body.dataset.theme = 'custom';
-                    this.onThemeChange();
-                    themeOptions.classList.remove('active');
-                } else {
-                    alert("Please enter a valid hex color code (e.g., #6750A4).");
+                // Add active class to the target slide
+                const newSlide = slides[index];
+                if (newSlide) {
+                    newSlide.classList.add('active');
+                    newSlide.setAttribute('aria-hidden', 'false');
+                    currentSlideIndex = index;
+                }
+                
+                updateUI();
+            }
+
+            function updateUI() {
+                // Update counter
+                slideCounter.textContent = `${currentSlideIndex + 1} / ${totalSlides}`;
+                
+                // Update button states
+                prevBtn.disabled = currentSlideIndex === 0;
+                nextBtn.disabled = currentSlideIndex === totalSlides - 1;
+            }
+
+            function showNextSlide() {
+                if (currentSlideIndex < totalSlides - 1) {
+                    showSlide(currentSlideIndex + 1);
+                }
+            }
+
+            function showPrevSlide() {
+                if (currentSlideIndex > 0) {
+                    showSlide(currentSlideIndex - 1);
+                }
+            }
+
+            // Event Listeners
+            nextBtn.addEventListener('click', showNextSlide);
+            prevBtn.addEventListener('click', showPrevSlide);
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    showNextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevSlide();
                 }
             });
-        }
 
-        initCharts() {
-            const chartContainers = document.querySelectorAll('.chart-container');
-            chartContainers.forEach(container => this.chartRenderer.render(container));
-        }
-        
-        onThemeChange() {
-            this.chartRenderer.updateMermaidTheme();
-            // Re-render charts on the currently visible slide to apply new theme
-            const activeSlide = this.slides[this.currentIndex];
-            if (activeSlide) {
-                const chartContainers = activeSlide.querySelectorAll('.chart-container');
-                chartContainers.forEach(container => this.chartRenderer.render(container));
-            }
-        }
-
-        showSlide(index) {
-            if (index < 0 || index >= this.slides.length) return;
-
-            this.slides[this.currentIndex].classList.remove('active');
-            this.currentIndex = index;
-            this.slides[this.currentIndex].classList.add('active');
-            
-            this.updateCounter();
-        }
-
-        updateCounter() {
-            document.getElementById('slide-counter').textContent = `${this.currentIndex + 1} / ${this.slides.length}`;
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // NOTE: The HTML above is a truncated representation. To make this fully functional,
-        // you would replace the placeholder comments with the generated HTML for all 60 slides.
-        // The JavaScript controller below will manage the slides that are present in the DOM.
-        new EnhancedPresentationController();
-    });
+            // Initial setup
+            showSlide(0);
+        });
     </script>
 </body>
 </html>
